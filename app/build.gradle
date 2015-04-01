@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.androider.legacy"
@@ -28,8 +28,5 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
     compile 'com.github.dexafree:materiallist:2.3.2'
-    // stock actionBar
-    compile 'com.balysv.materialmenu:material-menu:1.5.1'
-// Toolbar and ActionBarCompat-v21 (includes support-v7:21.0.x)
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
 }
