@@ -1,17 +1,20 @@
 package com.androider.legacy;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+
 
 import com.androider.legacy.adapter.ViewPagerAdapter;
 import com.androider.legacy.fragment.MyPostListFragment;
@@ -19,6 +22,7 @@ import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +33,6 @@ public class MainActivity extends ActionBarActivity {
     private MaterialMenuIconToolbar materialMenu;
     private Toolbar overallToolBar;
 
-    private View myPostView;
-    private View sessionView;
-    private View recommondView;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
 
@@ -54,9 +55,7 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         materialMenu.setNeverDrawTouch(true);
-
-
-
+        initView();
     }
 
     private void initView(){
@@ -66,8 +65,10 @@ public class MainActivity extends ActionBarActivity {
         fragmentList.add(MyPostListFragment.newInstance("",""));
         fragmentList.add(SessionListFragment.newInstance("",""));
         viewPager = (ViewPager)findViewById(R.id.viewpager);
-        ViewPagerAdapter
+        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter( fragmentList,this.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        UnderlinePageIndicator indicator = (UnderlinePageIndicator)findViewById(R.id.pager_indicator);
+        indicator.setViewPager(viewPager);
     }
 
     @Override
