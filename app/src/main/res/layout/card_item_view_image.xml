@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginRight="10dip">
+
+
+    <ImageView
+        android:layout_width="@dimen/cardview_user_image_width"
+        android:layout_height="@dimen/cardview_user_image_height"
+        android:contentDescription="@string/card_user_image_description"
+        android:layout_marginLeft="@dimen/cardview_user_image_left_margin"
+        android:layout_marginTop="@dimen/cardview_user_image_top_margin"
+        android:scaleType="centerCrop"
+        android:id="@+id/card_user_image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:textSize="16sp"
+        android:text= "@string/card_user_name_default"
+        android:id="@+id/cardview_user_name"
+        android:layout_alignTop="@+id/card_user_image"
+        android:layout_toRightOf="@id/card_user_image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dip"
+        android:text="@string/card_post_time_default"
+        android:id="@+id/cardview_post_time"
+        android:textSize="14sp"
+        android:layout_below="@+id/cardview_user_name"
+        android:layout_toRightOf="@+id/card_user_image"
+        android:layout_toEndOf="@+id/card_user_image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardview_content"
+        android:maxLines="10"
+        android:textSize="20sp"
+        android:text="@string/card_content_default"
+        android:layout_below="@id/cardview_post_time"
+        android:layout_alignLeft="@id/cardview_post_time"
+        android:layout_marginTop="10dip"
+        />
+
+    <ImageView
+        android:layout_width="200dip"
+        android:layout_height="200dip"
+        android:id="@+id/cardview_content_image"
+        android:layout_alignLeft="@id/cardview_content"
+        android:layout_below="@id/cardview_content"
+        android:layout_marginTop="10dip" />
+
+
+</RelativeLayout>

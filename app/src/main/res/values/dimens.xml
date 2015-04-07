@@ -2,4 +2,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="cardflow_card_margin">4dp</dimen>
+
+    <!-- cardview  -->
+    <dimen name="cardview_user_image_left_margin">4dp</dimen>
+    <dimen name="cardview_user_image_top_margin">4dp</dimen>
+    <dimen name="cardview_user_image_width">50dp</dimen>
+    <dimen name="cardview_user_image_height">50dp</dimen>
 </resources>
