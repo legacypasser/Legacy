@@ -224,8 +224,11 @@ public class CardFlow extends LinearLayout {
 
     }
 
+    public boolean isTop() {
+        return getScaleY() <= 0;
+    }
+
     public void completeMove(float velocityY) {
-//        int height = getContentHeight();
 
         int maxY = getChildBottom() - getHeight();
         int scrollyY = getScrollY();
@@ -267,7 +270,8 @@ public class CardFlow extends LinearLayout {
                 int y = (int)event.getY();
                 if (y != mLastMotionY) {
                     if (getScaleY() < (getChildBottom() - getHeight())) {
-                        Logger.getInstance().error(TAG, "onTouchEvent_ACTION_MOVE; currentY is " + y + "; mLast is " + mLastMotionY);
+                        Logger.getInstance().error(TAG, "scaleY is:" + getScaleY() + "; childBottom:" + getChildBottom() + "; height: " + getHeight());
+//                        Logger.getInstance().error(TAG, "onTouchEvent_ACTION_MOVE; currentY is " + y + "; mLast is " + mLastMotionY);
                         scrollBy(0, - (y - mLastMotionY));
                         mLastMotionY = y;
                     }

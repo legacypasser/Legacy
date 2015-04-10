@@ -2,6 +2,10 @@ package com.androider.legacy.card;
 
 import android.content.Context;
 
+import com.androider.legacy.card.model.CardInfo;
+
+import java.util.List;
+
 /**
  * Created by bao on 2015/4/5.
  */
@@ -15,7 +19,7 @@ public final class CardViewManager {
 
     private CardViewManager() {}
 
-    public static CardViewManager getInstance() {
+    public static CardViewManager getInstance(Context context) {
         synchronized (CardViewManager.class) {
             if (null == mCardViewManager) {
                 mCardViewManager = new CardViewManager();
@@ -31,5 +35,8 @@ public final class CardViewManager {
     }
 
 
+//    public void getCardViews(int num) {
+//        List<CardInfo> cardInfos = CardInfoManager.getInstance();
+//    }
 
 }

@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.card.CardFlow;
+import com.androider.legacy.card.CardView;
+import com.androider.legacy.card.OnCardFlowScrollChangedListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +69,34 @@ public class RecommendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recommend, container, false);
+//        return inflater.inflate(R.layout.fragment_recommend, container, false);
+
+        // TODO: 增加的cardflow的测试
+        CardFlow cardFlow = new CardFlow(getActivity().getApplicationContext());
+        cardFlow.setOnCardFlowScrollChangedListener(new OnCardFlowScrollChangedListener() {
+            @Override
+            public boolean reqeustViews(ViewGroup parent) {
+                if (parent.getChildCount() <= 30) {
+                    addCardView((CardFlow)parent, 5);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        addCardView(cardFlow, 5);
+        return cardFlow;
+    }
+
+    private int mDefaultTextViewCount = 0;
+
+    public void addCardView(CardFlow parent, int num) {
+        for(int i = 0; i < num; i++) {
+            TextView t = new TextView(getActivity().getApplicationContext());
+            t.setText("Default textview " + mDefaultTextViewCount);
+            mDefaultTextViewCount ++;
+            parent.addCardInTail(t);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

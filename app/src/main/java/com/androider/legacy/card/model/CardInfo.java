@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by bao on 2015/4/5.
  */
-final class CardInfo implements Comparable {
+public final class CardInfo implements Comparable {
 
     private static final String TAG = "CardInfo";
     private String userNickName;
@@ -15,6 +15,25 @@ final class CardInfo implements Comparable {
     private Timestamp postTime;
     private String description;
     private String contentImagePath;
+    private boolean isAssociateWithView;
+
+    public CardInfo(String userNickName, String userImagePath, Timestamp postTime,
+                    String description, String contentImagePath, boolean isAssociateWithView) {
+        this.userNickName = userNickName;
+        this.userImagePath = userImagePath;
+        this.postTime = postTime;
+        this.description = description;
+        this.contentImagePath = contentImagePath;
+        this.isAssociateWithView = isAssociateWithView;
+    }
+
+    public boolean getIsAssociateWithView() {
+        return isAssociateWithView;
+    }
+
+    public void setIsAssociateWithView(boolean i) {
+        this.isAssociateWithView = i;
+    }
 
     public String getUserNickName() {
         return userNickName;
@@ -64,6 +83,14 @@ final class CardInfo implements Comparable {
         } else {
             Logger.getInstance().error(TAG, "CardInfo compareTo error!!!");
             return 0;
+        }
+    }
+
+    public boolean isNewerThan(CardInfo another) {
+        if (compareTo(another) >= 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
