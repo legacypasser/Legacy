@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DaoCore/DaoCore.iml" filepath="$PROJECT_DIR$/DaoCore/DaoCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DaoExampleGenerator/DaoExampleGenerator.iml" filepath="$PROJECT_DIR$/DaoExampleGenerator/DaoExampleGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DaoGenerator/DaoGenerator.iml" filepath="$PROJECT_DIR$/DaoGenerator/DaoGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DaoTest/DaoTest.iml" filepath="$PROJECT_DIR$/DaoTest/DaoTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/Legacy.iml" filepath="$PROJECT_DIR$/Legacy.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator/ViewPagerIndicator.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator/ViewPagerIndicator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

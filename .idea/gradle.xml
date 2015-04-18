@@ -3,12 +3,16 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="D:\Android\studio\gradle\gradle-2.2.1" />
+        <option name="gradleJvm" value="1.7" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DaoCore" />
+            <option value="$PROJECT_DIR$/DaoExampleGenerator" />
+            <option value="$PROJECT_DIR$/DaoGenerator" />
+            <option value="$PROJECT_DIR$/DaoTest" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator" />
             <option value="$PROJECT_DIR$/app" />
           </set>
@@ -17,4 +21,3 @@
     </option>
   </component>
 </project>
-
