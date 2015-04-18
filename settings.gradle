@@ -1,2 +1,2 @@
-include ':app', ':DaoTest', ':DaoGenerator', ':DaoCore', ':DaoExampleGenerator'
+include ':app'
 include ':ViewPagerIndicator'
