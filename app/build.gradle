@@ -29,5 +29,6 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
     compile 'com.github.dexafree:materiallist:2.3.2'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile project(':ViewPagerIndicator')
 }

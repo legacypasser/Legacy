@@ -14,17 +14,15 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    private static final String dbName = "legacybase";
+    public DatabaseHelper(Context context) {
+        super(context, dbName, null, 1);
     }
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
-    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL("create table post ");
     }
 
     @Override

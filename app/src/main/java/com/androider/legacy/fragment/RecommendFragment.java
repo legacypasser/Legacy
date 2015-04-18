@@ -3,6 +3,7 @@ package com.androider.legacy.fragment;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,10 @@ import com.androider.legacy.R;
 import com.androider.legacy.card.CardFlow;
 import com.androider.legacy.card.CardView;
 import com.androider.legacy.card.OnCardFlowScrollChangedListener;
+import com.androider.legacy.listener.LeftClikedListener;
+import com.dexafree.materialList.cards.BigImageButtonsCard;
+import com.dexafree.materialList.cards.BigImageCard;
+import com.dexafree.materialList.view.MaterialListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,27 +27,10 @@ import com.androider.legacy.card.OnCardFlowScrollChangedListener;
  * Use the {@link RecommendFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecommendFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class RecommendFragment extends BaseListFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MaterialListView selfList;
 
-    private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecommendFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RecommendFragment newInstance(String param1, String param2) {
         RecommendFragment fragment = new RecommendFragment();
         Bundle args = new Bundle();
@@ -52,90 +40,20 @@ public class RecommendFragment extends Fragment {
         return fragment;
     }
 
-    public RecommendFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
+        selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
+        for(int i = 0; i < 10; i++){
+            BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
+            card.setDescription("this is the test");
+            card.setTitle("test");
+            card.setLeftButtonText("left");
+            card.setRightButtonText("right");
+            card.setDrawable(R.drawable.ic_launcher);
+            card.setOnLeftButtonPressedListener(new LeftClikedListener());
+            selfList.add(card);
         }
+        return rootView;
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_recommend, container, false);
-
-        // TODO: 增加的cardflow的测试
-        CardFlow cardFlow = new CardFlow(getActivity().getApplicationContext());
-        cardFlow.setOnCardFlowScrollChangedListener(new OnCardFlowScrollChangedListener() {
-            @Override
-            public boolean reqeustViews(ViewGroup parent) {
-                if (parent.getChildCount() <= 30) {
-                    addCardView((CardFlow)parent, 5);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-        addCardView(cardFlow, 5);
-        return cardFlow;
-    }
-
-    private int mDefaultTextViewCount = 0;
-
-    public void addCardView(CardFlow parent, int num) {
-        for(int i = 0; i < num; i++) {
-            TextView t = new TextView(getActivity().getApplicationContext());
-            t.setText("Default textview " + mDefaultTextViewCount);
-            mDefaultTextViewCount ++;
-            parent.addCardInTail(t);
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        /*try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
 }

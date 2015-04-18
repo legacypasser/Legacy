@@ -12,16 +12,24 @@
         android:minHeight="?attr/actionBarSize">
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        />
-
-    <com.viewpagerindicator.UnderlinePageIndicator
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:id="@+id/pager_indicator"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/main_container">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            />
+
+        <com.viewpagerindicator.UnderlinePageIndicator
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/pager_indicator"
+            />
+        </LinearLayout>
+
 </LinearLayout>
