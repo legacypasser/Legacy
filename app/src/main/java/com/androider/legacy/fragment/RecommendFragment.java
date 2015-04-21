@@ -1,10 +1,12 @@
 package com.androider.legacy.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,16 @@ import com.androider.legacy.R;
 import com.androider.legacy.card.CardFlow;
 import com.androider.legacy.card.CardView;
 import com.androider.legacy.card.OnCardFlowScrollChangedListener;
+import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Post;
 import com.androider.legacy.listener.LeftClikedListener;
+import com.androider.legacy.service.NetService;
 import com.dexafree.materialList.cards.BigImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageCard;
 import com.dexafree.materialList.view.MaterialListView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +37,8 @@ import com.dexafree.materialList.view.MaterialListView;
  */
 public class RecommendFragment extends BaseListFragment {
 
-    private MaterialListView selfList;
-
+    public static RecommendFragment instance;
+    public int currentPage = 0;
     public static RecommendFragment newInstance(String param1, String param2) {
         RecommendFragment fragment = new RecommendFragment();
         Bundle args = new Bundle();
@@ -44,16 +52,28 @@ public class RecommendFragment extends BaseListFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
-        for(int i = 0; i < 10; i++){
+        instance = this;
+        request();
+        return rootView;
+    }
+
+    private void request(){
+        currentPage++;
+        Intent intent = new Intent(getActivity(), NetService.class);
+        intent.putExtra(Constants.intentType, Constants.recommendAdded);
+        intent.putExtra(Constants.page, currentPage);
+        getActivity().startService(intent);
+    }
+
+    public void refreshList(){
+        for(Post item : Holder.recommendPost){
             BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
-            card.setDescription("this is the test");
-            card.setTitle("test");
-            card.setLeftButtonText("left");
+            card.setDescription(item.abs);
+            card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
             card.setDrawable(R.drawable.ic_launcher);
-            card.setOnLeftButtonPressedListener(new LeftClikedListener());
+            card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);
         }
-        return rootView;
     }
 }

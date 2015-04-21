@@ -12,9 +12,15 @@ import com.dexafree.materialList.model.Card;
  * Created by Think on 2015/4/17.
  */
 public class LeftClikedListener implements OnButtonPressListener {
+    private int postId;
+    public LeftClikedListener(int id){
+        postId = id;
+    }
     @Override
     public void onButtonPressedListener(View view, Card card) {
-        MainActivity.instance.switchFragment(MainActivity.detailFragName);
+        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
+        PostDetailFragment.currentId = postId;
         MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
     }
+
 }

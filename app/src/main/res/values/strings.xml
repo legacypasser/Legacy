@@ -15,4 +15,7 @@
     <string name="card_user_image_description">这个是用户头像</string>
     <string name="card_post_time_default">4月5日 18:04</string>
     <string name="card_content_default">这个是默认发布的内容啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</string>
+
+    <string name="recommend_finish_broadcast">com.android.legacy.action.RECOMMEND_REFRESH</string>
+    <string name="title_activity_register">RegisterActivity</string>
 </resources>

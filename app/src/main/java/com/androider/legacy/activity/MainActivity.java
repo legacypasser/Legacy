@@ -1,6 +1,10 @@
 package com.androider.legacy.activity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
@@ -9,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,20 +24,23 @@ import com.androider.legacy.adapter.FragmentViewPagerAdapter;
 import com.androider.legacy.common.database.DatabaseHelper;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
-import com.androider.legacy.fragment.RegisterFragment;
 import com.androider.legacy.fragment.ResultListFragment;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.listener.ToolBarListener;
+import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.service.NetService;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.apache.http.cookie.params.CookieSpecPNames;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +53,7 @@ public class MainActivity extends ActionBarActivity {
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
 
-    public static final String loginFragName = "login";
-    public static final String registerFragName = "register";
-    public static final String resultFragName = "result";
-    public static final String detailFragName = "detail";
+
     public static SQLiteDatabase db;
 
     public static MainActivity instance;
@@ -70,9 +75,21 @@ public class MainActivity extends ActionBarActivity {
         };
         materialMenu.setNeverDrawTouch(true);
         db = new DatabaseHelper(this).getWritableDatabase();
+        User.drag();
+        autoLogin();
         initView();
     }
 
+    private void autoLogin(){
+        if(User.id != -1){
+            Intent intent = new Intent(this, NetService.class);
+            intent.putExtra(Constants.intentType, Constants.loginAttempt);
+            startService(intent);
+            Log.v("panbo", "loginTrying");
+        }else{
+            Log.v("panbo", "not registered");
+        }
+    }
     private void initView(){
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
@@ -89,13 +106,11 @@ public class MainActivity extends ActionBarActivity {
     public void switchFragment(String fragmentName){
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentName);
         if(fragment == null){
-            if(fragmentName.equals(registerFragName)){
-                fragment = RegisterFragment.newInstance("", "");
-            }else if(fragmentName.equals(loginFragName)){
+            if(fragmentName.equals(LoginFragment.class.getSimpleName())){
                 fragment = LoginFragment.newInstance("", "");
-            }else if(fragmentName.equals(resultFragName)){
+            }else if(fragmentName.equals(ResultListFragment.class.getSimpleName())){
                 fragment = ResultListFragment.newInstance("", "");
-            }else if(fragmentName.equals(detailFragName)){
+            }else if(fragmentName.equals(PostDetailFragment.class.getSimpleName())){
                 fragment = PostDetailFragment.newInstance("", "");
             }
         }
@@ -124,6 +139,43 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id == R.id.action_register){
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static NetHandler netHandler = new NetHandler(instance);
+
+    static class NetHandler extends Handler{
+        WeakReference<MainActivity> activityWeakReference;
+        NetHandler(MainActivity mainActivity){
+            activityWeakReference = new WeakReference<MainActivity>(mainActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case Constants.recommendAdded:
+                    RecommendFragment.instance.refreshList();
+                break;
+                case Constants.detailRequest:
+                    PostDetailFragment.instance.setView();
+                    break;
+                case Constants.registrationSent:
+                    MainActivity.instance.autoLogin();
+                    break;
+                case Constants.loginAttempt:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }

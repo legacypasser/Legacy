@@ -22,7 +22,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table post ");
+        db.execSQL("CREATE TABLE  post  (" +
+                "   id  INTEGER PRIMARY KEY," +
+                "   des  VARCHAR," +
+                "   img  VARCHAR," +
+                "   seller  INTEGER," +
+                "   publish  TIMESTAMP," +
+                "   abs  VARCHAR" +
+                ");");
+        db.execSQL("CREATE TABLE session (peer INTEGER PRIMARY KEY, nickname VARCHAR, records VARCHAR);");
+        db.execSQL("CREATE TABLE record (id INTEGER PRIMARY KEY, sender INTEGER, receiver INTEGER, content VARCHAR, edit TIMESTAMP);");
+        db.execSQL("CREATE TABLE user (id INTEGER PRIMARY KEY, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR);");
     }
 
     @Override
@@ -30,8 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    // TODO: 完成这个方法
-    public List<CardInfo> queryCardInfoByTimeDesc() {
-        return null;
-    }
+
+
 }

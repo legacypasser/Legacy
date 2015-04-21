@@ -1,24 +1,34 @@
 package com.androider.legacy.net;
 
 
-import android.app.DownloadManager;
 
+import android.util.Log;
+
+import com.androider.legacy.common.Logger;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.PostConverter;
+import com.androider.legacy.data.User;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by Think on 2015/4/16.
  */
-public class LegacyClient {
+public class LegacyClient{
     OkHttpClient client;
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
@@ -26,6 +36,8 @@ public class LegacyClient {
     public static LegacyClient getInstance(){
         return SingletonHoler.instance;
     }
+
+
     private static class SingletonHoler{
         private static LegacyClient instance = new LegacyClient();
     }
@@ -39,23 +51,124 @@ public class LegacyClient {
         Response resp = null;
         try {
             resp = client.newCall(req).execute();
+            return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return resp.string();
+        return null;
     }
 
-    private String get(String url){
+    public String get(String url){
         Request req = new Request.Builder()
                 .url(url)
                 .build();
-        Response  resp = client.newCall(request).execute();
-        return resp.body().string();
+        Response  resp = null;
+        try {
+            resp = client.newCall(req).execute();
+            return resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public ArrayList<Post> getRecommend(int pageNum){
+    public String getRecommend(int pageNum){
         String reqUrl = Constants.requestPath + Constants.recommend + Constants.ask + Constants.page + pageNum;
-        String result = get(reqUrl);
+        return get(reqUrl);
+    }
 
+    public String getRest(int id){
+        String reqUrl = Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
+
+        return get(reqUrl);
+    }
+
+    public String search(String keyword){
+        String reqUrl = Constants.requestPath + Constants.search + Constants.ask + Constants.keyword + keyword;
+        return get(reqUrl);
+    }
+
+    public String personal(int id){
+        String reqUrl = Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
+        return get(reqUrl);
+    }
+
+    public boolean login(){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("email", User.email);
+            reqData.put("password", User.password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = post(Constants.requestPath + Constants.login, reqData.toString());
+        if(result == null)
+            return false;
+        else if(result.equals(Constants.success))
+            return true;
+        else
+            return false;
+    }
+
+    public String register(){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("email", User.email);
+            reqData.put("password", User.password);
+            reqData.put("nickname", User.nickname);
+            reqData.put("school", User.school);
+            reqData.put("major", User.major);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = post(Constants.requestPath + Constants.register, reqData.toString());
+        return result;
+    }
+
+    public String publish(String des, String ... imgs){
+        MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        builder.addFormDataPart("des", des);
+        for(String path: imgs){
+            builder.addFormDataPart("imgs", null, RequestBody.create(MEDIA_TYPE_PNG, new File(path)));
+        }
+        RequestBody body = builder.build();
+
+        Request req = new Request.Builder()
+                .url(Constants.requestPath + Constants.publish)
+                .post(body)
+                .build();
+
+        try {
+            return client.newCall(req).execute().body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String online(){
+        String reqUrl = Constants.requestPath + Constants.online;
+        return get(reqUrl);
+    }
+
+    public String chat(String content, int receiver){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("content", content);
+            reqData.put("receiver", receiver);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return post(Constants.requestPath + Constants.chat, reqData.toString());
+    }
+
+    public String interest(int id){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return post(Constants.requestPath + Constants.interest, reqData.toString());
     }
 }

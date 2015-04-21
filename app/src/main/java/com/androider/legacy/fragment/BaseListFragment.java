@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
+import com.dexafree.materialList.view.MaterialListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,8 @@ public class BaseListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     String mParam1;
     String mParam2;
+
+    MaterialListView selfList;
 
     private OnFragmentInteractionListener mListener;
 

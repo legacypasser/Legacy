@@ -5,11 +5,12 @@ import java.util.LinkedList;
 /**
  * Created by Think on 2015/4/16.
  */
-public class Session implements Cachable{
+public class Session {
     public int peer;
+    public String nickname;
     public String records;
-    public static LinkedList<Session> sessions = new LinkedList<Session>();
 
+    public static final String tableName = "session";
     public Session(int peer, String records) {
         this.peer = peer;
         this.records = records;
@@ -19,7 +20,7 @@ public class Session implements Cachable{
         LinkedList<Record> certain = new LinkedList<Record>();
         String[] peerList =  records.split(Constants.regex);
         for(String item : peerList){
-            certain.add(Record.records.get(item));
+            certain.add(Holder.records.get(item));
         }
         return certain;
     }
@@ -31,13 +32,4 @@ public class Session implements Cachable{
         records += Constants.regex + id;
     }
 
-    @Override
-    public Cachable get(String url) {
-        return null;
-    }
-
-    @Override
-    public LinkedList<Cachable> getList(String url) {
-        return null;
-    }
 }

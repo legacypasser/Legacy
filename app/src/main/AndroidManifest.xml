@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.androider.legacy" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +30,25 @@
         <activity
             android:name=".activity.SettingActivity"
             android:label="@string/title_activity_setting" >
+        </activity>
+
+        <service
+            android:name=".service.NetService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".broadcast.NetReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="@string/recommend_finish_broadcast" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:label="@string/title_activity_register" >
         </activity>
     </application>
 
