@@ -20,4 +20,8 @@ public class Holder{
     public static HashMap<Integer, Record> records = new HashMap<Integer, Record>();
 
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
+
+    public static ArrayList<String> paths = new ArrayList<>();
+
+    public static String publishDes;
 }

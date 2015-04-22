@@ -78,11 +78,9 @@ public class Post{
         return result;
     }
 
-    private static ArrayList<Post> listFromBase(String url){
+    public static ArrayList<Post> listFromBase(int seller){
         ArrayList<Post> result = new ArrayList<Post>();
-        int pageNum = Integer.parseInt(url.split(Constants.connnector)[1]);
-        int skip = pageNum * Constants.eachPage - Constants.eachPage;
-        Cursor cursor = MainActivity.db.rawQuery("select * from post limit " + Constants.eachPage + " offset " + skip, null);
+        Cursor cursor = MainActivity.db.rawQuery("select * from post where seller = ?;", new String[]{"" + seller});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             result.add(getCursored(cursor));
@@ -105,11 +103,13 @@ public class Post{
 
     public static void store(){
         for(Post item : Holder.recommendPost){
-            MainActivity.db.insert(tableName, null, getCv(item));
+            Cursor cursor = MainActivity.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
+            if(cursor.isAfterLast())
+                MainActivity.db.insert(tableName, null, getCv(item));
         }
     }
 
-    private static ContentValues getCv(Post item){
+    public static ContentValues getCv(Post item){
         ContentValues cv = new ContentValues();
         cv.put("des", item.des);
         cv.put("img", item.img);
@@ -118,6 +118,5 @@ public class Post{
         cv.put("abs", item.abs);
         return cv;
     }
-
 
 }

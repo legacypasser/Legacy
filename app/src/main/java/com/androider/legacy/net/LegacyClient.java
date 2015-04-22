@@ -1,14 +1,19 @@
 package com.androider.legacy.net;
 
 
+import org.apache.http.HttpEntity;
 
+import android.provider.Telephony;
 import android.util.Log;
 
+import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.common.Logger;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
+import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -36,7 +41,7 @@ public class LegacyClient{
     public static LegacyClient getInstance(){
         return SingletonHoler.instance;
     }
-
+    private String lastSession;
 
     private static class SingletonHoler{
         private static LegacyClient instance = new LegacyClient();
@@ -51,20 +56,25 @@ public class LegacyClient{
         Response resp = null;
         try {
             resp = client.newCall(req).execute();
+            lastSession = resp.header("Set-Cookie").split(";")[0];
             return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
     public String get(String url){
         Request req = new Request.Builder()
                 .url(url)
+                .addHeader("Cookie", lastSession)
                 .build();
         Response  resp = null;
         try {
             resp = client.newCall(req).execute();
+            lastSession = resp.header("Set-Cookie").split(";")[0];
+            Log.v("panbo", lastSession);
             return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,7 +89,6 @@ public class LegacyClient{
 
     public String getRest(int id){
         String reqUrl = Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
-
         return get(reqUrl);
     }
 
@@ -125,21 +134,23 @@ public class LegacyClient{
         return result;
     }
 
-    public String publish(String des, String ... imgs){
+    public String publish(){
+
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
-        builder.addFormDataPart("des", des);
-        for(String path: imgs){
-            builder.addFormDataPart("imgs", null, RequestBody.create(MEDIA_TYPE_PNG, new File(path)));
+        builder.addFormDataPart("des", Holder.publishDes);
+        for(String path: Holder.paths){
+            builder.addFormDataPart("imgs0", path, RequestBody.create(MEDIA_TYPE_PNG, new File(MainActivity.filePath + path)));
         }
         RequestBody body = builder.build();
-
         Request req = new Request.Builder()
                 .url(Constants.requestPath + Constants.publish)
+                .addHeader("Cookie", lastSession)
                 .post(body)
                 .build();
-
         try {
-            return client.newCall(req).execute().body().string();
+            Response resp = client.newCall(req).execute();
+            lastSession = resp.header("Set-Cookie").split(";")[0];
+            return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }

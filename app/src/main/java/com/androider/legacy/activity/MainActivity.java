@@ -36,6 +36,7 @@ import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.apache.http.cookie.params.CookieSpecPNames;
@@ -47,8 +48,11 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static String filePath;
     public static MaterialMenuIconToolbar materialMenu;
     public static Toolbar overallToolBar;
+
+    public AddFloatingActionButton overButton;
 
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
@@ -75,22 +79,21 @@ public class MainActivity extends ActionBarActivity {
         };
         materialMenu.setNeverDrawTouch(true);
         db = new DatabaseHelper(this).getWritableDatabase();
+        filePath = this.getApplicationContext().getFilesDir() + "/";
         User.drag();
         autoLogin();
         initView();
     }
 
     private void autoLogin(){
-        if(User.id != -1){
+        Log.v("panbo", "" + "user id is:" + User.id);
             Intent intent = new Intent(this, NetService.class);
             intent.putExtra(Constants.intentType, Constants.loginAttempt);
             startService(intent);
-            Log.v("panbo", "loginTrying");
-        }else{
-            Log.v("panbo", "not registered");
-        }
     }
     private void initView(){
+        overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
+        StateController.setToPublish();
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
@@ -168,6 +171,7 @@ public class MainActivity extends ActionBarActivity {
                     MainActivity.instance.autoLogin();
                     break;
                 case Constants.loginAttempt:
+                    Log.v("panbo", "login success");
                     break;
             }
         }

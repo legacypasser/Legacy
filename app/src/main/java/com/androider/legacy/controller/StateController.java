@@ -2,6 +2,7 @@ package com.androider.legacy.controller;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.listener.ShouldPublishListener;
 import com.balysv.materialmenu.MaterialMenu;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 
@@ -27,5 +28,9 @@ public class StateController {
                 MainActivity.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
                 break;
         }
+    }
+
+    public static void setToPublish(){
+        MainActivity.instance.overButton.setOnClickListener(new ShouldPublishListener());
     }
 }

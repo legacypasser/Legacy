@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
+import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Post;
+import com.androider.legacy.data.User;
+import com.androider.legacy.listener.LeftClikedListener;
+import com.dexafree.materialList.cards.BigImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageCard;
 import com.dexafree.materialList.cards.SmallImageCard;
 import com.dexafree.materialList.view.MaterialListView;
@@ -24,6 +29,7 @@ import com.dexafree.materialList.view.MaterialListView;
 public class MyPostListFragment extends BaseListFragment {
 
     private MaterialListView selfList;
+    public static MyPostListFragment instance;
 
     public static MyPostListFragment newInstance(String param1, String param2) {
         MyPostListFragment fragment = new MyPostListFragment();
@@ -39,15 +45,33 @@ public class MyPostListFragment extends BaseListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
+        instance = this;
         selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
-        for(int i = 0; i < 10; i++){
-            BigImageCard card = new BigImageCard(getActivity());
-            card.setDescription("this is the test");
-            card.setTitle("test");
+        Holder.myPost = Post.listFromBase(User.id);
+        fillList();
+        return rootView;
+    }
+
+    public void fillList(){
+        for(Post item : Holder.myPost){
+            BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
+            card.setDescription(item.abs);
+            card.setLeftButtonText("see detail");
+            card.setRightButtonText("right");
             card.setDrawable(R.drawable.ic_launcher);
+            card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);
         }
-        return rootView;
+    }
+
+    public void addToList(Post item){
+        BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
+        card.setDescription(item.abs);
+        card.setLeftButtonText("see detail");
+        card.setRightButtonText("right");
+        card.setDrawable(R.drawable.ic_launcher);
+        card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
+        selfList.add(card);
     }
 
 }

@@ -16,12 +16,15 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
+import com.androider.legacy.fragment.MyPostListFragment;
+import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.net.LegacyClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -73,8 +76,29 @@ public class NetService extends IntentService {
             case Constants.loginAttempt:
                 boolean loginResult = LegacyClient.getInstance().login();
                 if(loginResult)
-                msg.what = Constants.loginAttempt;
+                    msg.what = Constants.loginAttempt;
                 break;
+            case Constants.myPublish:
+                String idStr = LegacyClient.getInstance().publish();
+                Log.v("panbo", idStr);
+                int newlyAddedId = Integer.parseInt(idStr);
+                String imgStr = "";
+                for(String item : Holder.paths){
+                    imgStr += item + ";";
+                }
+                Post published = new Post(newlyAddedId,
+                        Holder.publishDes,
+                        imgStr.substring(0, imgStr.length() - 1),
+                        User.id,
+                        new Date(),
+                        Holder.publishDes
+                        );
+                Holder.detailed.put(newlyAddedId, published);
+                ContentValues publishedCv = Post.getCv(published);
+                publishedCv.put("id", newlyAddedId);
+                MainActivity.db.insert(Post.tableName, null, publishedCv);
+                Log.v("panbo", "stroed");
+                return;
         }
             messenger.send(msg);
         } catch (RemoteException e) {
