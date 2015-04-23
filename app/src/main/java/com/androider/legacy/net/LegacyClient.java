@@ -37,6 +37,7 @@ public class LegacyClient{
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
+        lastSession = "";
     }
     public static LegacyClient getInstance(){
         return SingletonHoler.instance;
@@ -51,6 +52,7 @@ public class LegacyClient{
         RequestBody body = RequestBody.create(JSON, json);
         Request req = new Request.Builder()
                 .url(url)
+                .addHeader("Cookie", lastSession)
                 .post(body)
                 .build();
         Response resp = null;
@@ -74,7 +76,6 @@ public class LegacyClient{
         try {
             resp = client.newCall(req).execute();
             lastSession = resp.header("Set-Cookie").split(";")[0];
-            Log.v("panbo", lastSession);
             return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,12 +112,15 @@ public class LegacyClient{
             e.printStackTrace();
         }
         String result = post(Constants.requestPath + Constants.login, reqData.toString());
-        if(result == null)
+        if(result == null ||result.equals("email_fail") || result.equals("password_fail"))
             return false;
-        else if(result.equals(Constants.success))
-            return true;
-        else
-            return false;
+        try {
+
+            User.resetUser(new JSONObject(result));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public String register(){
@@ -135,7 +139,6 @@ public class LegacyClient{
     }
 
     public String publish(){
-
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         builder.addFormDataPart("des", Holder.publishDes);
         for(String path: Holder.paths){
@@ -159,7 +162,8 @@ public class LegacyClient{
 
     public String online(){
         String reqUrl = Constants.requestPath + Constants.online;
-        return get(reqUrl);
+        String result = get(reqUrl);
+        return result;
     }
 
     public String chat(String content, int receiver){

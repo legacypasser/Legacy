@@ -9,11 +9,14 @@ import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -56,12 +59,12 @@ public class Post{
         if(certain == null){
             certain = detailFromBase(id);
             Holder.detailed.put(id, certain);
+            Log.v("panbo", certain.des);
             if(certain.des.equals("")){
                 Intent intent = new Intent(MainActivity.instance, NetService.class);
                 intent.putExtra(Constants.intentType, Constants.detailRequest);
                 intent.putExtra(Constants.id, id);
                 MainActivity.instance.startService(intent);
-            }else{
                 return null;
             }
         }
@@ -101,16 +104,18 @@ public class Post{
         );
     }
 
-    public static void store(){
-        for(Post item : Holder.recommendPost){
+    public static void store(ArrayList<Post> added){
+        for(Post item : added){
             Cursor cursor = MainActivity.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
             if(cursor.isAfterLast())
                 MainActivity.db.insert(tableName, null, getCv(item));
+            cursor.close();
         }
     }
 
     public static ContentValues getCv(Post item){
         ContentValues cv = new ContentValues();
+        cv.put("id", item.id);
         cv.put("des", item.des);
         cv.put("img", item.img);
         cv.put("seller", item.seller);

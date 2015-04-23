@@ -20,10 +20,9 @@ import java.util.Date;
 public class PostConverter {
 
     public static SimpleDateFormat formater = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static void stringToList(String str){
-        Holder.recommendPost.clear();
+    public static ArrayList<Post> stringToList(String str){
+        ArrayList<Post> result = new ArrayList<>();
         try {
-
             JSONArray jsonPosts = new JSONArray(str);
             for(int i = 0;i < jsonPosts.length(); i++){
                 JSONObject jsonPost = new JSONObject(jsonPosts.getString(i));
@@ -31,13 +30,15 @@ public class PostConverter {
                 String img = jsonPost.getString("img");
                 Date publish = formater.parse(jsonPost.getString("publish"));
                 String abs = jsonPost.getString("abs");
-                Holder.recommendPost.add(new Post(id, img, publish, abs));
+                Post added = new Post(id, img, publish, abs);
+                result.add(added);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
 

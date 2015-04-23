@@ -12,15 +12,15 @@
         android:minHeight="?attr/actionBarSize">
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/main_container">
-
-        <FrameLayout
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/main_container">
+
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="wrap_content"
@@ -28,19 +28,19 @@
                 android:layout_weight="1.0"
                 />
 
-            <com.getbase.floatingactionbutton.AddFloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:id="@+id/all_over_button"/>
-        </FrameLayout>
-
-
-        <com.viewpagerindicator.UnderlinePageIndicator
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:id="@+id/pager_indicator"
-            />
+            <com.viewpagerindicator.UnderlinePageIndicator
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:id="@+id/pager_indicator"
+                />
         </LinearLayout>
+
+        <com.getbase.floatingactionbutton.AddFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:id="@+id/all_over_button"/>
+    </FrameLayout>
+
 
 </LinearLayout>

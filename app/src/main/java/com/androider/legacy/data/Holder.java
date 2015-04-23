@@ -15,7 +15,7 @@ public class Holder{
     public static HashMap<Integer, Post> detailed = new HashMap<Integer, Post>();
     public static ArrayList<Post> resultedPost = new ArrayList<Post>();
 
-    public static ArrayList<Session> talks = new ArrayList<Session>();
+    public static HashMap<Integer, Session> talks = new HashMap<>();
 
     public static HashMap<Integer, Record> records = new HashMap<Integer, Record>();
 
@@ -24,4 +24,8 @@ public class Holder{
     public static ArrayList<String> paths = new ArrayList<>();
 
     public static String publishDes;
+
+    public static String myTalkConent;
+
+    public static ArrayList<Record> justReceived;
 }

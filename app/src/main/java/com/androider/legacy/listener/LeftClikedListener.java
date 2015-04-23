@@ -1,5 +1,6 @@
 package com.androider.legacy.listener;
 
+import android.util.Log;
 import android.view.View;
 
 import com.androider.legacy.activity.MainActivity;
@@ -18,8 +19,8 @@ public class LeftClikedListener implements OnButtonPressListener {
     }
     @Override
     public void onButtonPressedListener(View view, Card card) {
-        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
         PostDetailFragment.currentId = postId;
+        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
         MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
     }
 

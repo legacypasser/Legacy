@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Think on 2015/4/16.
@@ -18,6 +22,7 @@ public class User {
 
     public static String tableName = "user";
     public static void store(){
+        MainActivity.db.delete(tableName, null , null);
         ContentValues cv = new ContentValues();
         cv.put("email", email);
         cv.put("nickname", nickname);
@@ -26,6 +31,20 @@ public class User {
         cv.put("id", id);
         cv.put("major", major);
         MainActivity.db.insert(tableName, null, cv);
+    }
+
+    public static void resetUser(JSONObject returned){
+        try {
+            if(returned.getInt("id") == User.id)
+                return;
+            User.id = returned.getInt("id");
+            User.nickname = returned.getString("nickname");
+            User.major = returned.getString("major");
+            User.school = returned.getString("school");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        store();
     }
 
     public static void drag(){
@@ -41,6 +60,16 @@ public class User {
         school = cursor.getString(cursor.getColumnIndex("school"));
         major = cursor.getString(cursor.getColumnIndex("major"));
         nickname = cursor.getString(cursor.getColumnIndex("nickname"));
+        cursor.close();
+
+        cursor = MainActivity.db.rawQuery("select * from peer;", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            int peerId = cursor.getInt(cursor.getColumnIndex("id"));
+            String peerNickname = cursor.getString(cursor.getColumnIndex("nickname"));
+            Holder.peers.put(peerId, peerNickname);
+            cursor.moveToNext();
+        }
         cursor.close();
     }
 }

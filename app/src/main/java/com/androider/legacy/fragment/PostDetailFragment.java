@@ -1,15 +1,20 @@
 package com.androider.legacy.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.ChatActivity;
+import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
 
 
 public class PostDetailFragment extends Fragment {
@@ -24,6 +29,10 @@ public class PostDetailFragment extends Fragment {
 
     public static int currentId;
 
+    TextView des;
+    TextView img;
+    TextView nickname;
+    AddFloatingActionButton startTalk;
 
     public static PostDetailFragment instance;
 
@@ -64,7 +73,19 @@ public class PostDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_post_detail, container, false);
-
+        des = (TextView)rootView.findViewById(R.id.post_des);
+        img = (TextView)rootView.findViewById(R.id.post_img);
+        nickname = (TextView)rootView.findViewById(R.id.post_seller);
+        startTalk = (AddFloatingActionButton)rootView.findViewById(R.id.chat_with_seller);
+        startTalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("seller", Post.get(currentId).seller);
+                getActivity().startActivity(intent);
+            }
+        });
+        setView();
         return rootView;
     }
 
@@ -72,14 +93,15 @@ public class PostDetailFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Post current = Post.get(currentId);
-        if(current != null)
-            setView();
     }
 
     public void setView(){
         Post current = Post.get(currentId);
-        Log.v("panbo", current.des);
+        if(current == null)
+            return;
+        des.setText(current.des);
+        img.setText(current.img);
+        nickname.setText(Holder.peers.get(current.seller));
     }
 
     @Override

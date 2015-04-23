@@ -1,6 +1,7 @@
 package com.androider.legacy.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
+import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.User;
+import com.androider.legacy.service.NetService;
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +35,10 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    AddFloatingActionButton loginButton;
+    MaterialEditText username;
+    MaterialEditText password;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,9 +75,26 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        username = (MaterialEditText)rootView.findViewById(R.id.login_username);
+        password = (MaterialEditText)rootView.findViewById(R.id.login_password);
+        loginButton = (AddFloatingActionButton)rootView.findViewById(R.id.just_login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User.email = username.getText().toString();
+                User.password = password.getText().toString();
+                login();
+            }
+        });
+        return rootView;
     }
 
+    private void login(){
+        Intent intent = new Intent(getActivity(), NetService.class);
+        intent.putExtra(Constants.intentType, Constants.loginAttempt);
+        getActivity().startService(intent);
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -78,12 +105,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+
     }
 
     @Override

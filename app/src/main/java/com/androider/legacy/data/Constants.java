@@ -36,6 +36,8 @@ public class Constants {
     public static final int registrationSent = 2;
     public static final int loginAttempt = 3;
     public static final int myPublish = 4;
+    public static final int sendChat = 5;
+    public static final int pullMsg = 6;
 
     public static final String intentType = "intentType";
 }

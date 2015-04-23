@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.androider.legacy.R;
@@ -24,6 +25,7 @@ import com.androider.legacy.adapter.FragmentViewPagerAdapter;
 import com.androider.legacy.common.database.DatabaseHelper;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.MyPostListFragment;
@@ -119,7 +121,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container, fragment, fragment.getClass().getSimpleName());
+        ft.replace(R.id.main_container, fragment, fragmentName);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -147,6 +149,9 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
             return true;
         }
+        if(id == R.id.action_login){
+            switchFragment(LoginFragment.class.getSimpleName());
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -165,6 +170,7 @@ public class MainActivity extends ActionBarActivity {
                     RecommendFragment.instance.refreshList();
                 break;
                 case Constants.detailRequest:
+                    Log.v("panbo", "request reach");
                     PostDetailFragment.instance.setView();
                     break;
                 case Constants.registrationSent:
@@ -172,6 +178,12 @@ public class MainActivity extends ActionBarActivity {
                     break;
                 case Constants.loginAttempt:
                     Log.v("panbo", "login success");
+                    break;
+                case Constants.pullMsg:
+                    if(Holder.justReceived == null)
+                        break;
+                    else
+                        Toast.makeText(MainActivity.instance, Holder.justReceived.get(0).content,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
