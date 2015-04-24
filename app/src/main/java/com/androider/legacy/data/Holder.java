@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Observable;
 
 /**
@@ -28,4 +29,6 @@ public class Holder{
     public static String myTalkConent;
 
     public static ArrayList<Record> justReceived;
+
+    public static LinkedList<Record> waitToAppend;
 }

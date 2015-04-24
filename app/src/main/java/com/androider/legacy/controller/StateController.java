@@ -1,8 +1,11 @@
 package com.androider.legacy.controller;
 
+import android.content.Intent;
+import android.view.View;
+
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.data.Constants;
-import com.androider.legacy.listener.ShouldPublishListener;
 import com.balysv.materialmenu.MaterialMenu;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 
@@ -31,6 +34,12 @@ public class StateController {
     }
 
     public static void setToPublish(){
-        MainActivity.instance.overButton.setOnClickListener(new ShouldPublishListener());
+        MainActivity.instance.overButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.instance, PublishActivity.class);
+                MainActivity.instance.startActivity(intent);
+            }
+        });
     }
 }

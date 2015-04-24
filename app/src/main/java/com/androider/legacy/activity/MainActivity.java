@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -39,6 +40,8 @@ import com.androider.legacy.service.NetService;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.apache.http.cookie.params.CookieSpecPNames;
@@ -53,6 +56,8 @@ public class MainActivity extends ActionBarActivity {
     public static String filePath;
     public static MaterialMenuIconToolbar materialMenu;
     public static Toolbar overallToolBar;
+
+    public ImageButton startSearch;
 
     public AddFloatingActionButton overButton;
 
@@ -70,6 +75,13 @@ public class MainActivity extends ActionBarActivity {
         instance = this;
         setContentView(R.layout.activity_main);
         overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
+        startSearch = (ImageButton)findViewById(R.id.lets_search);
+        startSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchFragment(ResultListFragment.class.getSimpleName());
+            }
+        });
         setSupportActionBar(overallToolBar);
         overallToolBar.setNavigationOnClickListener(new ToolBarListener());
 
@@ -94,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
             startService(intent);
     }
     private void initView(){
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
         StateController.setToPublish();
         fragmentList = new ArrayList<Fragment>();
@@ -184,6 +197,10 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     else
                         Toast.makeText(MainActivity.instance, Holder.justReceived.get(0).content,Toast.LENGTH_SHORT).show();
+                    break;
+                case Constants.searchReq:
+                    ResultListFragment.instance.refreshList();
+                    Log.v("panbo", "get result");
                     break;
             }
         }

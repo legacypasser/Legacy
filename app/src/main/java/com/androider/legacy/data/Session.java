@@ -2,8 +2,13 @@ package com.androider.legacy.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.hardware.usb.UsbRequest;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.net.LegacyClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 
@@ -69,6 +74,14 @@ public class Session {
         int newPeer = record.receiver;
         if(newPeer == User.id)
             newPeer = record.sender;
+        if(Holder.peers.get(newPeer) == null){
+            try {
+                JSONObject peerInfo = new JSONObject(LegacyClient.getInstance().info(newPeer));
+                User.storePeer(peerInfo.getInt("id"), peerInfo.getString("nickname"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         Cursor cursor = MainActivity.db.rawQuery("select * from session where peer = ?;", new String[]{""+newPeer});
         if(cursor.isAfterLast()){
             String nickname = Holder.peers.get(newPeer);

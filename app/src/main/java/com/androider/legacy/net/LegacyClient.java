@@ -95,7 +95,9 @@ public class LegacyClient{
 
     public String search(String keyword){
         String reqUrl = Constants.requestPath + Constants.search + Constants.ask + Constants.keyword + keyword;
-        return get(reqUrl);
+        String str = get(reqUrl);
+        Log.v("panbo", str);
+        return str;
     }
 
     public String personal(int id){
@@ -185,5 +187,9 @@ public class LegacyClient{
             e.printStackTrace();
         }
         return post(Constants.requestPath + Constants.interest, reqData.toString());
+    }
+
+    public String info(int id){
+        return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
     }
 }

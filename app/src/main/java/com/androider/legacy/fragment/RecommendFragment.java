@@ -2,6 +2,9 @@ package com.androider.legacy.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,11 +22,13 @@ import com.androider.legacy.card.OnCardFlowScrollChangedListener;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.listener.ImageListener;
 import com.androider.legacy.listener.LeftClikedListener;
 import com.androider.legacy.service.NetService;
 import com.dexafree.materialList.cards.BigImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageCard;
 import com.dexafree.materialList.view.MaterialListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -71,7 +76,9 @@ public class RecommendFragment extends BaseListFragment {
             card.setDescription(item.abs);
             card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
+            String str = Constants.imgPath + item.img.split(";")[0];
             card.setDrawable(R.drawable.ic_launcher);
+            ImageLoader.getInstance().loadImage(Constants.imgPath + item.img.split(";")[0], new ImageListener(card));
             card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);
         }

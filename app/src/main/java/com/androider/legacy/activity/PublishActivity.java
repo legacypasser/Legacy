@@ -101,7 +101,9 @@ public class PublishActivity extends ActionBarActivity implements Camera.Picture
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         String theName = System.currentTimeMillis() + ".png";
         File file = new File(MainActivity.filePath + theName);
         try {

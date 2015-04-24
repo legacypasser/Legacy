@@ -72,4 +72,13 @@ public class User {
         }
         cursor.close();
     }
+
+    public static void storePeer(int id, String nickname){
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put("id", id);
+        cv.put("nickname", nickname);
+        MainActivity.db.insert("peer", null, cv);
+        Holder.peers.put(id, nickname);
+    }
 }

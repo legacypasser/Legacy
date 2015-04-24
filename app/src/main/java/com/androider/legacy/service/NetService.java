@@ -66,11 +66,7 @@ public class NetService extends IntentService {
                 cv.put("seller", certain.seller);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
                 String nickname = jsonPost.getString("nickname");
-                cv.clear();
-                cv.put("id", certain.seller);
-                cv.put("nickname", nickname);
-                MainActivity.db.insert("peer", null, cv);
-                Holder.peers.put(certain.seller, nickname);
+                User.storePeer(certain.seller, nickname);
                 msg.what = Constants.detailRequest;
                 break;
             case Constants.registrationSent:
@@ -112,6 +108,11 @@ public class NetService extends IntentService {
             case Constants.pullMsg:
                 Holder.justReceived = Record.getOnline();
                 msg.what = Constants.pullMsg;
+                break;
+            case Constants.searchReq:
+                String keyword = intent.getStringExtra(Constants.keyword);
+                Holder.resultedPost = PostConverter.stringToList(LegacyClient.getInstance().search(keyword));
+                msg.what = Constants.searchReq;
                 break;
         }
             messenger.send(msg);

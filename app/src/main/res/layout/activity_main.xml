@@ -10,6 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_white_24dp"
+            android:id="@+id/lets_search"/>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
