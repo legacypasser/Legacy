@@ -7,17 +7,26 @@
     android:orientation="vertical"
     tools:context="com.androider.legacy.activity.ChatActivity">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:cacheColorHint="#000000"
+        android:divider="@null"
+        android:dividerHeight="3dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:id="@+id/message_list"/>
 
-
-    <TextView android:text="just talk" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#7fd8d8"/>
+    <com.jialin.chat.MessageInputToolBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chat_input"/>
-    <com.getbase.floatingactionbutton.AddFloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chat_send"/>
+        android:id="@+id/message_box"/>
+
+
+
+
 </LinearLayout>

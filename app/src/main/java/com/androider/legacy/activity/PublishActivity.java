@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
@@ -23,6 +24,11 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.CapturePreview;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.jialin.chat.Message;
+import com.jialin.chat.MessageAdapter;
+import com.jialin.chat.MessageInputToolBox;
+import com.jialin.chat.OnOperationListener;
+import com.jialin.chat.Option;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.BufferedOutputStream;
@@ -31,6 +37,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class PublishActivity extends ActionBarActivity implements Camera.PictureCallback{
@@ -40,6 +49,7 @@ public class PublishActivity extends ActionBarActivity implements Camera.Picture
     private AddFloatingActionButton publish;
     private FrameLayout holder;
     CapturePreview preview;
+
 
     public static PublishActivity instance;
 
@@ -62,12 +72,14 @@ public class PublishActivity extends ActionBarActivity implements Camera.Picture
             }
         });
 
-        publish.setOnClickListener(new View.OnClickListener(){
+        publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myPublish();
             }
         });
+
+
     }
 
     private void myPublish(){

@@ -11,15 +11,20 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.ChatActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 import com.androider.legacy.listener.LeftClikedListener;
+import com.androider.legacy.listener.SessionItemClickListener;
 import com.androider.legacy.service.NetService;
+import com.dexafree.materialList.cards.BasicImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageButtonsCard;
+import com.dexafree.materialList.cards.OnButtonPressListener;
 import com.dexafree.materialList.cards.SmallImageCard;
+import com.dexafree.materialList.model.Card;
 import com.dexafree.materialList.view.MaterialListView;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 
@@ -71,13 +76,23 @@ public class SessionListFragment extends BaseListFragment{
         Iterator it  = Holder.talks.entrySet().iterator();
         while(it.hasNext()){
             HashMap.Entry entry = (HashMap.Entry)it.next();
-            SmallImageCard card = new SmallImageCard(getActivity());
-            card.setDescription(((Session)entry.getValue()).nickname);
+            BasicImageButtonsCard card = new BasicImageButtonsCard(getActivity());
+            card.setTitle(((Session) entry.getValue()).nickname);
             card.setDrawable(R.drawable.ic_launcher);
+            card.setLeftButtonText("talk with me");
+            card.setRightButtonText("right");
+            card.setOnLeftButtonPressedListener(new SessionItemClickListener(((Session) entry.getValue()).peer));
+            card.setOnRightButtonPressedListener(new OnButtonPressListener() {
+                @Override
+                public void onButtonPressedListener(View view, Card card) {
+
+                }
+            });
             selfList.add(card);
         }
 
     }
+
 
     public void startPull(){
         Intent intent = new Intent(getActivity(), NetService.class);

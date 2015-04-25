@@ -81,7 +81,7 @@ public class PostDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("seller", Post.get(currentId).seller);
+                intent.putExtra("talker", Post.get(currentId).seller);
                 getActivity().startActivity(intent);
             }
         });

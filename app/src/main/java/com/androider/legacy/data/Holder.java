@@ -30,5 +30,4 @@ public class Holder{
 
     public static ArrayList<Record> justReceived;
 
-    public static LinkedList<Record> waitToAppend;
 }

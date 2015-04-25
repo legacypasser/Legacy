@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.androider.legacy.card.model.CardInfo;
-import com.androider.legacy.common.Logger;
 import com.dexafree.materialList.model.Card;
 
 /**
@@ -55,7 +54,6 @@ public final class CardInfoManager  {
         } else if (cardInfos.size() == num) {
             return cardInfos;
         } else {
-            Logger.getInstance().error(TAG, "getCardInfos error~~~~~~~");
             return null;
         }
         // 如果缓存数据不够，请求数据库
@@ -64,7 +62,6 @@ public final class CardInfoManager  {
         }
         // 该逻辑不会走到
         else {
-            Logger.getInstance().error(TAG, "getCardInfos error");
             return null;
         }
     }

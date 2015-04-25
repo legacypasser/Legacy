@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androider.legacy.R;
-import com.androider.legacy.common.Logger;
 
 /**
  * Created by bao on 2015/4/4.
@@ -63,7 +62,6 @@ public class CardFlow extends LinearLayout {
 
     public void init() {
 
-        Logger.getInstance().debug(TAG, "init start");
 
         // 初始化背景色和卡片的间隔
         mBackgroundColor = getContext().getResources().getColor(R.color.cardflow_background_color);
@@ -263,14 +261,12 @@ public class CardFlow extends LinearLayout {
                 }
 
                 mLastMotionY = (int)event.getY();
-                Logger.getInstance().error(TAG, "onTouchEvent_ACTION_DOWN; mLastMotionY is :" + mLastMotionY);
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
                 int y = (int)event.getY();
                 if (y != mLastMotionY) {
                     if (getScaleY() < (getChildBottom() - getHeight())) {
-                        Logger.getInstance().error(TAG, "scaleY is:" + getScaleY() + "; childBottom:" + getChildBottom() + "; height: " + getHeight());
 //                        Logger.getInstance().error(TAG, "onTouchEvent_ACTION_MOVE; currentY is " + y + "; mLast is " + mLastMotionY);
                         scrollBy(0, - (y - mLastMotionY));
                         mLastMotionY = y;
@@ -279,7 +275,6 @@ public class CardFlow extends LinearLayout {
                 break;
             }
             case MotionEvent.ACTION_UP: {
-                Logger.getInstance().error(TAG, "onTouchEvent_ACTION_UP");
                 mVelocityTracker.computeCurrentVelocity(1000, mMaxmumVelocity);
                 float velocityY = mVelocityTracker.getYVelocity();
                 completeMove(-velocityY);

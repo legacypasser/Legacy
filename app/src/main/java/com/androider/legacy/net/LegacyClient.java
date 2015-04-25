@@ -7,7 +7,6 @@ import android.provider.Telephony;
 import android.util.Log;
 
 import com.androider.legacy.activity.MainActivity;
-import com.androider.legacy.common.Logger;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;

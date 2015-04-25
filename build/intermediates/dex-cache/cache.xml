@@ -44,6 +44,13 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-726049a01fa9702413e75e8f797e996178e051eb.jar" />
     </item>
     <item
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\Legacy\androidChatWidget\unspecified\libs\android-support-v4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="efec67655f6db90757faa37201efcee2a9ec3507">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\android-support-v4-2a5a7d09987eb9172ab662b31ae0720c528ef23f.jar" />
+    </item>
+    <item
         jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.3.0\2e7bc7033dc2c8423e661224171b3133fb155b28\okhttp-2.3.0.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -56,6 +63,13 @@
         revision="21.1.2"
         sha1="ade05f95660ce1c67b92ce46b8b4126a45e6b533">
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-6d13393b9dbfa79099d8b74e949c959cc7b22206.jar" />
+    </item>
+    <item
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\Legacy\androidChatWidget\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7fa4b262d2588103986b553626ef05b0b4b1359b">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-51684ef41d2c02ee5fa8d61d89e0de7cfa14e0d0.jar" />
     </item>
 
 </items>

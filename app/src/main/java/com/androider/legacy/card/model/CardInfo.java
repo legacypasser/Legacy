@@ -1,6 +1,5 @@
 package com.androider.legacy.card.model;
 
-import com.androider.legacy.common.Logger;
 
 import java.sql.Timestamp;
 
@@ -81,7 +80,6 @@ public final class CardInfo implements Comparable {
             CardInfo a = (CardInfo)another;
             return compareTimestamp(postTime, a.getPostTime());
         } else {
-            Logger.getInstance().error(TAG, "CardInfo compareTo error!!!");
             return 0;
         }
     }

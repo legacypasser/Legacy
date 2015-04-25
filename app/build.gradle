@@ -31,5 +31,5 @@ dependencies {
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile project(':ViewPagerIndicator')
-
+    compile project(':androidChatWidget')
 }
