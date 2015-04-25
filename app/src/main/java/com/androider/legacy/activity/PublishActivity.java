@@ -42,14 +42,13 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PublishActivity extends ActionBarActivity implements Camera.PictureCallback{
+public class PublishActivity extends SimpleActivity implements Camera.PictureCallback{
 
     private MaterialEditText des;
     private AddFloatingActionButton addImg;
     private AddFloatingActionButton publish;
     private FrameLayout holder;
     CapturePreview preview;
-
 
     public static PublishActivity instance;
 
@@ -64,7 +63,7 @@ public class PublishActivity extends ActionBarActivity implements Camera.Picture
         holder = (FrameLayout)findViewById(R.id.img_holder);
         preview = new CapturePreview(this);
         holder.addView(preview);
-
+        setToolBar();
         addImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,28 +86,6 @@ public class PublishActivity extends ActionBarActivity implements Camera.Picture
         Intent intent = new Intent(this, NetService.class);
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_publish, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

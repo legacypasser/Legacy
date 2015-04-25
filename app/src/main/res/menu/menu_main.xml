@@ -1,8 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:icon="@drawable/ic_search_white_36dp" app:showAsAction="always"
+        android:title="搜索" android:id="@+id/lets_search"
+        android:orderInCategory="90"/>
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_register" android:title="注册"/>
-    <item android:id="@+id/action_login" android:title="登陆"/>
+    <item android:id="@+id/action_register" android:title="注册" android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_login" android:title="登陆" android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

@@ -18,4 +18,6 @@
 
     <string name="recommend_finish_broadcast">com.android.legacy.action.RECOMMEND_REFRESH</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_simple">SimpleActivity</string>
 </resources>

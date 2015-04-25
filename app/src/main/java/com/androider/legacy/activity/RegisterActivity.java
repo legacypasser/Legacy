@@ -16,7 +16,7 @@ import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-public class RegisterActivity extends ActionBarActivity {
+public class RegisterActivity extends SimpleActivity {
 
     AddFloatingActionButton button;
     MaterialEditText email;
@@ -29,6 +29,7 @@ public class RegisterActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setToolBar();
         button = (AddFloatingActionButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
@@ -54,25 +55,6 @@ public class RegisterActivity extends ActionBarActivity {
         intent.putExtra(Constants.intentType, Constants.registrationSent);
         startService(intent);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

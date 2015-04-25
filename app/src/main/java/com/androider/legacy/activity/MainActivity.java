@@ -32,7 +32,6 @@ import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
-import com.androider.legacy.fragment.ResultListFragment;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.net.LegacyClient;
@@ -54,19 +53,12 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     public static String filePath;
-    public static MaterialMenuIconToolbar materialMenu;
-    public static Toolbar overallToolBar;
-
-    public ImageButton startSearch;
-
+    public MaterialMenuIconToolbar materialMenu;
+    public Toolbar overallToolBar;
     public AddFloatingActionButton overButton;
-
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
-
-
     public static SQLiteDatabase db;
-
     public static MainActivity instance;
 
     @Override
@@ -75,16 +67,8 @@ public class MainActivity extends ActionBarActivity {
         instance = this;
         setContentView(R.layout.activity_main);
         overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
-        startSearch = (ImageButton)findViewById(R.id.lets_search);
-        startSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchFragment(ResultListFragment.class.getSimpleName());
-            }
-        });
         setSupportActionBar(overallToolBar);
         overallToolBar.setNavigationOnClickListener(new ToolBarListener());
-
         materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
             @Override
             public int getToolbarViewId() {
@@ -109,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
         StateController.setToPublish();
-        fragmentList = new ArrayList<Fragment>();
+        fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
         fragmentList.add(SessionListFragment.newInstance("",""));
@@ -126,8 +110,6 @@ public class MainActivity extends ActionBarActivity {
         if(fragment == null){
             if(fragmentName.equals(LoginFragment.class.getSimpleName())){
                 fragment = LoginFragment.newInstance("", "");
-            }else if(fragmentName.equals(ResultListFragment.class.getSimpleName())){
-                fragment = ResultListFragment.newInstance("", "");
             }else if(fragmentName.equals(PostDetailFragment.class.getSimpleName())){
                 fragment = PostDetailFragment.newInstance("", "");
             }
@@ -152,9 +134,10 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
             return true;
         }
         if(id == R.id.action_register){
@@ -164,16 +147,22 @@ public class MainActivity extends ActionBarActivity {
         }
         if(id == R.id.action_login){
             switchFragment(LoginFragment.class.getSimpleName());
+            return true;
+        }
+        if(id == R.id.lets_search){
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public static NetHandler netHandler = new NetHandler(instance);
 
-    static class NetHandler extends Handler{
+    private static class NetHandler extends Handler{
         WeakReference<MainActivity> activityWeakReference;
         NetHandler(MainActivity mainActivity){
-            activityWeakReference = new WeakReference<MainActivity>(mainActivity);
+            activityWeakReference = new WeakReference<>(mainActivity);
         }
 
         @Override
@@ -197,10 +186,6 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     else
                         Toast.makeText(MainActivity.instance, Holder.justReceived.get(0).content,Toast.LENGTH_SHORT).show();
-                    break;
-                case Constants.searchReq:
-                    ResultListFragment.instance.refreshList();
-                    Log.v("panbo", "get result");
                     break;
             }
         }

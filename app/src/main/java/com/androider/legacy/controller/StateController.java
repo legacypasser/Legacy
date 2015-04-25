@@ -19,16 +19,16 @@ public class StateController {
         switch (navState){
             case Constants.mainState:
                 MainActivity.instance.getSupportFragmentManager().popBackStack();
-                MainActivity.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+                MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
                 break;
             case Constants.chatState:
-                MainActivity.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+                MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
                 break;
             case Constants.detailState:
-                MainActivity.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+                MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
                 break;
             case Constants.resultState:
-                MainActivity.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+                MainActivity.instance.materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
                 break;
         }
     }

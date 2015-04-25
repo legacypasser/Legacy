@@ -53,11 +53,14 @@ public class RecommendFragment extends BaseListFragment {
         return fragment;
     }
 
+    public RecommendFragment(){
+        instance = this;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
-        instance = this;
         request();
         return rootView;
     }

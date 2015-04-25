@@ -51,8 +51,11 @@ public class SessionListFragment extends BaseListFragment{
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
-        instance = fragment;
         return fragment;
+    }
+
+    public SessionListFragment(){
+        instance = this;
     }
 
     @Override

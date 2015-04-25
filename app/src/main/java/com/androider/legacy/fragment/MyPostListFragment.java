@@ -13,6 +13,7 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 import com.androider.legacy.listener.LeftClikedListener;
+import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.dexafree.materialList.cards.BigImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageCard;
 import com.dexafree.materialList.cards.SmallImageCard;
@@ -40,12 +41,15 @@ public class MyPostListFragment extends BaseListFragment {
         return fragment;
     }
 
+    public MyPostListFragment(){
+        instance = this;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        instance = this;
         selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
         Holder.myPost = Post.listFromBase(User.id);
         fillList();

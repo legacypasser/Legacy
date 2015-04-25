@@ -109,11 +109,6 @@ public class NetService extends IntentService {
                 Holder.justReceived = Record.getOnline();
                 msg.what = Constants.pullMsg;
                 break;
-            case Constants.searchReq:
-                String keyword = intent.getStringExtra(Constants.keyword);
-                Holder.resultedPost = PostConverter.stringToList(LegacyClient.getInstance().search(keyword));
-                msg.what = Constants.searchReq;
-                break;
         }
             messenger.send(msg);
         } catch (RemoteException e) {
