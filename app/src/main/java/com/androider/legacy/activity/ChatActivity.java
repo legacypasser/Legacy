@@ -12,6 +12,9 @@ import android.widget.ListView;
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Record;
+import com.androider.legacy.data.Session;
+import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.jialin.chat.Message;
@@ -28,8 +31,9 @@ import java.util.HashMap;
 
 public class ChatActivity extends ActionBarActivity {
 
-    public static int seller;
-
+    public int talker;
+    public Session currentSession;
+    public static ChatActivity instance;
     MessageInputToolBox box;
     MessageAdapter adapter;
     HashMap<Integer, ArrayList<String>> faceData = new HashMap<>();
@@ -41,14 +45,17 @@ public class ChatActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        seller = getIntent().getIntExtra("talker", -1);
+        instance = this;
+        talker = getIntent().getIntExtra("talker", -1);
+        currentSession = Holder.talks.get(talker);
         box = (MessageInputToolBox)findViewById(R.id.message_box);
         box.setOnOperationListener(new OnOperationListener() {
             @Override
             public void send(String content) {
-                Message message = new Message(0,1, "Tom", "avatar", "Jerry", "avatar", content, true, true, new Date());
+                Message message = new Message(0, 1, User.nickname, "avatar", currentSession.nickname, "avatar", content, true, true, new Date());
                 adapter.getData().add(message);
                 list.setSelection(list.getBottom());
+                sendToPeer(content);
             }
 
             @Override
@@ -62,10 +69,14 @@ public class ChatActivity extends ActionBarActivity {
             }
         });
 
+
+        initList();
+    }
+
+    private void initList(){
         for(int i = 0; i < 10; i++){
             faceNameList.add("big"+ i);
         }
-
         faceData.put(R.drawable.em_cate_magic, faceNameList);
         box.setFaceData(faceData);
         for(int i = 0;  i < 5; i++){
@@ -75,11 +86,14 @@ public class ChatActivity extends ActionBarActivity {
             functionData.add(takePhoto);
         }
         box.setFunctionData(functionData);
-
         list = (ListView) findViewById(R.id.message_list);
+        ArrayList<Record> existsRecord = currentSession.getRecords();
+        for(Record item : existsRecord){
+            Message message = new Message(0, 1, Holder.peers.get(item.sender), "avatar", Holder.peers.get(item.receiver), "avatar", item.content, true, true, item.edit);
+            messages.add(message);
+        }
         adapter = new MessageAdapter(this, messages);
         list.setAdapter(adapter);
-
         list.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -87,9 +101,15 @@ public class ChatActivity extends ActionBarActivity {
                 return false;
             }
         });
+
     }
 
-
+    private void sendToPeer(String content){
+        Intent intent = new Intent(this, NetService.class);
+        intent.putExtra(Constants.intentType, Constants.sendChat);
+        intent.putExtra("content", content);
+        startService(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

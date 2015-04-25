@@ -37,7 +37,7 @@ public class Record {
     }
 
     public static ArrayList<Record> drag(int peer){
-        Cursor cursor = MainActivity.db.rawQuery("select * from record;", new String[]{"" + peer, "" + peer});
+        Cursor cursor = MainActivity.db.rawQuery("select * from record where receiver = ? or sender = ?;", new String[]{"" + peer, "" + peer});
         cursor.moveToFirst();
         ArrayList<Record> result = new ArrayList<>();
         while (!cursor.isAfterLast()){

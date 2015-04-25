@@ -101,7 +101,7 @@ public class NetService extends IntentService {
                 Log.v("panbo", "stroed");
                 return;
             case Constants.sendChat:
-                String chatResult = LegacyClient.getInstance().chat(Holder.myTalkConent, ChatActivity.seller);
+                String chatResult = LegacyClient.getInstance().chat(intent.getStringExtra("content"), ChatActivity.instance.talker);
                 Record returned = Record.strToObj(chatResult);
                 Record.moreCome(returned);
                 return;

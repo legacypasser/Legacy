@@ -3,6 +3,7 @@ package com.androider.legacy.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.hardware.usb.UsbRequest;
+import android.widget.ArrayAdapter;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.net.LegacyClient;
@@ -10,6 +11,7 @@ import com.androider.legacy.net.LegacyClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -19,6 +21,7 @@ public class Session {
     public int peer;
     public String nickname;
     public String records;
+    public boolean draged = false;
 
     public static final String tableName = "session";
     public Session(int peer, String nickname, String records) {
@@ -27,13 +30,18 @@ public class Session {
         this.records = records;
     }
 
-    public LinkedList<Record> getRecords(){
-        LinkedList<Record> certain = new LinkedList<Record>();
+    public ArrayList<Record> getRecords(){
+        ArrayList<Record> certain = new ArrayList<>();
         String[] peerList =  records.split(Constants.regex);
-        for(String item : peerList){
-            certain.add(Holder.records.get(item));
+        if(draged){
+            for(String item : peerList){
+                certain.add(Holder.records.get(item));
+            }
+            return certain;
+        }else{
+            draged = true;
+            return Record.drag(peer);
         }
-        return certain;
     }
 
     public void addRecord(int id){

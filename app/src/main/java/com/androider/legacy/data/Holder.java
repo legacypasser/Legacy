@@ -26,8 +26,6 @@ public class Holder{
 
     public static String publishDes;
 
-    public static String myTalkConent;
-
     public static ArrayList<Record> justReceived;
 
 }
