@@ -30,17 +30,32 @@ public class Session {
         this.records = records;
     }
 
+    public ArrayList<Record> dragRecords(){
+        Cursor cursor = MainActivity.db.rawQuery("select * from record where receiver = ? or sender = ?;", new String[]{"" + peer, "" + peer});
+        cursor.moveToFirst();
+        ArrayList<Record> result = new ArrayList<>();
+        while (!cursor.isAfterLast()){
+            Record item = Record.getCursored(cursor);
+            Holder.records.put(item.id, item);
+            Holder.belongTo.put(item, this);
+            result.add(item);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return result;
+    }
+
     public ArrayList<Record> getRecords(){
         ArrayList<Record> certain = new ArrayList<>();
         String[] peerList =  records.split(Constants.regex);
         if(draged){
             for(String item : peerList){
-                certain.add(Holder.records.get(item));
+                certain.add(Holder.records.get(Integer.parseInt(item)));
             }
             return certain;
         }else{
             draged = true;
-            return Record.drag(peer);
+            return dragRecords();
         }
     }
 
@@ -49,6 +64,15 @@ public class Session {
             records += id;
         else
         records += Constants.regex + id;
+    }
+
+    public static Session get(int id){
+        Session result = Holder.talks.get(id);
+        if(result == null){
+            result = new Session(id, User.getPeerNick(id), "");
+            Holder.talks.put(id, result);
+        }
+        return result;
     }
 
     public static void drag(){
@@ -70,41 +94,27 @@ public class Session {
         return item;
     }
 
-    public static void store(Session item){
+    public void store(){
         ContentValues cv = new ContentValues();
-        cv.put("peer", item.peer);
-        cv.put("nickname", item.nickname);
-        cv.put("records", item.records);
+        cv.put("peer", peer);
+        cv.put("nickname", nickname);
+        cv.put("records", records);
         MainActivity.db.insert(tableName, null, cv);
     }
 
-    public static void append(Record record){
-        int newPeer = record.receiver;
-        if(newPeer == User.id)
-            newPeer = record.sender;
-        if(Holder.peers.get(newPeer) == null){
-            try {
-                JSONObject peerInfo = new JSONObject(LegacyClient.getInstance().info(newPeer));
-                User.storePeer(peerInfo.getInt("id"), peerInfo.getString("nickname"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    public void update(){
+        ContentValues cv = new ContentValues();
+        cv.put("records", records);
+        MainActivity.db.update(tableName, cv, "peer = ?", new String[]{"" + peer});
+    }
+
+    public void append(Record record){
+        addRecord(record.id);
+        Holder.belongTo.put(record, this);
+        if(records.equals("")){
+            store();
+        }else{
+            update();
         }
-        Cursor cursor = MainActivity.db.rawQuery("select * from session where peer = ?;", new String[]{""+newPeer});
-        if(cursor.isAfterLast()){
-            String nickname = Holder.peers.get(newPeer);
-            Session newlyInstall = new Session(newPeer, nickname, "" + record.id);
-            Holder.talks.put(newPeer, newlyInstall);
-            store(newlyInstall);
-        }else {
-            cursor.moveToFirst();
-            Session existed = getCursored(cursor);
-            Session already = Holder.talks.get(existed.peer);
-            already.addRecord(record.id);
-            ContentValues cv = new ContentValues();
-            cv.put("records", already.records);
-            MainActivity.db.update(tableName, cv, "peer = ?", new String[]{"" + existed.peer});
-        }
-        cursor.close();
     }
 }

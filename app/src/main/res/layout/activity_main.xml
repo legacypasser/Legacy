@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                fab:fab_colorPressed="@color/pressed"
                 android:id="@+id/all_over_button"/>
         </RelativeLayout>
 

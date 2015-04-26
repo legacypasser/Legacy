@@ -28,4 +28,6 @@ public class Holder{
 
     public static ArrayList<Record> justReceived;
 
+    public static HashMap<Record, Session> belongTo = new HashMap<>();
+
 }

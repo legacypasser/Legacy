@@ -24,6 +24,7 @@ import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.listener.LeftClikedListener;
 import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.service.SearchService;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.lang.ref.WeakReference;
@@ -48,11 +49,12 @@ public class SearchActivity extends SimpleActivity {
                 startSearch();
             }
         });
+        switchFragment(ResultFragment.class.getSimpleName());
     }
 
     private void startSearch(){
         String keyword = searchInput.getText().toString();
-        Intent intent = new Intent(this, NetService.class);
+        Intent intent = new Intent(this, SearchService.class);
         intent.putExtra(Constants.intentType, Constants.searchReq);
         intent.putExtra(Constants.keyword, keyword);
         this.startService(intent);
@@ -70,7 +72,6 @@ public class SearchActivity extends SimpleActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case Constants.searchReq:
-                    SearchActivity.instance.switchFragment(ResultFragment.class.getSimpleName());
                     ResultFragment.instance.refreshList();
                     break;
             }
@@ -79,16 +80,17 @@ public class SearchActivity extends SimpleActivity {
 
     public void switchFragment(String fragName){
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragName);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if(fragment == null){
             if(fragName.equals(ResultFragment.class.getSimpleName())){
                 fragment = ResultFragment.newInstance("", "");
+                ft.replace(R.id.search_holder, fragment, fragName);
+                ft.addToBackStack(null);
             }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
                 fragment = PostDetailFragment.newInstance("", "");
+                ft.add(R.id.search_holder, fragment, fragName);
             }
         }
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.search_holder, fragment, fragName);
-        ft.addToBackStack(null);
         ft.commit();
     }
 }

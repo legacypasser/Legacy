@@ -16,7 +16,6 @@ import com.androider.legacy.data.Record;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.jialin.chat.Message;
 import com.jialin.chat.MessageAdapter;
 import com.jialin.chat.MessageInputToolBox;
@@ -47,7 +46,7 @@ public class ChatActivity extends SimpleActivity {
         setContentView(R.layout.activity_chat);
         instance = this;
         talker = getIntent().getIntExtra("talker", -1);
-        currentSession = Holder.talks.get(talker);
+        currentSession = Session.get(talker);
         box = (MessageInputToolBox)findViewById(R.id.message_box);
         box.setOnOperationListener(new OnOperationListener() {
             @Override
@@ -69,7 +68,6 @@ public class ChatActivity extends SimpleActivity {
             }
         });
 
-
         initList();
     }
 
@@ -87,6 +85,7 @@ public class ChatActivity extends SimpleActivity {
         }
         box.setFunctionData(functionData);
         list = (ListView) findViewById(R.id.message_list);
+
         ArrayList<Record> existsRecord = currentSession.getRecords();
         for(Record item : existsRecord){
             Message message = new Message(0, 1, Holder.peers.get(item.sender), "avatar", Holder.peers.get(item.receiver), "avatar", item.content, true, true, item.edit);

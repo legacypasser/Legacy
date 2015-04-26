@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.net.LegacyClient;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
@@ -80,5 +81,19 @@ public class User {
         cv.put("nickname", nickname);
         MainActivity.db.insert("peer", null, cv);
         Holder.peers.put(id, nickname);
+    }
+
+    public static String getPeerNick(int id){
+        String nickname = Holder.peers.get(id);
+        if(nickname == null){
+            JSONObject peerInfo = null;
+            try {
+                peerInfo = new JSONObject(LegacyClient.getInstance().info(id));
+                User.storePeer(peerInfo.getInt("id"), peerInfo.getString("nickname"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return nickname;
     }
 }

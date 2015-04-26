@@ -36,20 +36,6 @@ public class Record {
         this.edit = edit;
     }
 
-    public static ArrayList<Record> drag(int peer){
-        Cursor cursor = MainActivity.db.rawQuery("select * from record where receiver = ? or sender = ?;", new String[]{"" + peer, "" + peer});
-        cursor.moveToFirst();
-        ArrayList<Record> result = new ArrayList<>();
-        while (!cursor.isAfterLast()){
-            Record item = getCursored(cursor);
-            Holder.records.put(item.id, item);
-            result.add(item);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return result;
-    }
-
     public static Record getCursored(Cursor cursor){
         Record item = new Record(cursor.getInt(cursor.getColumnIndex("id")),
                 cursor.getInt(cursor.getColumnIndex("sender")),
@@ -72,7 +58,6 @@ public class Record {
         }
         return result;
     }
-
 
     public static ArrayList<Record> getOnline(){
         String allMsg = LegacyClient.getInstance().online();
@@ -118,9 +103,21 @@ public class Record {
         return cv;
     }
 
+    public Session getSession(){
+        Session owner = Holder.belongTo.get(this);
+        if(owner == null){
+            int newPeer = this.sender;
+            if(newPeer == User.id)
+                newPeer = this.receiver;
+            owner = new Session(newPeer, User.getPeerNick(newPeer),"");
+            Holder.talks.put(newPeer, owner);
+        }
+        return owner;
+    }
+
     public static void moreCome(Record record){
         Holder.records.put(record.id, record);
         store(record);
-        Session.append(record);
+        record.getSession().append(record);
     }
 }

@@ -20,4 +20,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_simple">SimpleActivity</string>
+    <string name="cap_finish">完成</string>
+    <string name="cap_start">拍照</string>
 </resources>

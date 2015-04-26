@@ -23,14 +23,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ResultFragment extends BaseListFragment {
 
-    MaterialListView resultList;
     public static ResultFragment instance;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_result, container, false);
-        resultList = (MaterialListView)rootView.findViewById(R.id.result_list);
+        View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
+        selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
         return rootView;
     }
 
@@ -50,14 +49,14 @@ public class ResultFragment extends BaseListFragment {
     public void refreshList(){
         for(Post item : Holder.resultedPost){
             BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
-            Log.v("panob", item.abs);
             card.setDescription(item.abs);
             card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
+            String str = Constants.imgPath + item.img.split(";")[0];
             card.setDrawable(R.drawable.ic_launcher);
-            ImageLoader.getInstance().loadImage(Constants.imgPath + item.img.split(";")[0], new ImageListener(card));
+            ImageLoader.getInstance().loadImage(str, new ImageListener(card));
             card.setOnLeftButtonPressedListener(new SearchClickListener(item.id));
-            resultList.add(card);
+            selfList.add(card);
         }
     }
 

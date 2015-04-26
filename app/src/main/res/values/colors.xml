@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cardflow_background_color">#ededed</color>
-    
-    
-    
-    
+    <color name="pressed">#80738ffe</color>
+    <color name="back_white">#efefef</color>
+    <color name="tool_back">#111111</color>
     
     
 </resources>

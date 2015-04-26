@@ -1,52 +1,88 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+    xmlns:fabs="http://schemas.android.com/apk/res-auto"
     tools:context="com.androider.legacy.activity.PublishActivity">
-
-    <include layout="@layout/common_toolbar"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/img_holder">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请输入描述"/>
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/des_to_publish"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/img_test"/>
-
+        <include layout="@layout/common_toolbar"/>
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/img_holder">
-
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:id="@+id/pusher"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="end">
+                <com.getbase.floatingactionbutton.AddFloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fabs:fab_colorPressed="@color/pressed"
+                    android:id="@+id/start_cap"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/back_white">
+            <com.gc.materialdesign.views.ButtonFlat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cap_switch"
+                android:text="@string/cap_finish"/>
         </FrameLayout>
 
-        <com.getbase.floatingactionbutton.AddFloatingActionButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/start_cap"/>
-        <com.getbase.floatingactionbutton.AddFloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/publish"/>
+            android:minHeight="80dp"
+            android:background="@color/back_white"
+            android:orientation="horizontal"
+            android:id="@+id/cap_holder"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/back_white"
+            android:minHeight="320dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请输入描述"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/des_to_publish"/>
+        </LinearLayout>
 
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="end">
+        <com.getbase.floatingactionbutton.AddFloatingActionButton
+            android:layout_width="wrap_content"
+            fabs:fab_colorPressed="@color/pressed"
+            android:layout_height="wrap_content"
+            android:id="@+id/publish"/>
+    </RelativeLayout>
 
-
-
-</RelativeLayout>
+</FrameLayout>
