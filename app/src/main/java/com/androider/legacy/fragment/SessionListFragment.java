@@ -81,7 +81,7 @@ public class SessionListFragment extends BaseListFragment{
             HashMap.Entry entry = (HashMap.Entry)it.next();
             BasicImageButtonsCard card = new BasicImageButtonsCard(getActivity());
             card.setTitle(((Session) entry.getValue()).nickname);
-            card.setDrawable(R.drawable.ic_launcher);
+            card.setDrawable(R.drawable.ic_person_grey600_48dp);
             card.setLeftButtonText("talk with me");
             card.setRightButtonText("right");
             card.setOnLeftButtonPressedListener(new SessionItemClickListener(((Session) entry.getValue()).peer));

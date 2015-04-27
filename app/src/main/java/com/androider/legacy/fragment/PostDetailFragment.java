@@ -97,7 +97,7 @@ public class PostDetailFragment extends Fragment {
             BigImageCard card = new BigImageCard(getActivity());
             card.setDescription("");
             card.setTitle("");
-            card.setDrawable(R.drawable.ic_launcher);
+            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
             ImageLoader.getInstance().loadImage(Constants.imgPath + item, new BigImageListener(card));
             detailHolder.add(card);
         }
@@ -109,7 +109,7 @@ public class PostDetailFragment extends Fragment {
         SmallImageCard ownerCard = new SmallImageCard(getActivity());
         ownerCard.setTitle("");
         ownerCard.setDescription(User.getPeerNick(current.seller));
-        ownerCard.setDrawable(R.drawable.ic_launcher);
+        ownerCard.setDrawable(R.drawable.ic_person_grey600_48dp);
 
         detailHolder.add(descripCard);
         detailHolder.add(ownerCard);

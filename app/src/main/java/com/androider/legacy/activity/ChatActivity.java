@@ -88,7 +88,7 @@ public class ChatActivity extends SimpleActivity {
 
         ArrayList<Record> existsRecord = currentSession.getRecords();
         for(Record item : existsRecord){
-            Message message = new Message(0, 1, Holder.peers.get(item.sender), "avatar", Holder.peers.get(item.receiver), "avatar", item.content, true, true, item.edit);
+            Message message = new Message(0, 1, Holder.peers.get(item.sender), "avatar", Holder.peers.get(item.receiver), "avatar", item.content, User.id == item.sender, true, item.edit);
             messages.add(message);
         }
         adapter = new MessageAdapter(this, messages);

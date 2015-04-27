@@ -66,7 +66,7 @@ public class MyPostListFragment extends BaseListFragment {
             card.setDescription(item.abs);
             card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
-            card.setDrawable(R.drawable.ic_launcher);
+            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
             ImageLoader.getInstance().loadImage("file://" + MainActivity.filePath + item.img.split(";")[0], new ImageListener(card));
             card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);

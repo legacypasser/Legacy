@@ -80,7 +80,7 @@ public class RecommendFragment extends BaseListFragment {
             card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
             String str = Constants.imgPath + item.img.split(";")[0];
-            card.setDrawable(R.drawable.ic_launcher);
+            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
             ImageLoader.getInstance().loadImage(str, new ImageListener(card));
             card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);
