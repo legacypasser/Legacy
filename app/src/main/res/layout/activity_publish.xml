@@ -46,27 +46,37 @@
                 android:text="@string/cap_finish"/>
         </FrameLayout>
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="80dp"
             android:background="@color/back_white"
-            android:orientation="horizontal"
-            android:id="@+id/cap_holder"/>
+            android:rowCount="2"
+            android:columnCount="4"
+            android:id="@+id/cap_holder">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/ic_add_to_photos_grey600_48dp"/>
+
+        </GridLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/back_white"
-            android:minHeight="320dp"
+            android:background="@color/primary_blue"
+            android:padding="16dp"
+            android:minHeight="480dp"
             android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="请输入描述"/>
+                android:text="请输入资产描述"/>
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="这是我的资产"
+                fabs:maxCharacters="20"
                 android:id="@+id/des_to_publish"/>
         </LinearLayout>
 

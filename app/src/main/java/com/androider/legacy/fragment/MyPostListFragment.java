@@ -9,15 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
+import com.androider.legacy.listener.ImageListener;
 import com.androider.legacy.listener.LeftClikedListener;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.dexafree.materialList.cards.BigImageButtonsCard;
 import com.dexafree.materialList.cards.BigImageCard;
 import com.dexafree.materialList.cards.SmallImageCard;
 import com.dexafree.materialList.view.MaterialListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,6 +67,7 @@ public class MyPostListFragment extends BaseListFragment {
             card.setLeftButtonText("see detail");
             card.setRightButtonText("right");
             card.setDrawable(R.drawable.ic_launcher);
+            ImageLoader.getInstance().loadImage("file://" + MainActivity.filePath + item.img.split(";")[0], new ImageListener(card));
             card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
             selfList.add(card);
         }

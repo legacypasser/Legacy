@@ -22,8 +22,6 @@ public class Holder{
 
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
 
-    public static ArrayList<String> paths = new ArrayList<>();
-
     public static String publishDes;
 
     public static ArrayList<Record> justReceived;

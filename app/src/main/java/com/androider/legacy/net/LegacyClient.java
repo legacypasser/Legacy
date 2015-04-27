@@ -7,6 +7,7 @@ import android.provider.Telephony;
 import android.util.Log;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
  */
 public class LegacyClient{
     OkHttpClient client;
-    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
@@ -142,9 +143,12 @@ public class LegacyClient{
     public String publish(){
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         builder.addFormDataPart("des", Holder.publishDes);
-        for(String path: Holder.paths){
-            builder.addFormDataPart("imgs0", path, RequestBody.create(MEDIA_TYPE_PNG, new File(MainActivity.filePath + path)));
+        int temp = 0;
+        for(String path: PublishActivity.instance.paths){
+            builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));
+            temp++;
         }
+
         RequestBody body = builder.build();
         Request req = new Request.Builder()
                 .url(Constants.requestPath + Constants.publish)

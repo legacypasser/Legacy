@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/back_white"
     tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/overall_toolbar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:background="@color/tool_back"
             android:minHeight="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
 

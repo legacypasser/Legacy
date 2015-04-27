@@ -4,6 +4,7 @@
     <color name="pressed">#80738ffe</color>
     <color name="back_white">#efefef</color>
     <color name="tool_back">#111111</color>
+    <color name="primary_blue">#3f51b5</color>
     
     
 </resources>

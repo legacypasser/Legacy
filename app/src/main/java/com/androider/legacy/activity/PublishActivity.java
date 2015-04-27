@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +25,7 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.CapturePreview;
+import com.androider.legacy.util.DensityUtil;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.jialin.chat.Message;
@@ -46,6 +48,8 @@ import java.util.Map;
 
 public class PublishActivity extends SimpleActivity implements Camera.PictureCallback{
 
+    private int thumbHeight;
+    private int thumbWidth;
     private MaterialEditText des;
     private AddFloatingActionButton addImg;
     private AddFloatingActionButton publish;
@@ -53,6 +57,8 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
+    GridLayout thumbs;
+    public ArrayList<String> paths = new ArrayList<>();
 
     public static PublishActivity instance;
 
@@ -61,11 +67,14 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
         instance = this;
+        thumbHeight = DensityUtil.dip2px(this, 60);
+        thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
         addImg = (AddFloatingActionButton)findViewById(R.id.start_cap);
         publish = (AddFloatingActionButton)findViewById(R.id.publish);
         holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
+        thumbs = (GridLayout)findViewById(R.id.cap_holder);
         pusher = findViewById(R.id.pusher);
         capSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,16 +121,26 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 2;
+        options.inSampleSize = 3;
         Matrix matrix = new Matrix();
         matrix.reset();
         matrix.setRotate(90);
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         int iniWidth = bitmap.getWidth();
         int iniHeight = bitmap.getHeight();
-
-        Bitmap used = Bitmap.createBitmap(bitmap, iniWidth/10,0,iniWidth/3, iniHeight, matrix, true);
+        Bitmap used = Bitmap.createBitmap(bitmap, iniWidth / 10, 0, iniWidth / 3, iniHeight, matrix, true);
         bitmap.recycle();
+        int usedHeight = used.getHeight();
+        int usedWidth = used.getWidth();
+        matrix.reset();
+        matrix.postScale((float)thumbWidth/usedWidth, (float)thumbHeight/usedHeight);
+        Bitmap thumbnail = Bitmap.createBitmap(used, 0, 0, usedWidth, usedHeight, matrix, true);
+        ImageView added = new ImageView(this);
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.setMargins(4, 4, 4, 4);
+        added.setLayoutParams(params);
+        added.setImageBitmap(thumbnail);
+        thumbs.addView(added, thumbs.getChildCount() - 1);
         String theName = System.currentTimeMillis() + ".jpg";
         File file = new File(MainActivity.filePath + theName);
         try {
@@ -135,7 +154,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Holder.paths.add(theName);
-        preview.camera.startPreview();
+        paths.add(theName);
+        camera.startPreview();
     }
 }

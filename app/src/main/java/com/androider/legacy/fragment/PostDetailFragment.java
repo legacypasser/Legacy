@@ -12,9 +12,17 @@ import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.User;
+import com.androider.legacy.listener.BigImageListener;
+import com.androider.legacy.listener.ImageListener;
+import com.dexafree.materialList.cards.BigImageCard;
+import com.dexafree.materialList.cards.SmallImageCard;
+import com.dexafree.materialList.view.MaterialListView;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 
 public class PostDetailFragment extends Fragment {
@@ -29,11 +37,7 @@ public class PostDetailFragment extends Fragment {
 
     public static int currentId;
 
-    TextView des;
-    TextView img;
-    TextView nickname;
-    AddFloatingActionButton startTalk;
-
+    MaterialListView detailHolder;
     public static PostDetailFragment instance;
 
     /**
@@ -73,18 +77,7 @@ public class PostDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_post_detail, container, false);
-        des = (TextView)rootView.findViewById(R.id.post_des);
-        img = (TextView)rootView.findViewById(R.id.post_img);
-        nickname = (TextView)rootView.findViewById(R.id.post_seller);
-        startTalk = (AddFloatingActionButton)rootView.findViewById(R.id.chat_with_seller);
-        startTalk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("talker", Post.get(currentId).seller);
-                getActivity().startActivity(intent);
-            }
-        });
+        detailHolder = (MaterialListView)rootView.findViewById(R.id.detail_holder);
         setView();
         return rootView;
     }
@@ -99,9 +92,27 @@ public class PostDetailFragment extends Fragment {
         Post current = Post.get(currentId);
         if(current == null)
             return;
-        des.setText(current.des);
-        img.setText(current.img);
-        nickname.setText(Holder.peers.get(current.seller));
+        String[] imgs = current.img.split(";");
+        for(String item : imgs){
+            BigImageCard card = new BigImageCard(getActivity());
+            card.setDescription("");
+            card.setTitle("");
+            card.setDrawable(R.drawable.ic_launcher);
+            ImageLoader.getInstance().loadImage(Constants.imgPath + item, new BigImageListener(card));
+            detailHolder.add(card);
+        }
+
+        SmallImageCard descripCard = new SmallImageCard(getActivity());
+        descripCard.setTitle("");
+        descripCard.setDescription(current.des);
+        descripCard.setDrawable(R.drawable.ic_launcher);
+        SmallImageCard ownerCard = new SmallImageCard(getActivity());
+        ownerCard.setTitle("");
+        ownerCard.setDescription(User.getPeerNick(current.seller));
+        ownerCard.setDrawable(R.drawable.ic_launcher);
+
+        detailHolder.add(descripCard);
+        detailHolder.add(ownerCard);
     }
 
     @Override

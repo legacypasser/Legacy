@@ -3,8 +3,11 @@ package com.androider.legacy.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Surface;
@@ -12,8 +15,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 
+import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
+import com.androider.legacy.data.Holder;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Policy;
 import java.util.List;
@@ -21,7 +30,7 @@ import java.util.List;
 /**
  * Created by Think on 2015/4/22.
  */
-public class CapturePreview extends SurfaceView implements SurfaceHolder.Callback{
+public class CapturePreview extends SurfaceView implements SurfaceHolder.Callback, Camera.ShutterCallback{
 
     SurfaceHolder holder;
     public Camera camera;
@@ -45,7 +54,7 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     public void takePicture(){
-        camera.takePicture(null, null, PublishActivity.instance);
+        camera.takePicture(this, null, PublishActivity.instance);
     }
 
     @Override
@@ -72,6 +81,12 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
         camera.stopPreview();
         camera.release();
         camera = null;
+    }
+
+
+    @Override
+    public void onShutter() {
+        new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME).startTone(ToneGenerator.TONE_PROP_BEEP2);
     }
 
 }

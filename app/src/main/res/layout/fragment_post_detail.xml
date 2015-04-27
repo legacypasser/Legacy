@@ -4,28 +4,11 @@
     tools:context="com.androider.legacy.fragment.PostDetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_des"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_img"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_seller"/>
 
-        <com.getbase.floatingactionbutton.AddFloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chat_with_seller"/>
-    </LinearLayout>
+    <com.dexafree.materialList.view.MaterialListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_holder"/>
 
 
 </FrameLayout>

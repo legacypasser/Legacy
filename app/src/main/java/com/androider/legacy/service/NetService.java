@@ -12,6 +12,7 @@ import android.util.Log;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -85,7 +86,7 @@ public class NetService extends IntentService {
                 Log.v("panbo", idStr);
                 int newlyAddedId = Integer.parseInt(idStr);
                 String imgStr = "";
-                for(String item : Holder.paths){
+                for(String item : PublishActivity.instance.paths){
                     imgStr += item + ";";
                 }
                 Post published = new Post(newlyAddedId,
