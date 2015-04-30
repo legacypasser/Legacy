@@ -192,9 +192,7 @@ public class MainActivity extends ActionBarActivity {
                     break;
                 case Constants.pullMsg:
                     if(Holder.justReceived == null)
-                        break;
-                    else
-                        Toast.makeText(MainActivity.instance, Holder.justReceived.get(0).content,Toast.LENGTH_SHORT).show();
+                        SessionListFragment.instance.refreshSession();
                     break;
             }
         }

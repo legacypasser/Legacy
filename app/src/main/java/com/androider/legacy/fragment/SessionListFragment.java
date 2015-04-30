@@ -79,6 +79,10 @@ public class SessionListFragment extends BaseListFragment implements SessionList
         }
     }
 
+    public void refreshSession(){
+        swipeHolder.setRefreshing(false);
+    }
+
     public void startPull(){
         Intent intent = new Intent(getActivity(), NetService.class);
         intent.putExtra(Constants.intentType, Constants.pullMsg);
