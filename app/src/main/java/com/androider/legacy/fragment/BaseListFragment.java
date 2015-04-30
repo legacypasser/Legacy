@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
-import com.dexafree.materialList.view.MaterialListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +30,8 @@ public class BaseListFragment extends Fragment {
     String mParam1;
     String mParam2;
 
-    MaterialListView selfList;
-
+    RecyclerView selfList;
+    RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
     private OnFragmentInteractionListener mListener;
 
     @Override
@@ -41,7 +42,6 @@ public class BaseListFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -21,7 +21,6 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.ResultFragment;
-import com.androider.legacy.listener.LeftClikedListener;
 import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.SearchService;

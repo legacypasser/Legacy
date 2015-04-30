@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup\otto\1.3.5\7941cd2c2c8ec006800d75c35f8a9dacf892ab93\otto-1.3.5.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="7941cd2c2c8ec006800d75c35f8a9dacf892ab93">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\otto-1.3.5-144e055532aa48d6160bf6cf26fc8eec000e6653.jar" />
-    </item>
-    <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.balysv.materialmenu\material-menu-toolbar\1.5.1\classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -16,46 +9,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-bb3467d0c4099b04b53d94f7860d3aef21d8a216.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-85b27888d4b77377731635e261870b3d801dcf8b.jar" />
-    </item>
-    <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\1.8.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="516ac6ca1d257cf5a1d95184b2ca21234f59c885">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-b876a5cf94a5a43ffce2f417bc3e6916c5ad754a.jar" />
-    </item>
-    <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-482294032d6bbe787813d4fb290cd6662bbc02fa.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\library-2.4.0-420c2159ba77a36df5d86321a17c14810d804c43.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nhaarman.listviewanimations\lib-manipulation\3.1.0\63737e512fcd9e0ebe9bcd0bb375c2dded74116f\lib-manipulation-3.1.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="63737e512fcd9e0ebe9bcd0bb375c2dded74116f">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\lib-manipulation-3.1.0-75b426f1feae2f232cdcbd48e583d31c4356dfed.jar" />
-    </item>
-    <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.getbase\floatingactionbutton\1.9.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f2b8a750df2a5d485d0c40b379b44371c5e6d98d">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-9cd6db8f9bb9c0e45f93bc6502aa3ab640167993.jar" />
+        sha1="11842de6a309c447b3a3d60d73ad637a87c58994">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-979d4f937e6e2246cfa491b4a521aac77ac51082.jar" />
     </item>
     <item
         jar="C:\Users\Think\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
@@ -65,6 +23,13 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-da6f5449543e39f0541834cec6a1efa4b256ee8c.jar" />
     </item>
     <item
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-85b27888d4b77377731635e261870b3d801dcf8b.jar" />
+    </item>
+    <item
         jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.3.0\2e7bc7033dc2c8423e661224171b3133fb155b28\okhttp-2.3.0.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -72,11 +37,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\okhttp-2.3.0-836099df4eff6db5569dc1c05dd095f31b423aa8.jar" />
     </item>
     <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.4.0\f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2\picasso-2.4.0.jar"
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\1.8.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\picasso-2.4.0-190de68a0d6f329a1afdaa85a42dc3b138bf3733.jar" />
+        sha1="516ac6ca1d257cf5a1d95184b2ca21234f59c885">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-b876a5cf94a5a43ffce2f417bc3e6916c5ad754a.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\21.0.0\classes.jar"
@@ -100,13 +65,6 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-6d13393b9dbfa79099d8b74e949c959cc7b22206.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\21.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="7d2525cba8ed61fff102977caed964fc22061e34">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-a43e128e9c2d6d0b7bb3b5a71a2bcaed112460bf.jar" />
-    </item>
-    <item
         jar="D:\github\Legacy\app\libs\universal-image-loader-1.9.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -119,6 +77,13 @@
         revision="21.1.2"
         sha1="d84409890828e07d344a3b9b1da545dba9897b51">
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-34470a0a70f74b1298aa9ac0f7591d2be8ee6d2a.jar" />
+    </item>
+    <item
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-482294032d6bbe787813d4fb290cd6662bbc02fa.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.github.ksoichiro\android-observablescrollview\1.5.0\classes.jar"
@@ -135,11 +100,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\okio-1.3.0-d0b4d0054c655d5bec12f640d436d17c505998b8.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.github.dexafree\materiallist\2.3.2\classes.jar"
+        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="b90b1b8016379a1adaaef9945e2d9f752b4f0ebe">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-1e9c06e056c7654249ce49ecb531744d9df8442d.jar" />
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\library-2.4.0-420c2159ba77a36df5d86321a17c14810d804c43.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.github.navasmdc\MaterialDesign\1.4\classes.jar"
@@ -156,11 +121,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-988d0d66a74e25442b97b44d0bfb874b0d224469.jar" />
     </item>
     <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nhaarman.listviewanimations\lib-core\3.1.0\f3f9629b068554d8513a2aaf34418171bf430851\lib-core-3.1.0.jar"
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.getbase\floatingactionbutton\1.9.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="f3f9629b068554d8513a2aaf34418171bf430851">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\lib-core-3.1.0-dee7bdef197e5cc31f6fddfbc2674d977f5fff9a.jar" />
+        sha1="f2b8a750df2a5d485d0c40b379b44371c5e6d98d">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-9cd6db8f9bb9c0e45f93bc6502aa3ab640167993.jar" />
     </item>
 
 </items>

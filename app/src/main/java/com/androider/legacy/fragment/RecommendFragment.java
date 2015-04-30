@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +17,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.card.CardFlow;
 import com.androider.legacy.card.CardView;
 import com.androider.legacy.card.OnCardFlowScrollChangedListener;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.listener.ImageListener;
-import com.androider.legacy.listener.LeftClikedListener;
 import com.androider.legacy.service.NetService;
-import com.dexafree.materialList.cards.BigImageButtonsCard;
-import com.dexafree.materialList.cards.BigImageCard;
-import com.dexafree.materialList.view.MaterialListView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -40,8 +39,9 @@ import java.util.ArrayList;
  * Use the {@link RecommendFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecommendFragment extends BaseListFragment {
+public class RecommendFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
+    private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static RecommendFragment instance;
     public int currentPage = 0;
     public static RecommendFragment newInstance(String param1, String param2) {
@@ -60,7 +60,10 @@ public class RecommendFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
+        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        adapter.setOnClickListener(this );
+        selfList.setLayoutManager(manager);
+        selfList.setAdapter(adapter);
         request();
         return rootView;
     }
@@ -75,15 +78,13 @@ public class RecommendFragment extends BaseListFragment {
 
     public void refreshList(){
         for(Post item : Holder.recommendPost){
-            BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
-            card.setDescription(item.abs);
-            card.setLeftButtonText("see detail");
-            card.setRightButtonText("right");
-            String str = Constants.imgPath + item.img.split(";")[0];
-            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
-            ImageLoader.getInstance().loadImage(str, new ImageListener(card));
-            card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
-            selfList.add(card);
+            adapter.addData(item);
         }
+    }
+
+    @Override
+    public void onItemClick(int id) {
+        PostDetailFragment.instance.currentId = id;
+        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
 }

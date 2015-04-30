@@ -4,23 +4,20 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.adapter.MyPostAdapter;
+import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
-import com.androider.legacy.listener.ImageListener;
-import com.androider.legacy.listener.LeftClikedListener;
-import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
-import com.dexafree.materialList.cards.BigImageButtonsCard;
-import com.dexafree.materialList.cards.BigImageCard;
-import com.dexafree.materialList.cards.SmallImageCard;
-import com.dexafree.materialList.view.MaterialListView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -31,11 +28,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * Use the {@link MyPostListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyPostListFragment extends BaseListFragment {
+public class MyPostListFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
-    private MaterialListView selfList;
     public static MyPostListFragment instance;
 
+    private MyPostAdapter adapter = new MyPostAdapter();
     public static MyPostListFragment newInstance(String param1, String param2) {
         MyPostListFragment fragment = new MyPostListFragment();
         Bundle args = new Bundle();
@@ -54,33 +51,24 @@ public class MyPostListFragment extends BaseListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        selfList = (MaterialListView)rootView.findViewById(R.id.card_list);
+        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        selfList.setLayoutManager(manager);
+        adapter.setOnClickListener(this);
+        selfList.setAdapter(adapter);
         Holder.myPost = Post.listFromBase(User.id);
-        fillList();
+        refreshList();
         return rootView;
     }
 
-    public void fillList(){
+    public void refreshList(){
         for(Post item : Holder.myPost){
-            BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
-            card.setDescription(item.abs);
-            card.setLeftButtonText("see detail");
-            card.setRightButtonText("right");
-            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
-            ImageLoader.getInstance().loadImage("file://" + MainActivity.filePath + item.img.split(";")[0], new ImageListener(card));
-            card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
-            selfList.add(card);
+            adapter.addData(item);
         }
     }
 
-    public void addToList(Post item){
-        BigImageButtonsCard card = new BigImageButtonsCard(getActivity());
-        card.setDescription(item.abs);
-        card.setLeftButtonText("see detail");
-        card.setRightButtonText("right");
-        card.setDrawable(R.drawable.ic_launcher);
-        card.setOnLeftButtonPressedListener(new LeftClikedListener(item.id));
-        selfList.add(card);
+    @Override
+    public void onItemClick(int id) {
+        PostDetailFragment.instance.currentId = id;
+        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
-
 }

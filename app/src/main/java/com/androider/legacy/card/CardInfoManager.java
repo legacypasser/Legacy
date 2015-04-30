@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.androider.legacy.card.model.CardInfo;
-import com.dexafree.materialList.model.Card;
 
 /**
  * Created by baojianting on 2015/4/9.

@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
@@ -16,12 +20,7 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
-import com.androider.legacy.listener.BigImageListener;
-import com.androider.legacy.listener.ImageListener;
-import com.dexafree.materialList.cards.BigImageCard;
-import com.dexafree.materialList.cards.SmallImageCard;
-import com.dexafree.materialList.view.MaterialListView;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
@@ -35,9 +34,10 @@ public class PostDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public static int currentId;
-
-    MaterialListView detailHolder;
+    public int currentId;
+    TextView detailDes;
+    TextView detailNickname;
+    LinearLayout detailHolder;
     public static PostDetailFragment instance;
 
     /**
@@ -77,7 +77,9 @@ public class PostDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_post_detail, container, false);
-        detailHolder = (MaterialListView)rootView.findViewById(R.id.detail_holder);
+        detailHolder = (LinearLayout)rootView.findViewById(R.id.detail_holder);
+        detailDes = (TextView)rootView.findViewById(R.id.detail_des);
+        detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
         setView();
         return rootView;
     }
@@ -94,25 +96,14 @@ public class PostDetailFragment extends Fragment {
             return;
         String[] imgs = current.img.split(";");
         for(String item : imgs){
-            BigImageCard card = new BigImageCard(getActivity());
-            card.setDescription("");
-            card.setTitle("");
-            card.setDrawable(R.drawable.ic_refresh_grey600_48dp);
-            ImageLoader.getInstance().loadImage(Constants.imgPath + item, new BigImageListener(card));
-            detailHolder.add(card);
+            ImageView imgItem = new ImageView(getActivity());
+            ImageLoader.getInstance().displayImage(Constants.imgPath + item, imgItem);
+            CardView imgCard = new CardView(getActivity());
+            imgCard.addView(imgItem);
+            detailHolder.addView(imgCard);
         }
-
-        SmallImageCard descripCard = new SmallImageCard(getActivity());
-        descripCard.setTitle("");
-        descripCard.setDescription(current.des);
-        descripCard.setDrawable(R.drawable.ic_launcher);
-        SmallImageCard ownerCard = new SmallImageCard(getActivity());
-        ownerCard.setTitle("");
-        ownerCard.setDescription(User.getPeerNick(current.seller));
-        ownerCard.setDrawable(R.drawable.ic_person_grey600_48dp);
-
-        detailHolder.add(descripCard);
-        detailHolder.add(ownerCard);
+        detailNickname.setText(User.getPeerNick(current.seller));
+        detailDes.setText(current.des);
     }
 
     @Override

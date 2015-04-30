@@ -2,6 +2,7 @@ package com.androider.legacy.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
@@ -39,8 +40,11 @@ import com.androider.legacy.service.NetService;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.apache.http.cookie.params.CookieSpecPNames;
@@ -90,7 +94,11 @@ public class MainActivity extends ActionBarActivity {
             startService(intent);
     }
     private void initView(){
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+        DisplayImageOptions options  = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .defaultDisplayImageOptions(options)
+                .build();
+        ImageLoader.getInstance().init(config);
         overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
         StateController.setToPublish();
         fragmentList = new ArrayList<>();
@@ -157,7 +165,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static NetHandler netHandler = new NetHandler(instance);
+    public NetHandler netHandler = new NetHandler(instance);
 
     private static class NetHandler extends Handler{
         WeakReference<MainActivity> activityWeakReference;

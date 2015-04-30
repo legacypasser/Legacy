@@ -45,7 +45,7 @@ public class NetService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         int type = intent.getIntExtra(Constants.intentType, -1);
-        Messenger messenger = new Messenger(MainActivity.netHandler);
+        Messenger messenger = new Messenger(MainActivity.instance.netHandler);
         Message msg = Message.obtain();
         try {
         switch (type){

@@ -4,9 +4,10 @@
     tools:context="com.androider.legacy.fragment.BaseListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.dexafree.materialList.view.MaterialListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/card_list"/>
+        android:id="@+id/card_list"
+        />
 
 </FrameLayout>
