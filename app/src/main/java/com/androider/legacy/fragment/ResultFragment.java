@@ -57,7 +57,7 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
 
     @Override
     public void onItemClick(int id) {
-        PostDetailFragment.instance.currentId = id;
+        PostDetailFragment.currentId = id;
         SearchActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
 }

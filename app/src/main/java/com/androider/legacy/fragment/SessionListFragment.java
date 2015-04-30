@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,9 +37,7 @@ import java.util.Map;
  * Use the {@link SessionListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SessionListFragment extends BaseListFragment{
-
-    AddFloatingActionButton pullButton;
+public class SessionListFragment extends BaseListFragment implements SessionListAdapter.OnItemClickListner{
 
     private SessionListAdapter adapter = new SessionListAdapter();
     public static SessionListFragment instance;
@@ -58,17 +57,15 @@ public class SessionListFragment extends BaseListFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
-        selfList.setLayoutManager(manager);
+        commonSet(rootView);
+        adapter.setOnclickListener(this);
         selfList.setAdapter(adapter);
-        pullButton = new AddFloatingActionButton(getActivity());
-        pullButton.setOnClickListener(new View.OnClickListener() {
+        swipeHolder.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 startPull();
             }
         });
-        ((FrameLayout)rootView).addView(pullButton);
         Session.drag();
         listSessions();
         return rootView;
@@ -82,10 +79,16 @@ public class SessionListFragment extends BaseListFragment{
         }
     }
 
-
     public void startPull(){
         Intent intent = new Intent(getActivity(), NetService.class);
         intent.putExtra(Constants.intentType, Constants.pullMsg);
         getActivity().startService(intent);
+    }
+
+    @Override
+    public void onItemClick(int id) {
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        intent.putExtra("talker", id);
+        getActivity().startActivity(intent);
     }
 }

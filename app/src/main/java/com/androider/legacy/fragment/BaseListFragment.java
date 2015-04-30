@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class BaseListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     String mParam1;
     String mParam2;
-
+    SwipeRefreshLayout swipeHolder;
     RecyclerView selfList;
     RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
     private OnFragmentInteractionListener mListener;
@@ -41,6 +42,12 @@ public class BaseListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    protected void commonSet(View rootView){
+        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        selfList.setLayoutManager(manager);
+        swipeHolder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
     }
 
 

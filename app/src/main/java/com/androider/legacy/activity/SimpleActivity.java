@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.androider.legacy.R;
 import com.androider.legacy.listener.ToolBarListener;
@@ -20,7 +21,12 @@ public class SimpleActivity extends ActionBarActivity {
     protected void setToolBar(){
         searchTool = (Toolbar)findViewById(R.id.simple_toolbar);
         setSupportActionBar(searchTool);
-        searchTool.setNavigationOnClickListener(new ToolBarListener());
+        searchTool.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mateMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
             @Override
             public int getToolbarViewId() {
@@ -43,11 +49,6 @@ public class SimpleActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

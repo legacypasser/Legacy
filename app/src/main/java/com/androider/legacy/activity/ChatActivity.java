@@ -67,7 +67,7 @@ public class ChatActivity extends SimpleActivity {
 
             }
         });
-
+        setToolBar();
         initList();
     }
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Session;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,16 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     @Override
     public RecycleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.session_item, parent, false);
-        return new RecycleHolder(item);
+        return new RecycleHolder(item, listner);
+    }
+
+    private OnItemClickListner listner;
+    public interface OnItemClickListner{
+        public void onItemClick(int id);
+    }
+
+    public void setOnclickListener(OnItemClickListner listener){
+        this.listner = listener;
     }
 
     @Override
@@ -45,13 +53,21 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         return data.size();
     }
 
-    public class RecycleHolder extends RecyclerView.ViewHolder{
+    public class RecycleHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView portrait;
         public TextView nickname;
-        public RecycleHolder(View itemView) {
+        private OnItemClickListner sessionListener;
+        public RecycleHolder(View itemView, OnItemClickListner listner) {
             super(itemView);
             portrait = (ImageView)itemView.findViewById(R.id.session_img);
             nickname = (TextView)itemView.findViewById(R.id.session_name);
+            sessionListener = listner;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            sessionListener.onItemClick(data.get(getPosition()).peer);
         }
     }
 }

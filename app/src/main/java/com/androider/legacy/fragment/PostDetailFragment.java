@@ -34,9 +34,10 @@ public class PostDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public int currentId;
+    public static int currentId;
     TextView detailDes;
     TextView detailNickname;
+    CardView detailNickCard;
     LinearLayout detailHolder;
     public static PostDetailFragment instance;
 
@@ -80,6 +81,7 @@ public class PostDetailFragment extends Fragment {
         detailHolder = (LinearLayout)rootView.findViewById(R.id.detail_holder);
         detailDes = (TextView)rootView.findViewById(R.id.detail_des);
         detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
+        detailNickCard = (CardView)rootView.findViewById(R.id.detail_nick_card);
         setView();
         return rootView;
     }
@@ -103,6 +105,7 @@ public class PostDetailFragment extends Fragment {
             detailHolder.addView(imgCard);
         }
         detailNickname.setText(User.getPeerNick(current.seller));
+
         detailDes.setText(current.des);
     }
 

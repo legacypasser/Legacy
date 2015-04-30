@@ -60,9 +60,8 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        commonSet(rootView);
         adapter.setOnClickListener(this );
-        selfList.setLayoutManager(manager);
         selfList.setAdapter(adapter);
         request();
         return rootView;
@@ -84,7 +83,7 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
 
     @Override
     public void onItemClick(int id) {
-        PostDetailFragment.instance.currentId = id;
+        PostDetailFragment.currentId = id;
         MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
 }

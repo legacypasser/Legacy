@@ -110,6 +110,7 @@ public class MainActivity extends ActionBarActivity {
         viewPager.setAdapter(pagerAdapter);
         UnderlinePageIndicator indicator = (UnderlinePageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(0);
     }
 

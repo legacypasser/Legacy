@@ -51,8 +51,7 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
-        selfList.setLayoutManager(manager);
+        commonSet(rootView);
         adapter.setOnClickListener(this);
         selfList.setAdapter(adapter);
         Holder.myPost = Post.listFromBase(User.id);
@@ -68,7 +67,7 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
 
     @Override
     public void onItemClick(int id) {
-        PostDetailFragment.instance.currentId = id;
+        PostDetailFragment.currentId = id;
         MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
 }
