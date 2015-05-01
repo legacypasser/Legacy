@@ -4,38 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/back_white"
     tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/overall_toolbar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:background="@color/tool_back"
-            android:minHeight="?attr/actionBarSize">
-        </android.support.v7.widget.Toolbar>
+            android:background="@color/primary_color"
+            android:minHeight="?attr/actionBarSize"
+        />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/dark_primary_color"
+        android:id="@+id/main_container">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/main_container">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0"
-                />
-            <com.viewpagerindicator.UnderlinePageIndicator
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:id="@+id/pager_indicator"
-                />
-
+            >
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0"
+                    />
+                <com.viewpagerindicator.LinePageIndicator
+                    android:padding="5dip"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    fab:strokeWidth="4dp"
+                    fab:lineWidth="30dp"
+                    fab:unselectedColor="@color/primary_color"
+                    fab:selectedColor="@color/light_primary_color"
+                    android:id="@+id/pager_indicator"
+                    />
         </LinearLayout>
 
         <RelativeLayout
@@ -47,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                fab:fab_colorNormal="@color/accent_color"
                 fab:fab_colorPressed="@color/pressed"
                 android:id="@+id/all_over_button"/>
         </RelativeLayout>

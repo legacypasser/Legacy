@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.support.v7.widget.Toolbar;
 
@@ -30,7 +31,7 @@ import java.lang.ref.WeakReference;
 
 public class SearchActivity extends SimpleActivity {
 
-    MaterialEditText searchInput;
+    EditText searchInput;
     ImageButton searchButton;
     public static SearchActivity instance;
 
@@ -40,7 +41,7 @@ public class SearchActivity extends SimpleActivity {
         setContentView(R.layout.activity_search);
         instance = this;
         setToolBar();
-        searchInput = (MaterialEditText)findViewById(R.id.search_input);
+        searchInput = (EditText)findViewById(R.id.search_input);
         searchButton = (ImageButton)findViewById(R.id.search_confirm);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +84,15 @@ public class SearchActivity extends SimpleActivity {
         if(fragment == null){
             if(fragName.equals(ResultFragment.class.getSimpleName())){
                 fragment = ResultFragment.newInstance("", "");
-                ft.replace(R.id.search_holder, fragment, fragName);
-                ft.addToBackStack(null);
+                ft.add(R.id.search_holder, fragment, fragName);
             }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
                 fragment = PostDetailFragment.newInstance("", "");
-                ft.add(R.id.search_holder, fragment, fragName);
+                ft.replace(R.id.search_holder, fragment, fragName);
+                ft.addToBackStack(null);
             }
+        }else {
+            ft.replace(R.id.search_holder, fragment, fragName);
+            ft.addToBackStack(null);
         }
         ft.commit();
     }

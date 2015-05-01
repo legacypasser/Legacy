@@ -1,69 +1,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_white"
+    android:background="@color/dark_primary_color"
     android:orientation="vertical"
     tools:context="com.androider.legacy.activity.RegisterActivity">
 
     <include layout="@layout/common_toolbar"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/primary_blue">
-        <TextView
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/text_icon"
             android:layout_height="wrap_content"
-            android:text="email"/>
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:orientation="vertical">
 
         <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16sp"
+            app:met_floatingLabelText="@string/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:met_primaryColor="@color/primary_color"
+            app:met_baseColor="@color/primary_text"
+            android:hint="@string/email"
             android:id="@+id/email"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="password"/>
         <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16sp"
+            app:met_floatingLabelText="@string/password"
             android:layout_width="match_parent"
+            app:met_primaryColor="@color/primary_color"
+            app:met_baseColor="@color/primary_text"
+            android:hint="@string/password"
             android:layout_height="wrap_content"
             android:password="true"
             android:id="@+id/password"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="nickname"/>
         <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16sp"
+            app:met_floatingLabelText="@string/nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:met_primaryColor="@color/primary_color"
+            app:met_baseColor="@color/primary_text"
+            android:hint="@string/nickname"
             android:id="@+id/nickname"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="school"/>
         <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16sp"
+            app:met_floatingLabelText="@string/school"
             android:layout_width="match_parent"
+            app:met_primaryColor="@color/primary_color"
+            app:met_baseColor="@color/primary_text"
+            android:hint="@string/school"
             android:layout_height="wrap_content"
             android:id="@+id/school"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="major"/>
         <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16sp"
+            app:met_floatingLabelText="@string/major"
             android:layout_width="match_parent"
+            app:met_primaryColor="@color/primary_color"
+            app:met_baseColor="@color/primary_text"
+            android:hint="@string/major"
             android:layout_height="wrap_content"
             android:id="@+id/major"/>
+        </LinearLayout>
 
-    </LinearLayout>
     <com.getbase.floatingactionbutton.AddFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="end"
+        app:fab_colorNormal="@color/accent_color"
+        app:fab_colorPressed="@color/light_primary_color"
         android:id="@+id/register"/>
 
 </LinearLayout>

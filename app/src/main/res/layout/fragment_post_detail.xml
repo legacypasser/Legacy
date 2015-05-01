@@ -1,11 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:orientation="vertical"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_primary_color"
     tools:context="com.androider.legacy.fragment.PostDetailFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
     <!-- TODO: Update blank fragment layout -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,24 +22,31 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/text_icon"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:textColor="@color/primary_text"
             android:id="@+id/detail_des"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/text_icon"
         android:id="@+id/detail_nick_card">
         <TextView
             android:layout_width="match_parent"
+            android:textSize="18sp"
+            android:padding="16dp"
             android:layout_height="wrap_content"
             android:id="@+id/detail_nickname"
-            android:textColor="@android:color/black"/>
+            android:textColor="@color/primary_text"/>
     </android.support.v7.widget.CardView>
-
-
 </LinearLayout>
+</ScrollView>

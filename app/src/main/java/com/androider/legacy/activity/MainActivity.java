@@ -37,6 +37,7 @@ import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.DensityUtil;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
@@ -44,7 +45,10 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+import com.viewpagerindicator.LinePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.apache.http.cookie.params.CookieSpecPNames;
@@ -94,7 +98,10 @@ public class MainActivity extends ActionBarActivity {
             startService(intent);
     }
     private void initView(){
-        DisplayImageOptions options  = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
+        DisplayImageOptions options  = new DisplayImageOptions.Builder().
+                cacheOnDisk(true).
+                displayer(new SimpleBitmapDisplayer()).
+                build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .defaultDisplayImageOptions(options)
                 .build();
@@ -108,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         FragmentViewPagerAdapter pagerAdapter = new FragmentViewPagerAdapter( fragmentList,this.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        UnderlinePageIndicator indicator = (UnderlinePageIndicator)findViewById(R.id.pager_indicator);
+        LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(0);

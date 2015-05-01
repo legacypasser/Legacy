@@ -22,4 +22,14 @@
     <string name="title_activity_simple">SimpleActivity</string>
     <string name="cap_finish">完成</string>
     <string name="cap_start">拍照</string>
+
+    <string name="email">邮箱</string>
+    <string name="password">密码</string>
+    <string name="repass">重新输入密码</string>
+    <string name="school">学校</string>
+    <string name="nickname">昵称</string>
+    <string name="major">专业</string>
+    <string name="key_word">请输入关键字</string>
+    <string name="legacy_story">这是我的宝贝的故事</string>
+    <string name="legacy_des">资产描述</string>
 </resources>

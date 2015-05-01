@@ -35,21 +35,15 @@
                     android:visibility="visible"/>
             </RelativeLayout>
         </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/back_white">
             <com.gc.materialdesign.views.ButtonFlat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/cap_switch"
                 android:text="@string/cap_finish"/>
-        </FrameLayout>
-
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/back_white"
+            android:background="@color/text_icon"
             android:rowCount="2"
             android:columnCount="4"
             android:id="@+id/cap_holder">
@@ -64,22 +58,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary_blue"
+            android:background="@color/dark_primary_color"
             android:padding="16dp"
             android:minHeight="480dp"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="请输入资产描述"/>
+
             <com.rengwuxian.materialedittext.MaterialEditText
+                fabs:met_floatingLabel="highlight"
+                fabs:met_floatingLabelTextSize="16sp"
+                fabs:met_floatingLabelText="@string/legacy_des"
+                fabs:met_primaryColor="@color/primary_color"
+                fabs:met_baseColor="@color/primary_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="这是我的资产"
-                fabs:maxCharacters="20"
+                android:hint="@string/legacy_story"
+                fabs:met_maxCharacters="20"
                 android:id="@+id/des_to_publish"/>
         </LinearLayout>
-
 
     </LinearLayout>
 

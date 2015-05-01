@@ -52,16 +52,17 @@ public class User {
         Cursor cursor = MainActivity.db.rawQuery("select * from user;", null);
         if(cursor.isAfterLast()){
             id = -1;
-            return;
+        }else{
+            cursor.moveToFirst();
+            id = cursor.getInt(cursor.getColumnIndex("id"));
+            email = cursor.getString(cursor.getColumnIndex("email"));
+            password = cursor.getString(cursor.getColumnIndex("password"));
+            school = cursor.getString(cursor.getColumnIndex("school"));
+            major = cursor.getString(cursor.getColumnIndex("major"));
+            nickname = cursor.getString(cursor.getColumnIndex("nickname"));
+            cursor.close();
+            Holder.peers.put(id, nickname);
         }
-        cursor.moveToFirst();
-        id = cursor.getInt(cursor.getColumnIndex("id"));
-        email = cursor.getString(cursor.getColumnIndex("email"));
-        password = cursor.getString(cursor.getColumnIndex("password"));
-        school = cursor.getString(cursor.getColumnIndex("school"));
-        major = cursor.getString(cursor.getColumnIndex("major"));
-        nickname = cursor.getString(cursor.getColumnIndex("nickname"));
-        cursor.close();
 
         cursor = MainActivity.db.rawQuery("select * from peer;", null);
         cursor.moveToFirst();

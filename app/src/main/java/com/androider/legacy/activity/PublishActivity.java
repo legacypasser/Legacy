@@ -121,7 +121,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 3;
+        options.inSampleSize = 2;
         Matrix matrix = new Matrix();
         matrix.reset();
         matrix.setRotate(90);
@@ -145,7 +145,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         File file = new File(MainActivity.filePath + theName);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            used.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            used.compress(Bitmap.CompressFormat.JPEG, 80, bos);
             bos.flush();
             bos.close();
             used.recycle();

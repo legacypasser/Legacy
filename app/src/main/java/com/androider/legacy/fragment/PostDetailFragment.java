@@ -21,6 +21,8 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 
+import com.androider.legacy.util.DensityUtil;
+import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
@@ -86,7 +88,6 @@ public class PostDetailFragment extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -98,15 +99,27 @@ public class PostDetailFragment extends Fragment {
             return;
         String[] imgs = current.img.split(";");
         for(String item : imgs){
-            ImageView imgItem = new ImageView(getActivity());
+            SelectableRoundedImageView imgItem = new SelectableRoundedImageView(getActivity());
+            imgItem.setCornerRadiiDP(8,8,8,8);
+            imgItem.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imgItem.setMinimumHeight(DensityUtil.dip2px(getActivity(),200));
             ImageLoader.getInstance().displayImage(Constants.imgPath + item, imgItem);
             CardView imgCard = new CardView(getActivity());
+            imgCard.setRadius(DensityUtil.dip2px(getActivity(),8));
+            imgCard.setPreventCornerOverlap(false);
             imgCard.addView(imgItem);
             detailHolder.addView(imgCard);
         }
         detailNickname.setText(User.getPeerNick(current.seller));
-
         detailDes.setText(current.des);
+        detailNickCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("talker", Post.get(currentId).seller);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     @Override

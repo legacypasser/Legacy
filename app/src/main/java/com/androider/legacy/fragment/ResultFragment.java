@@ -2,7 +2,7 @@ package com.androider.legacy.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,9 +30,10 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
-        selfList.setLayoutManager(manager);
+        selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.setOnClickListener(this);
         selfList.setAdapter(adapter);
+        swipeHolder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
         return rootView;
     }
 

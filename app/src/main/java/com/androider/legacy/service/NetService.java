@@ -66,8 +66,7 @@ public class NetService extends IntentService {
                 cv.put("des", certain.des);
                 cv.put("seller", certain.seller);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
-                String nickname = jsonPost.getString("nickname");
-                User.storePeer(certain.seller, nickname);
+                User.getPeerNick(certain.seller);
                 msg.what = Constants.detailRequest;
                 break;
             case Constants.registrationSent:
