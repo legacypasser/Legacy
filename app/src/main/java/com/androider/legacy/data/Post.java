@@ -59,7 +59,6 @@ public class Post{
         if(certain == null){
             certain = detailFromBase(id);
             Holder.detailed.put(id, certain);
-            Log.v("panbo", certain.des);
             if(certain.des.equals("")){
                 Intent intent = new Intent(MainActivity.instance, NetService.class);
                 intent.putExtra(Constants.intentType, Constants.detailRequest);

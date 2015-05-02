@@ -110,7 +110,7 @@ public class PostDetailFragment extends Fragment {
             imgCard.addView(imgItem);
             detailHolder.addView(imgCard);
         }
-        detailNickname.setText(User.getPeerNick(current.seller));
+        detailNickname.setText(Holder.peers.get(current.seller));
         detailDes.setText(current.des);
         detailNickCard.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true"
+    android:layout_marginBottom="16dp"
     android:background="@color/text_icon">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,8 +19,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/session_img"
+            android:layout_toEndOf="@id/session_img"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:textColor="@color/primary_text"
             android:id="@+id/session_name"/>
     </RelativeLayout>
