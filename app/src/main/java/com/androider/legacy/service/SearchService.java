@@ -38,7 +38,6 @@ public class SearchService extends IntentService {
                 String keyword = intent.getStringExtra(Constants.keyword);
                 Holder.resultedPost = PostConverter.stringToList(LegacyClient.getInstance().search(keyword));
                 msg.what = Constants.searchReq;
-                msg.what = Constants.searchReq;
                 break;
         }
         try {

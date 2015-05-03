@@ -32,4 +32,5 @@
     <string name="key_word">请输入关键字</string>
     <string name="legacy_story">这是我的宝贝的故事</string>
     <string name="legacy_des">资产描述</string>
+    <string name="publishing">正在上传</string>
 </resources>

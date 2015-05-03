@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_primary_color"
+    android:background="@color/divider_color"
     android:orientation="vertical"
     tools:context="com.androider.legacy.activity.ChatActivity">
 
@@ -19,7 +19,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#7fd8d8"/>
+        android:background="@color/divider_color"/>
     <com.jialin.chat.MessageInputToolBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

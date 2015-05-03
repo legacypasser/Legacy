@@ -27,19 +27,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:gravity="end">
-                <com.getbase.floatingactionbutton.AddFloatingActionButton
+                <com.getbase.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    fabs:fab_colorNormal="@color/accent_color"
                     fabs:fab_colorPressed="@color/pressed"
                     android:id="@+id/start_cap"
                     android:visibility="visible"/>
             </RelativeLayout>
         </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/divider_color"
+            android:orientation="vertical">
             <com.gc.materialdesign.views.ButtonFlat
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cap_switch"
                 android:text="@string/cap_finish"/>
+        </LinearLayout>
+
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +67,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_primary_color"
+            android:background="@color/divider_color"
             android:padding="16dp"
             android:minHeight="480dp"
             android:orientation="vertical">
@@ -69,6 +78,7 @@
                 fabs:met_floatingLabelText="@string/legacy_des"
                 fabs:met_primaryColor="@color/primary_color"
                 fabs:met_baseColor="@color/primary_text"
+                android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/legacy_story"
@@ -85,6 +95,7 @@
         android:gravity="end">
         <com.getbase.floatingactionbutton.AddFloatingActionButton
             android:layout_width="wrap_content"
+            fabs:fab_colorNormal="@color/accent_color"
             fabs:fab_colorPressed="@color/pressed"
             android:layout_height="wrap_content"
             android:id="@+id/publish"/>

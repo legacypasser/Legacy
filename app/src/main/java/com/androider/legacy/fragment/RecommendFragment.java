@@ -28,6 +28,7 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.service.NetService;
 
+import com.androider.legacy.util.LegacyProgress;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
  */
 public class RecommendFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
+    LegacyProgress loadingView;
     private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static RecommendFragment instance;
     public int currentPage = 0;
@@ -61,15 +63,16 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
+        loadingView = new LegacyProgress(getActivity());
         commonSet(rootView);
         adapter.setOnClickListener(this);
         selfList.setAdapter(adapter);
-
         request();
         return rootView;
     }
 
     private void request(){
+        loadingView.show();
         currentPage++;
         Intent intent = new Intent(getActivity(), NetService.class);
         intent.putExtra(Constants.intentType, Constants.recommendAdded);
@@ -81,11 +84,18 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
         for(Post item : Holder.recommendPost){
             adapter.addData(item);
         }
+        loadingView.hide();
     }
 
     @Override
     public void onItemClick(int id) {
         PostDetailFragment.currentId = id;
         MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        loadingView.dismiss();
     }
 }

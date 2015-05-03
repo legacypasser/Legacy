@@ -8,10 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.PostConverter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -47,8 +50,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.absDes.setText(data.get(position).abs);
-        String path = Constants.imgPath + data.get(position).img.split(";")[0];
-        ImageLoader.getInstance().displayImage(path, holder.absImg);
+        holder.absPub.setText(PostConverter.formater.format(data.get(position).publish));
+        String path = "file://" + MainActivity.filePath + data.get(position).img.split(";")[0];
+        File file = new File(path);
+        if(file.exists())
+            ImageLoader.getInstance().displayImage(path, holder.absImg);
+        else
+            ImageLoader.getInstance().displayImage(Constants.imgPath + data.get(position).img.split(";")[0], holder.absImg);
     }
 
     @Override
@@ -60,10 +68,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public ImageView absImg;
         public TextView absDes;
         private RecycleClickListener listener;
+        public TextView absPub;
         public ViewHolder(View itemView, RecycleClickListener cycleListener) {
             super(itemView);
             absImg = (ImageView)itemView.findViewById(R.id.abs_img);
             absDes = (TextView)itemView.findViewById(R.id.abs_des);
+            absPub = (TextView)itemView.findViewById(R.id.abs_pub);
             listener = cycleListener;
             itemView.setOnClickListener(this);
         }

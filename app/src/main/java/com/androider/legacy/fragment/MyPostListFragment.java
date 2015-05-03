@@ -34,7 +34,7 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
 
     public static MyPostListFragment instance;
 
-    private MyPostAdapter adapter = new MyPostAdapter();
+    private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static MyPostListFragment newInstance(String param1, String param2) {
         MyPostListFragment fragment = new MyPostListFragment();
         Bundle args = new Bundle();

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/dark_primary_color"
+    android:background="@color/divider_color"
     tools:context="com.androider.legacy.fragment.LoginFragment">
 
     <!-- TODO: Update blank fragment layout -->

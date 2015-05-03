@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cardflow_background_color">#ededed</color>
-    <color name="pressed">#80738ffe</color>
+    <color name="pressed">#80ffaa00</color>
 
-    <color name="dark_primary_color">#616161</color>
-    <color name="primary_color">#9e9e9e</color>
-    <color name="light_primary_color">#f5f5f5</color>
-    <color name="text_icon">#eeeeee</color>
-    <color name="accent_color">#536dfe</color>
+    <color name="dark_primary_color">#303f9f</color>
+    <color name="primary_color">#3f51b5</color>
+    <color name="light_primary_color">#c5cae9</color>
+    <color name="text_icon">#fafbfc</color>
+    <color name="accent_color">#ff9800</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
-    <color name="divider_color">#B6B6B6</color>
+    <color name="divider_color">#eaebec</color>
     
 </resources>

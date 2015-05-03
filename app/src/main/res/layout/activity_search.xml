@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_primary_color"
+    android:background="@color/divider_color"
     tools:context="com.androider.legacy.activity.SearchActivity">
 
     <include layout="@layout/common_toolbar"/>

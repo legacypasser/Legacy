@@ -80,26 +80,6 @@ public class NetService extends IntentService {
                 if(loginResult)
                     msg.what = Constants.loginAttempt;
                 break;
-            case Constants.myPublish:
-                String idStr = LegacyClient.getInstance().publish();
-                Log.v("panbo", idStr);
-                int newlyAddedId = Integer.parseInt(idStr);
-                String imgStr = "";
-                for(String item : PublishActivity.instance.paths){
-                    imgStr += item + ";";
-                }
-                Post published = new Post(newlyAddedId,
-                        Holder.publishDes,
-                        imgStr,
-                        User.id,
-                        new Date(),
-                        Holder.publishDes
-                        );
-                Holder.detailed.put(newlyAddedId, published);
-                ContentValues publishedCv = Post.getCv(published);
-                MainActivity.db.insert(Post.tableName, null, publishedCv);
-                Log.v("panbo", "stroed");
-                return;
             case Constants.sendChat:
                 String chatResult = LegacyClient.getInstance().chat(intent.getStringExtra("content"), ChatActivity.instance.talker);
                 Record returned = Record.strToObj(chatResult);

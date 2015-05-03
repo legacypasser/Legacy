@@ -69,6 +69,11 @@
             android:name=".activity.SimpleActivity"
             android:label="@string/title_activity_simple" >
         </activity>
+
+        <service
+            android:name=".service.PublishService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

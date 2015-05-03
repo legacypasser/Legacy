@@ -16,11 +16,18 @@
             android:topRightRadius="8dp"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:id="@+id/abs_pub"
+                />
+
             <com.joooonho.SelectableRoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:sriv_left_top_corner_radius="8dp"
-                app:sriv_right_top_corner_radius="8dp"
                 android:scaleType="centerCrop"
                 android:id="@+id/abs_img"
                 />

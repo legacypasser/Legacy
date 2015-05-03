@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class MessageInputToolBox extends RelativeLayout {
 	
@@ -99,7 +100,7 @@ public class MessageInputToolBox extends RelativeLayout {
 	}
 	
 	private void initView(){
-			messageEditText 		= (EditText) findViewById(R.id.messageEditText);
+			messageEditText 		= (MaterialEditText) findViewById(R.id.messageEditText);
 			sendButton 				= (Button) findViewById(R.id.sendButton);
 	
 			bottomHideLayout		= (RelativeLayout) findViewById(R.id.bottomHideLayout);

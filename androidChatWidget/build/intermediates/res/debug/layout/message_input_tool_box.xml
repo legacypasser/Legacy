@@ -30,7 +30,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/face_btn_normal" />
 
-        <Button
+        <
             android:id="@+id/moreTypeButton"
             android:layout_width="35dp"
             android:layout_height="35dp"

@@ -19,6 +19,7 @@ import com.androider.legacy.activity.ChatActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
 
 import com.androider.legacy.util.DensityUtil;
@@ -40,6 +41,7 @@ public class PostDetailFragment extends Fragment {
     TextView detailDes;
     TextView detailNickname;
     CardView detailNickCard;
+    TextView detailPub;
     LinearLayout detailHolder;
     public static PostDetailFragment instance;
 
@@ -82,6 +84,7 @@ public class PostDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_post_detail, container, false);
         detailHolder = (LinearLayout)rootView.findViewById(R.id.detail_holder);
         detailDes = (TextView)rootView.findViewById(R.id.detail_des);
+        detailPub = (TextView)rootView.findViewById(R.id.detail_pub);
         detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
         detailNickCard = (CardView)rootView.findViewById(R.id.detail_nick_card);
         setView();
@@ -110,8 +113,10 @@ public class PostDetailFragment extends Fragment {
             imgCard.addView(imgItem);
             detailHolder.addView(imgCard);
         }
+
         detailNickname.setText(Holder.peers.get(current.seller));
         detailDes.setText(current.des);
+        detailPub.setText(PostConverter.formater.format(current.publish));
         detailNickCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

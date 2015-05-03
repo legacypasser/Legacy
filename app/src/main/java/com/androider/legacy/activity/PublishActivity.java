@@ -1,5 +1,6 @@
 package com.androider.legacy.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,10 +8,12 @@ import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,16 +26,16 @@ import android.widget.ListView;
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
+import com.androider.legacy.util.LegacyProgress;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
-import com.jialin.chat.Message;
-import com.jialin.chat.MessageAdapter;
-import com.jialin.chat.MessageInputToolBox;
-import com.jialin.chat.OnOperationListener;
-import com.jialin.chat.Option;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.BufferedOutputStream;
@@ -40,6 +43,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +55,14 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
-    private AddFloatingActionButton addImg;
+    private FloatingActionButton addImg;
     private AddFloatingActionButton publish;
     private LinearLayout holder;
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
     GridLayout thumbs;
+    public LegacyProgress loadingView;
     public ArrayList<String> paths = new ArrayList<>();
 
     public static PublishActivity instance;
@@ -70,7 +75,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbHeight = DensityUtil.dip2px(this, 60);
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
-        addImg = (AddFloatingActionButton)findViewById(R.id.start_cap);
+        addImg = (FloatingActionButton)findViewById(R.id.start_cap);
         publish = (AddFloatingActionButton)findViewById(R.id.publish);
         holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
@@ -107,15 +112,49 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
                 myPublish();
             }
         });
-
+        loadingView = new LegacyProgress(this);
+        loadingView.setTitle(R.string.publishing);
 
     }
 
     private void myPublish(){
+        loadingView.show();
         Holder.publishDes = des.getText().toString();
-        Intent intent = new Intent(this, NetService.class);
+        Intent intent = new Intent(this, PublishService.class);
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
+    }
+
+    public void publishFinished(){
+        paths.clear();
+        thumbs.removeAllViews();
+        des.setText("");
+        loadingView.hide();
+    }
+
+    public static NetHandler netHandler = new NetHandler(instance);
+
+    private static class NetHandler extends Handler {
+        WeakReference<PublishActivity> activityWeakReference;
+        NetHandler(PublishActivity publishActivity){
+            activityWeakReference = new WeakReference<>(publishActivity);
+        }
+
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what){
+                case Constants.myPublish:
+                    instance.publishFinished();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(loadingView != null)
+            loadingView.dismiss();
     }
 
     @Override
@@ -145,7 +184,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         File file = new File(MainActivity.filePath + theName);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            used.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+            used.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
             used.recycle();

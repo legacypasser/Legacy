@@ -122,6 +122,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void switchFragment(String fragmentName){
+        
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentName);
         if(fragment == null){
             if(fragmentName.equals(LoginFragment.class.getSimpleName())){
@@ -151,11 +152,6 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingActivity.class);
-            startActivity(intent);
-            return true;
-        }
         if(id == R.id.action_register){
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
@@ -195,11 +191,13 @@ public class MainActivity extends ActionBarActivity {
                     MainActivity.instance.autoLogin();
                     break;
                 case Constants.loginAttempt:
-                    Log.v("panbo", "login success");
+                    Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
+
                     break;
                 case Constants.pullMsg:
                     if(Holder.justReceived == null)
                         SessionListFragment.instance.refreshSession();
+
                     break;
             }
         }
