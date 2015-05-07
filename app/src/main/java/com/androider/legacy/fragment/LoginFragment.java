@@ -13,7 +13,7 @@ import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    AddFloatingActionButton loginButton;
+    ButtonFloat loginButton;
     MaterialEditText username;
     MaterialEditText password;
 
@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         username = (MaterialEditText)rootView.findViewById(R.id.login_username);
         password = (MaterialEditText)rootView.findViewById(R.id.login_password);
-        loginButton = (AddFloatingActionButton)rootView.findViewById(R.id.just_login);
+        loginButton = (ButtonFloat)rootView.findViewById(R.id.just_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

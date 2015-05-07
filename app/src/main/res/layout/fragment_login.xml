@@ -42,10 +42,8 @@
     </LinearLayout>
 
 
-    <com.getbase.floatingactionbutton.AddFloatingActionButton
+    <com.gc.materialdesign.views.ButtonFloat
         android:layout_width="wrap_content"
-        app:fab_colorNormal="@color/accent_color"
-        app:fab_colorPressed="@color/light_primary_color"
         android:layout_height="wrap_content"
         android:id="@+id/just_login"
         android:layout_gravity="end"/>

@@ -13,15 +13,15 @@
         android:orientation="horizontal"
         android:padding="4dp" >
 
-        <EditText
+
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/messageEditText"
+            app:met_primaryColor="#212121"
+            android:textColor="#212121"
+            app:met_baseColor="#eeeeee"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="input message"
-            android:maxHeight="80dp"
-            android:textSize="16sp" >
-        </EditText>
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/faceButton"
@@ -30,7 +30,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/face_btn_normal" />
 
-        <
+        <Button
             android:id="@+id/moreTypeButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -44,7 +44,7 @@
         <Button
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="4dp"

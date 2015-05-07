@@ -12,13 +12,12 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class RegisterActivity extends SimpleActivity {
 
-    AddFloatingActionButton button;
+    ButtonFloat button;
     MaterialEditText email;
     MaterialEditText password;
     MaterialEditText nickname;
@@ -30,7 +29,7 @@ public class RegisterActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setToolBar();
-        button = (AddFloatingActionButton)findViewById(R.id.register);
+        button = (ButtonFloat)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
         nickname = (MaterialEditText)findViewById(R.id.nickname);

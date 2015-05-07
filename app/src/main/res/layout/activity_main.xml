@@ -46,13 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">
-            <com.getbase.floatingactionbutton.AddFloatingActionButton
+            <com.gc.materialdesign.views.ButtonFloat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                fab:fab_colorNormal="@color/accent_color"
-                fab:fab_colorPressed="@color/pressed"
                 android:id="@+id/all_over_button"/>
         </RelativeLayout>
 

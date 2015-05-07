@@ -3,7 +3,7 @@
     package="com.jialin.chat.test" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
     <instrumentation
@@ -13,7 +13,7 @@
         android:label="Tests for com.jialin.chat.test"
         android:targetPackage="com.jialin.chat.test" />
 
-    <application>
+    <application android:allowBackup="true" >
         <uses-library android:name="android.test.runner" />
     </application>
 

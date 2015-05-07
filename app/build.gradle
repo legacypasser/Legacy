@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.androider.legacy"
-        minSdkVersion 16
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -22,9 +22,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.getbase:floatingactionbutton:1.9.0'
-    compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
@@ -33,4 +30,5 @@ dependencies {
     compile project(':androidChatWidget')
     compile 'com.android.support:cardview-v7:22.0.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
 }

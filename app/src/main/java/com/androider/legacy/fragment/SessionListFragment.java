@@ -23,7 +23,6 @@ import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
 
 import java.util.HashMap;
 import java.util.Iterator;

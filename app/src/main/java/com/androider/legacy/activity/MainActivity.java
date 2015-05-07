@@ -40,7 +40,7 @@ import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DensityUtil;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
     public static String filePath;
     public MaterialMenuIconToolbar materialMenu;
     public Toolbar overallToolBar;
-    public AddFloatingActionButton overButton;
+    public ButtonFloat overButton;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     public static SQLiteDatabase db;
@@ -106,7 +106,7 @@ public class MainActivity extends ActionBarActivity {
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-        overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
+        overButton = (ButtonFloat)findViewById(R.id.all_over_button);
         StateController.setToPublish();
         fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
@@ -122,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void switchFragment(String fragmentName){
-        
+
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentName);
         if(fragment == null){
             if(fragmentName.equals(LoginFragment.class.getSimpleName())){

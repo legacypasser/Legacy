@@ -19,11 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.adapter.GridAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.fragment.ResultFragment;
@@ -33,9 +35,9 @@ import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.LegacyProgress;
 import com.gc.materialdesign.views.ButtonFlat;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 
+
+import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.BufferedOutputStream;
@@ -55,13 +57,14 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
-    private FloatingActionButton addImg;
-    private AddFloatingActionButton publish;
+    private ButtonFlat addImg;
+    private ButtonFloat publish;
     private LinearLayout holder;
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
-    GridLayout thumbs;
+    GridView thumbs;
+    GridAdapter thumbAdpter = new GridAdapter();
     public LegacyProgress loadingView;
     public ArrayList<String> paths = new ArrayList<>();
 
@@ -75,12 +78,13 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbHeight = DensityUtil.dip2px(this, 60);
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
-        addImg = (FloatingActionButton)findViewById(R.id.start_cap);
-        publish = (AddFloatingActionButton)findViewById(R.id.publish);
+        addImg = (ButtonFlat)findViewById(R.id.start_cap);
+        publish = (ButtonFloat)findViewById(R.id.publish);
         holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
-        thumbs = (GridLayout)findViewById(R.id.cap_holder);
+        thumbs = (GridView)findViewById(R.id.cap_holder);
         pusher = findViewById(R.id.pusher);
+        thumbs.setAdapter(thumbAdpter);
         capSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,11 +179,8 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         matrix.postScale((float)thumbWidth/usedWidth, (float)thumbHeight/usedHeight);
         Bitmap thumbnail = Bitmap.createBitmap(used, 0, 0, usedWidth, usedHeight, matrix, true);
         ImageView added = new ImageView(this);
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.setMargins(4, 4, 4, 4);
-        added.setLayoutParams(params);
         added.setImageBitmap(thumbnail);
-        thumbs.addView(added, thumbs.getChildCount() - 1);
+        thumbAdpter.addThumb(added);
         String theName = System.currentTimeMillis() + ".jpg";
         File file = new File(MainActivity.filePath + theName);
         try {
