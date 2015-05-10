@@ -5,6 +5,8 @@ import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.NetConstants;
+import com.jialin.chat.Message;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,30 +22,33 @@ import java.util.LinkedList;
  * Created by Think on 2015/4/16.
  */
 public class Record {
-    public int id;
     public int sender;
     public int receiver;
     public String content;
-    public Date edit;
+    public long edit;
 
     public static final String tableName = "record";
 
-    public Record(int id, int sender, int receiver, String content, Date edit) {
-        this.id = id;
+    public Record(int sender, int receiver, String content, long edit) {
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
         this.edit = edit;
     }
 
+    public Record(int sender, int receiver, String content) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+        edit = System.currentTimeMillis();
+    }
+
     public static Record getCursored(Cursor cursor){
-        Record item = new Record(cursor.getInt(cursor.getColumnIndex("id")),
-                cursor.getInt(cursor.getColumnIndex("sender")),
+        return new Record(cursor.getInt(cursor.getColumnIndex("sender")),
                 cursor.getInt(cursor.getColumnIndex("receiver")),
                 cursor.getString(cursor.getColumnIndex("content")),
-                new Date(cursor.getLong(cursor.getColumnIndex("edit")))
+                cursor.getLong(cursor.getColumnIndex("edit"))
         );
-        return item;
     }
 
     public static ArrayList<Record> strToList(String str){
@@ -63,61 +68,73 @@ public class Record {
         String allMsg = LegacyClient.getInstance().online();
         if(allMsg.equals("empty"))
             return null;
-        ArrayList<Record> result = strToList(allMsg);
-        for(Record item : result){
-            moreCome(item);
-        }
-        return result;
+        return strToList(allMsg);
+    }
+
+    public static Record fromCome(String[] tokens){
+        int senderId = Integer.parseInt(tokens[1]);
+        int receiverId = Integer.parseInt(tokens[2]);
+        long comeEdit = Long.parseLong(tokens[3]);
+        String comeContent = tokens[4];
+        return new Record(senderId,receiverId,comeContent,comeEdit);
+    }
+
+    public String formFeedBack(){
+        return "" + sender + NetConstants.regex + receiver + NetConstants.regex + edit;
     }
 
     public static Record strToObj(String str){
         try {
             JSONObject jObj = new JSONObject(str);
-            Record item = new Record(
-                    jObj.getInt("id"),
+            return new Record(
                     jObj.getInt("sender"),
                     jObj.getInt("receiver"),
                     jObj.getString("content"),
-                    PostConverter.formater.parse(jObj.getString("edit"))
+                    PostConverter.formater.parse(jObj.getString("edit")).getTime()
             );
-            return item;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (JSONException|ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static void store(Record item){
-        MainActivity.db.insert(tableName, null, getCV(item));
+    public void store(){
+        MainActivity.db.insert(tableName, null, getCV());
     }
 
-    public static ContentValues getCV(Record item){
+    public ContentValues getCV(){
         ContentValues cv = new ContentValues();
-        cv.put("id", item.id);
-        cv.put("sender", item.sender);
-        cv.put("receiver", item.receiver);
-        cv.put("content", item.content);
-        cv.put("edit", item.edit.getTime());
+        cv.put("sender", this.sender);
+        cv.put("receiver", this.receiver);
+        cv.put("content", this.content);
+        cv.put("edit", this.edit);
         return cv;
     }
 
     public Session getSession(){
-        Session owner = Holder.belongTo.get(this);
+        int newPeer = (receiver == User.id)? sender: receiver;
+        Session owner = Holder.talks.get(newPeer);
         if(owner == null){
-            int newPeer = this.sender;
-            if(newPeer == User.id)
-                newPeer = this.receiver;
-            owner = new Session(newPeer, User.getPeerNick(newPeer),"");
+            owner = new Session(newPeer, User.getPeerNick(newPeer));
             Holder.talks.put(newPeer, owner);
+            owner.store();
         }
         return owner;
     }
 
-    public static void moreCome(Record record){
-        Holder.records.put(record.id, record);
-        store(record);
-        record.getSession().append(record);
+    public void moreCome(){
+        store();
+        if(getSession().draged)
+            getSession().append(this);
+
+    }
+
+    @Override
+    public String toString(){
+        return "" + sender + NetConstants.regex + receiver + NetConstants.regex + edit + NetConstants.regex + content;
+    }
+
+    public Message formMessage(){
+        return new Message(0, 1, Holder.peers.get(sender), "avatar", Holder.peers.get(receiver), "avatar", content, User.id == sender, true, new Date(edit));
     }
 }

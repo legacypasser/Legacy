@@ -18,14 +18,12 @@ public class Holder{
 
     public static HashMap<Integer, Session> talks = new HashMap<>();
 
-    public static HashMap<Integer, Record> records = new HashMap<Integer, Record>();
-
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
 
     public static String publishDes;
 
     public static ArrayList<Record> justReceived;
 
-    public static HashMap<Record, Session> belongTo = new HashMap<>();
+    public static HashMap<Long, Record> waitBack = new HashMap<>();
 
 }

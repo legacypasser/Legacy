@@ -1,8 +1,6 @@
 package com.androider.legacy.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +24,7 @@ import com.androider.legacy.service.NetService;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,7 +77,19 @@ public class SessionListFragment extends BaseListFragment implements SessionList
         }
     }
 
-    public void refreshSession(){
+    public void refreshSessions(Session item){
+        if(item.affected){
+            adapter.updateData(item);
+            item.affected = false;
+        }
+    }
+
+    public void refreshSessions(){
+        Iterator it  = Holder.talks.entrySet().iterator();
+        while(it.hasNext()){
+            HashMap.Entry entry = (HashMap.Entry)it.next();
+            refreshSessions((Session)entry.getValue());
+        }
         swipeHolder.setRefreshing(false);
     }
 

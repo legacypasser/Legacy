@@ -74,6 +74,10 @@
             android:name=".service.PublishService"
             android:exported="false" >
         </service>
+        <service
+            android:name=".service.ChatService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

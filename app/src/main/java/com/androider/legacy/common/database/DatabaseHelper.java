@@ -31,8 +31,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "   abs  VARCHAR" +
                 ");");
 
-        db.execSQL("CREATE TABLE session ( peer INT primary key, nickname VARCHAR, records VARCHAR);");
-        db.execSQL("CREATE TABLE record ( id INT primary key, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");
+        db.execSQL("CREATE TABLE session ( peer INT primary key, nickname VARCHAR);");
+        db.execSQL("CREATE TABLE record ( id INTEGER, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");
         db.execSQL("CREATE TABLE user (id INT primary key, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR);");
         db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar);");
     }

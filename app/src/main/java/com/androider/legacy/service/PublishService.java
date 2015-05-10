@@ -37,7 +37,7 @@ public class PublishService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         int intentType = intent.getIntExtra(Constants.intentType, -1);
-        Messenger messenger = new Messenger(PublishActivity.netHandler);
+        Messenger messenger = new Messenger(PublishActivity.instance.netHandler);
         Message msg = Message.obtain();
         switch (intentType){
             case Constants.myPublish:

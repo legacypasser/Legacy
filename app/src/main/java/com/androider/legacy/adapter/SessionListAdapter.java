@@ -12,12 +12,14 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Session;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by Think on 2015/4/17.
  */
 public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.RecycleHolder>{
-    private ArrayList<Session> data = new ArrayList<>();
+    private LinkedList<Session> data = new LinkedList<>();
     @Override
     public RecycleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.session_item, parent, false);
@@ -39,13 +41,30 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         holder.portrait.setImageResource(R.drawable.ic_person_grey600_48dp);
     }
 
-    public void setData(ArrayList<Session> data){
-        this.data = data;
+    public void addData(Session one){
+        int pos = 0;
+        for (Session session : data) {
+            if (session.getLast() < one.getLast())
+                break;
+            else
+                pos++;
+        }
+        data.add(pos, one);
+        notifyItemInserted(pos);
     }
 
-    public void addData(Session one){
-        data.add(one);
-        notifyItemInserted(data.size() - 1);
+    public void updateData(Session one){
+        int pos = 0;
+        for (Iterator<Session> iterator = data.iterator(); iterator.hasNext(); ) {
+            Session next =  iterator.next();
+            if(one.peer == next.peer){
+                data.remove();
+                notifyItemRemoved(pos);
+                break;
+            }
+            pos++;
+        }
+        addData(one);
     }
 
     @Override

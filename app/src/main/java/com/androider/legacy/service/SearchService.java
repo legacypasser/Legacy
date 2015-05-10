@@ -31,7 +31,7 @@ public class SearchService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         int intentType = intent.getIntExtra(Constants.intentType, -1);
-        Messenger messenger = new Messenger(SearchActivity.netHandler);
+        Messenger messenger = new Messenger(SearchActivity.instance.netHandler);
         Message msg = Message.obtain();
         switch (intentType){
             case Constants.searchReq:

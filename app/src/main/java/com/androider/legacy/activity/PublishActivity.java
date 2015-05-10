@@ -57,7 +57,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
-    private ButtonFlat addImg;
+    private ButtonFloat addImg;
     private ButtonFloat publish;
     private LinearLayout holder;
     CapturePreview preview;
@@ -78,7 +78,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbHeight = DensityUtil.dip2px(this, 60);
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
-        addImg = (ButtonFlat)findViewById(R.id.start_cap);
+        addImg = (ButtonFloat)findViewById(R.id.start_cap);
         publish = (ButtonFloat)findViewById(R.id.publish);
         holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
@@ -136,7 +136,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         loadingView.hide();
     }
 
-    public static NetHandler netHandler = new NetHandler(instance);
+    public NetHandler netHandler = new NetHandler(instance);
 
     private static class NetHandler extends Handler {
         WeakReference<PublishActivity> activityWeakReference;

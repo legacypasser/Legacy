@@ -60,7 +60,7 @@ public class SearchActivity extends SimpleActivity {
         this.startService(intent);
     }
 
-    public static NetHandler netHandler = new NetHandler(instance);
+    public NetHandler netHandler = new NetHandler(instance);
 
     private static class NetHandler extends Handler {
         WeakReference<SearchActivity> activityWeakReference;

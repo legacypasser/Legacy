@@ -18,12 +18,11 @@ public class Constants {
     public static final String info = "info";
     public static final String chat = "chat";
     public static final String interest = "interest";
-    public static final String regex = "&";
-    public static final int eachPage = 5;
     public static final String ask = "?";
     public static final String page = "page=";
     public static final String id = "id=";
     public static final String keyword = "keyword=";
+    public static final int eachPage = 5;
 
 
     public static final int mainState = 0;
@@ -36,7 +35,6 @@ public class Constants {
     public static final int registrationSent = 2;
     public static final int loginAttempt = 3;
     public static final int myPublish = 4;
-    public static final int sendChat = 5;
     public static final int pullMsg = 6;
     public static final int searchReq = 7;
 

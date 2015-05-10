@@ -21,6 +21,8 @@ public class User {
     public static String major;
     public static String password;
 
+    public static boolean alreadLogin;
+
     public static String tableName = "user";
     public static void store(){
         MainActivity.db.delete(tableName, null , null);

@@ -36,6 +36,8 @@ import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.Receiver;
+import com.androider.legacy.net.Sender;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DensityUtil;
 import com.balysv.materialmenu.MaterialMenuDrawable;
@@ -191,13 +193,15 @@ public class MainActivity extends ActionBarActivity {
                     MainActivity.instance.autoLogin();
                     break;
                 case Constants.loginAttempt:
-                    Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
-
+                    if(User.alreadLogin)
+                        Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
+                    Thread backSender = new Thread(Sender.getInstance());
+                    Thread backReceiver = new Thread(Receiver.getInstance());
+                    backReceiver.start();
+                    backSender.start();
                     break;
                 case Constants.pullMsg:
-                    if(Holder.justReceived == null)
-                        SessionListFragment.instance.refreshSession();
-
+                        SessionListFragment.instance.refreshSessions();
                     break;
             }
         }

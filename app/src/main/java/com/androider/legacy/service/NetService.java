@@ -53,7 +53,6 @@ public class NetService extends IntentService {
                 int pageNum = intent.getIntExtra(Constants.page, 1);
                 Holder.recommendPost = PostConverter.stringToList(LegacyClient.getInstance().getRecommend(pageNum));
                 Post.store(Holder.recommendPost);
-                msg.what = Constants.recommendAdded;
                 break;
             case Constants.detailRequest:
                 int id = intent.getIntExtra(Constants.id, -1);
@@ -67,33 +66,25 @@ public class NetService extends IntentService {
                 cv.put("seller", certain.seller);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
                 User.getPeerNick(certain.seller);
-                msg.what = Constants.detailRequest;
                 break;
             case Constants.registrationSent:
                 String regiResult = LegacyClient.getInstance().register();
                 User.id = Integer.parseInt(regiResult);
                 User.store();
-                msg.what = Constants.registrationSent;
                 break;
             case Constants.loginAttempt:
-                boolean loginResult = LegacyClient.getInstance().login();
-                if(loginResult)
-                    msg.what = Constants.loginAttempt;
+                User.alreadLogin = LegacyClient.getInstance().login();
                 break;
-            case Constants.sendChat:
-                String chatResult = LegacyClient.getInstance().chat(intent.getStringExtra("content"), ChatActivity.instance.talker);
-                Record returned = Record.strToObj(chatResult);
-                Record.moreCome(returned);
-                return;
             case Constants.pullMsg:
-                Holder.justReceived = Record.getOnline();
-                msg.what = Constants.pullMsg;
+                ArrayList<Record> records = Record.getOnline();
+                if(records != null)
+                    for (Record item : records)
+                        item.moreCome();
                 break;
         }
+            msg.what = type;
             messenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (RemoteException|JSONException e) {
             e.printStackTrace();
         }
     }
