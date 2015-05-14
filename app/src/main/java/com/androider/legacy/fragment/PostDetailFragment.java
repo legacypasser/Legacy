@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +26,8 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.util.DensityUtil;
 import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.zip.Inflater;
 
 
 public class PostDetailFragment extends Fragment {
@@ -102,16 +105,10 @@ public class PostDetailFragment extends Fragment {
             return;
         String[] imgs = current.img.split(";");
         for(String item : imgs){
-            SelectableRoundedImageView imgItem = new SelectableRoundedImageView(getActivity());
-            imgItem.setCornerRadiiDP(8,8,8,8);
-            imgItem.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imgItem.setMinimumHeight(DensityUtil.dip2px(getActivity(),200));
+            View img = LayoutInflater.from(getActivity()).inflate(R.layout.item_img, detailHolder, false);
+            SelectableRoundedImageView imgItem = (SelectableRoundedImageView)img.findViewById(R.id.detail_img);
             ImageLoader.getInstance().displayImage(Constants.imgPath + item, imgItem);
-            CardView imgCard = new CardView(getActivity());
-            imgCard.setRadius(DensityUtil.dip2px(getActivity(),8));
-            imgCard.setPreventCornerOverlap(false);
-            imgCard.addView(imgItem);
-            detailHolder.addView(imgCard);
+            detailHolder.addView(img);
         }
 
         detailNickname.setText(Holder.peers.get(current.seller));

@@ -28,6 +28,7 @@ import com.androider.legacy.common.database.DatabaseHelper;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.MyPostListFragment;
@@ -87,6 +88,7 @@ public class MainActivity extends ActionBarActivity {
         };
         materialMenu.setNeverDrawTouch(true);
         db = new DatabaseHelper(this).getWritableDatabase();
+        Nicker.initNick(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
         User.drag();
         autoLogin();
@@ -124,7 +126,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void switchFragment(String fragmentName){
-
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentName);
         if(fragment == null){
             if(fragmentName.equals(LoginFragment.class.getSimpleName())){

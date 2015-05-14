@@ -5,8 +5,6 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.androider.legacy.card.model.CardInfo;
-
 import java.util.List;
 
 /**
@@ -35,6 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE record ( id INTEGER, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");
         db.execSQL("CREATE TABLE user (id INT primary key, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR);");
         db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar);");
+        db.execSQL("CREATE TABLE nick_adj(id INTEGER, adj VARCHAR);");
+        db.execSQL("CREATE TABLE nick_noun(id INTEGER, noun VARCHAR)");
     }
 
     @Override

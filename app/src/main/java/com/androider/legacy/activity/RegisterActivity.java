@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
@@ -35,7 +36,7 @@ public class RegisterActivity extends SimpleActivity {
         nickname = (MaterialEditText)findViewById(R.id.nickname);
         school = (MaterialEditText)findViewById(R.id.school);
         major = (MaterialEditText)findViewById(R.id.major);
-
+        nickname.setText(Nicker.getAdj()+ Nicker.getNoun());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

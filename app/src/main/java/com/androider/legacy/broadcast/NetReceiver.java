@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.androider.legacy.activity.MainActivity;
-
 public class NetReceiver extends BroadcastReceiver {
     public NetReceiver() {
     }
