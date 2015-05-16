@@ -41,10 +41,12 @@
         android:id="@+id/login_password"/>
     </LinearLayout>
 
-
     <com.gc.materialdesign.views.ButtonFloat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:iconDrawable="@drawable/ic_add_white_24dp"
         android:id="@+id/just_login"
+        android:layout_marginTop="16dp"
         android:layout_gravity="end"/>
+
 </LinearLayout>

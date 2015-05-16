@@ -9,7 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.androider.legacy.R;
-import com.androider.legacy.listener.ToolBarListener;
+import com.androider.legacy.controller.StateController;
+import com.androider.legacy.data.Constants;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
@@ -24,7 +25,7 @@ public class SimpleActivity extends ActionBarActivity {
         searchTool.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                backControl();
             }
         });
         mateMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
@@ -34,6 +35,29 @@ public class SimpleActivity extends ActionBarActivity {
             }
         };
         mateMenu.setNeverDrawTouch(true);
+        mateMenu.setState(MaterialMenuDrawable.IconState.X);
+        StateController.change(Constants.funcState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        backControl();
+    }
+
+    private void backControl(){
+        if(StateController.getCurrent() == Constants.detailState){
+            getSupportFragmentManager().popBackStack();
+            mateMenu.animateState(MaterialMenuDrawable.IconState.X);
+            StateController.goBack();
+        }else {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StateController.goBack();
     }
 
     @Override

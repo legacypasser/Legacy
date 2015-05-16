@@ -21,8 +21,7 @@ public class Holder{
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
 
     public static String publishDes;
-
-    public static ArrayList<Record> justReceived;
+    public static String price;
 
     public static HashMap<Long, Record> waitBack = new HashMap<>();
 

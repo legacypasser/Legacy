@@ -28,6 +28,7 @@ import java.util.Observer;
  */
 public class Post{
     public int id;
+    public int price;
     public String des;
     public String img;
     public int seller;
@@ -36,22 +37,24 @@ public class Post{
 
     public static final String tableName = "post";
 
-    public Post(int id, String img, Date publish, String abs) {
+    public Post(int id, String img, Date publish, String abs, int price) {
         this.id = id;
         this.des = "";
         this.img = img;
         this.seller = -1;
         this.publish = publish;
         this.abs = abs;
+        this.price = price;
     }
 
-    public Post(int id,String des, String img, int seller, Date publish, String abs) {
+    public Post(int id,String des, String img, int seller, Date publish, String abs, int price) {
         this.id = id;
         this.des = des;
         this.img = img;
         this.seller = seller;
         this.publish = publish;
         this.abs = abs;
+        this.price = price;
     }
 
     public static Post get(int id) {
@@ -99,7 +102,8 @@ public class Post{
                 cursor.getString(cursor.getColumnIndex("img")),
                 cursor.getInt(cursor.getColumnIndex("seller")),
                 new Date(cursor.getLong(cursor.getColumnIndex("publish"))),
-                cursor.getString(cursor.getColumnIndex("abs"))
+                cursor.getString(cursor.getColumnIndex("abs")),
+                cursor.getInt(cursor.getColumnIndex("price"))
         );
     }
 
@@ -120,6 +124,7 @@ public class Post{
         cv.put("seller", item.seller);
         cv.put("publish", item.publish.getTime());
         cv.put("abs", item.abs);
+        cv.put("price", item.price);
         return cv;
     }
 

@@ -27,8 +27,7 @@ public class Constants {
 
     public static final int mainState = 0;
     public static final int detailState = 1;
-    public static final int resultState = 2;
-    public static final int chatState = 3;
+    public static final int funcState = 2;
 
     public static final int detailRequest = 1;
     public static final int recommendAdded = 0;

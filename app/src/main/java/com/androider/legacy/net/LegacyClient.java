@@ -143,6 +143,7 @@ public class LegacyClient{
     public String publish(){
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         builder.addFormDataPart("des", Holder.publishDes);
+        builder.addFormDataPart("price", Holder.price);
         int temp = 0;
         for(String path: PublishActivity.instance.paths){
             builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));

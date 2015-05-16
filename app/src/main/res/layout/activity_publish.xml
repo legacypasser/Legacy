@@ -12,28 +12,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <include layout="@layout/common_toolbar"/>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
+        <View
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:id="@+id/pusher"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="end">
-                <com.gc.materialdesign.views.ButtonFloat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/start_cap"
-                    android:visibility="visible"/>
-            </RelativeLayout>
-        </FrameLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +32,6 @@
                 android:id="@+id/cap_switch"
                 android:text="@string/cap_finish"/>
         </LinearLayout>
-
         <GridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,10 +44,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/divider_color"
             android:padding="16dp"
-            android:minHeight="480dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -77,19 +64,29 @@
                 android:hint="@string/legacy_story"
                 fabs:met_maxCharacters="20"
                 android:id="@+id/des_to_publish"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                fabs:met_floatingLabel="highlight"
+                fabs:met_floatingLabelTextSize="16sp"
+                fabs:met_floatingLabelText="@string/price_flow"
+                fabs:met_primaryColor="@color/primary_color"
+                fabs:met_baseColor="@color/primary_text"
+                android:textSize="16sp"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/price"
+                fabs:met_maxCharacters="20"
+                android:id="@+id/price_to_publish"/>
+            <com.gc.materialdesign.views.ButtonFloat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                fabs:iconDrawable="@drawable/ic_add_white_24dp"
+                android:layout_gravity="end"
+                android:id="@+id/publish"/>
         </LinearLayout>
-
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="end">
-        <com.gc.materialdesign.views.ButtonFloat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/publish"/>
-    </RelativeLayout>
 
 </FrameLayout>

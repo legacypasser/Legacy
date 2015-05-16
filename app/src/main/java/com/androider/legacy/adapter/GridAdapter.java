@@ -19,6 +19,10 @@ public class GridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clearImg(){
+        thumbs.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return thumbs.size();

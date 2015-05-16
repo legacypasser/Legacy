@@ -3,9 +3,12 @@ package com.androider.legacy.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
@@ -36,13 +39,47 @@ public class RegisterActivity extends SimpleActivity {
         nickname = (MaterialEditText)findViewById(R.id.nickname);
         school = (MaterialEditText)findViewById(R.id.school);
         major = (MaterialEditText)findViewById(R.id.major);
-        nickname.setText(Nicker.getAdj()+ Nicker.getNoun());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendRegistration();
             }
         });
+
+        TextWatcher validator = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!email.getText().toString().equals("")
+                    &&!password.getText().toString().equals("")
+                        &&!nickname.getText().toString().equals("")
+                        &&!school.getText().toString().equals("")
+                        &&!major.getText().toString().equals("")){
+                    if(!button.isShow)
+                        button.show();
+                }else{
+                    if(button.isShow)
+                        button.hide();
+                }
+
+            }
+        };
+
+        email.addTextChangedListener(validator);
+        password.addTextChangedListener(validator);
+        nickname.addTextChangedListener(validator);
+        school.addTextChangedListener(validator);
+        major.addTextChangedListener(validator);
+        nickname.setText(Nicker.getAdj() + Nicker.getNoun());
     }
 
     public void sendRegistration(){

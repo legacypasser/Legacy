@@ -50,6 +50,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.absDes.setText(data.get(position).abs);
+        holder.absPrice.setText("价格："+ data.get(position).price +"元");
         holder.absPub.setText(PostConverter.formater.format(data.get(position).publish));
         String path = "file://" + MainActivity.filePath + data.get(position).img.split(";")[0];
         File file = new File(path);
@@ -67,6 +68,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView absImg;
         public TextView absDes;
+        public TextView absPrice;
         private RecycleClickListener listener;
         public TextView absPub;
         public ViewHolder(View itemView, RecycleClickListener cycleListener) {
@@ -74,6 +76,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             absImg = (ImageView)itemView.findViewById(R.id.abs_img);
             absDes = (TextView)itemView.findViewById(R.id.abs_des);
             absPub = (TextView)itemView.findViewById(R.id.abs_pub);
+            absPrice = (TextView)itemView.findViewById(R.id.abs_price);
             listener = cycleListener;
             itemView.setOnClickListener(this);
         }

@@ -52,7 +52,8 @@ public class PublishService extends IntentService {
                         imgStr,
                         User.id,
                         new Date(),
-                        Holder.publishDes
+                        Holder.publishDes,
+                        Integer.parseInt(Holder.price)
                 );
                 Holder.detailed.put(newlyAddedId, published);
                 ContentValues publishedCv = Post.getCv(published);

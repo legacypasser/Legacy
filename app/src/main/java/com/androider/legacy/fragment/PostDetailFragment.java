@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
+import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -90,6 +91,7 @@ public class PostDetailFragment extends Fragment {
         detailPub = (TextView)rootView.findViewById(R.id.detail_pub);
         detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
         detailNickCard = (CardView)rootView.findViewById(R.id.detail_nick_card);
+        StateController.change(Constants.detailState);
         setView();
         return rootView;
     }

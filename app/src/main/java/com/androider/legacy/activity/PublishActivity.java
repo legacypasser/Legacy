@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +25,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.GridAdapter;
+import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.fragment.ResultFragment;
@@ -57,9 +61,8 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
-    private ButtonFloat addImg;
+    private MaterialEditText price;
     private ButtonFloat publish;
-    private LinearLayout holder;
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
@@ -78,9 +81,9 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbHeight = DensityUtil.dip2px(this, 60);
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
-        addImg = (ButtonFloat)findViewById(R.id.start_cap);
+        price = (MaterialEditText)findViewById(R.id.price_to_publish);
         publish = (ButtonFloat)findViewById(R.id.publish);
-        holder = (LinearLayout)findViewById(R.id.img_holder);
+        LinearLayout holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
         thumbs = (GridView)findViewById(R.id.cap_holder);
         pusher = findViewById(R.id.pusher);
@@ -88,42 +91,87 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         capSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pusher.getVisibility() == View.VISIBLE){
+                if (pusher.getVisibility() == View.VISIBLE) {
+                    if(thumbAdpter.getCount() == 0){
+                        Toast.makeText(instance, "请先拍几张",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     pusher.setVisibility(View.GONE);
-                    addImg.setVisibility(View.GONE);
                     capSwitch.setText(getResources().getString(R.string.cap_start));
                     preview.camera.stopPreview();
-                }else{
+                    setToInput();
+                } else {
                     pusher.setVisibility(View.VISIBLE);
-                    addImg.setVisibility(View.VISIBLE);
                     capSwitch.setText(getResources().getString(R.string.cap_finish));
                     preview.camera.startPreview();
+                    setToCap();
                 }
             }
         });
         preview = new CapturePreview(this);
         holder.addView(preview);
         setToolBar();
-        addImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                preview.takePicture();
-            }
-        });
-        publish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myPublish();
-            }
-        });
+        setToCap();
         loadingView = new LegacyProgress(this);
         loadingView.setTitle(R.string.publishing);
 
     }
 
+    private void setToCap(){
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preview.takePicture();
+            }
+        });
+        des.setEnabled(false);
+        price.setEnabled(false);
+
+    }
+
+    private void setToInput(){
+        publish.hide();
+        publish.setOnClickListener(null);
+        des.setEnabled(true);
+        price.setEnabled(true);
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setToPub();
+            }
+        };
+        des.addTextChangedListener(watcher);
+        price.addTextChangedListener(watcher);
+    }
+
+    private void setToPub(){
+        if(des.getText().toString().equals("")){
+        }else if(price.getText().toString().equals("")){
+        }else{
+            publish.show();
+            publish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myPublish();
+                }
+            });
+        }
+    }
+
     private void myPublish(){
         loadingView.show();
         Holder.publishDes = des.getText().toString();
+        Holder.price = price.getText().toString();
         Intent intent = new Intent(this, PublishService.class);
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
@@ -131,9 +179,12 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
 
     public void publishFinished(){
         paths.clear();
-        thumbs.removeAllViews();
+        thumbAdpter.clearImg();
         des.setText("");
+        price.setText("");
         loadingView.hide();
+        capSwitch.setText("继续发布");
+        setToCap();
     }
 
     public NetHandler netHandler = new NetHandler(instance);

@@ -16,14 +16,29 @@
             android:topRightRadius="8dp"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"
-                android:id="@+id/abs_pub"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:padding="16dp"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"
+                    android:id="@+id/abs_pub"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"
+                    android:layout_gravity="right"
+                    android:id="@+id/abs_price"/>
+            </LinearLayout>
+
 
             <com.joooonho.SelectableRoundedImageView
                 android:layout_width="match_parent"

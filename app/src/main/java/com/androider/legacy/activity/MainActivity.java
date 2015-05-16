@@ -35,7 +35,6 @@ import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
-import com.androider.legacy.listener.ToolBarListener;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.Receiver;
 import com.androider.legacy.net.Sender;
@@ -64,9 +63,9 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     public static String filePath;
-    public MaterialMenuIconToolbar materialMenu;
-    public Toolbar overallToolBar;
-    public ButtonFloat overButton;
+    private MaterialMenuIconToolbar materialMenu;
+    private Toolbar overallToolBar;
+    private ButtonFloat overButton;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     public static SQLiteDatabase db;
@@ -79,7 +78,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
         setSupportActionBar(overallToolBar);
-        overallToolBar.setNavigationOnClickListener(new ToolBarListener());
+        overallToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backControl();
+            }
+        });
         materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
             @Override
             public int getToolbarViewId() {
@@ -90,9 +94,25 @@ public class MainActivity extends ActionBarActivity {
         db = new DatabaseHelper(this).getWritableDatabase();
         Nicker.initNick(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
+        StateController.change(Constants.mainState);
         User.drag();
         autoLogin();
         initView();
+    }
+
+    private void backControl(){
+        if(StateController.getCurrent() == Constants.detailState){
+            getSupportFragmentManager().popBackStack();
+            materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+            StateController.goBack();
+        }else{
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        backControl();
     }
 
     private void autoLogin(){
@@ -111,7 +131,14 @@ public class MainActivity extends ActionBarActivity {
                 .build();
         ImageLoader.getInstance().init(config);
         overButton = (ButtonFloat)findViewById(R.id.all_over_button);
-        StateController.setToPublish();
+        overButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.instance, PublishActivity.class);
+                MainActivity.instance.startActivity(intent);
+            }
+        });
+
         fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
@@ -122,7 +149,30 @@ public class MainActivity extends ActionBarActivity {
         LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
-        viewPager.setCurrentItem(0);
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (overButton.getVisibility() == View.INVISIBLE)
+                    overButton.setVisibility(View.VISIBLE);
+                if (position == 1){
+                    if(!overButton.isShow)
+                        overButton.show();
+                }
+                else
+                    overButton.hide();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        overButton.setVisibility(View.INVISIBLE);
     }
 
     public void switchFragment(String fragmentName){
@@ -135,6 +185,7 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
+        materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_container, fragment, fragmentName);
         ft.addToBackStack(null);
