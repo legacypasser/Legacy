@@ -41,12 +41,17 @@
         android:id="@+id/login_password"/>
     </LinearLayout>
 
-    <com.gc.materialdesign.views.ButtonFloat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:iconDrawable="@drawable/ic_add_white_24dp"
-        android:id="@+id/just_login"
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_add_white_24dp"
+        android:scaleType="fitCenter"
+        android:padding="15dp"
+        android:background="@drawable/round_button"
         android:layout_marginTop="16dp"
-        android:layout_gravity="end"/>
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="end"
+        android:id="@+id/just_login"/>
 
 </LinearLayout>

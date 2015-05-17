@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.androider.legacy.R;
 import com.androider.legacy.controller.StateController;
@@ -37,7 +38,7 @@ public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ButtonFloat loginButton;
+    ImageButton loginButton;
     MaterialEditText username;
     MaterialEditText password;
 
@@ -79,7 +80,7 @@ public class LoginFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         username = (MaterialEditText)rootView.findViewById(R.id.login_username);
         password = (MaterialEditText)rootView.findViewById(R.id.login_password);
-        loginButton = (ButtonFloat)rootView.findViewById(R.id.just_login);
+        loginButton = (ImageButton)rootView.findViewById(R.id.just_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

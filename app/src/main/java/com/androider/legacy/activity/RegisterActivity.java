@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.androider.legacy.R;
@@ -21,7 +22,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class RegisterActivity extends SimpleActivity {
 
-    ButtonFloat button;
+    ImageButton button;
     MaterialEditText email;
     MaterialEditText password;
     MaterialEditText nickname;
@@ -33,7 +34,7 @@ public class RegisterActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setToolBar();
-        button = (ButtonFloat)findViewById(R.id.register);
+        button = (ImageButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
         nickname = (MaterialEditText)findViewById(R.id.nickname);
@@ -64,11 +65,9 @@ public class RegisterActivity extends SimpleActivity {
                         &&!nickname.getText().toString().equals("")
                         &&!school.getText().toString().equals("")
                         &&!major.getText().toString().equals("")){
-                    if(!button.isShow)
-                        button.show();
+                    button.setVisibility(View.VISIBLE);
                 }else{
-                    if(button.isShow)
-                        button.hide();
+                    button.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -80,6 +79,7 @@ public class RegisterActivity extends SimpleActivity {
         school.addTextChangedListener(validator);
         major.addTextChangedListener(validator);
         nickname.setText(Nicker.getAdj() + Nicker.getNoun());
+        button.setVisibility(View.INVISIBLE);
     }
 
     public void sendRegistration(){

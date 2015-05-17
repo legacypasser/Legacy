@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
     public static String filePath;
     private MaterialMenuIconToolbar materialMenu;
     private Toolbar overallToolBar;
-    private ButtonFloat overButton;
+    private ImageButton overButton;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     public static SQLiteDatabase db;
@@ -130,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-        overButton = (ButtonFloat)findViewById(R.id.all_over_button);
+        overButton = (ImageButton)findViewById(R.id.all_over_button);
         overButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,14 +157,11 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (overButton.getVisibility() == View.INVISIBLE)
-                    overButton.setVisibility(View.VISIBLE);
                 if (position == 1){
-                    if(!overButton.isShow)
-                        overButton.show();
+                    overButton.setVisibility(View.VISIBLE);
                 }
                 else
-                    overButton.hide();
+                    overButton.setVisibility(View.INVISIBLE);
             }
 
             @Override

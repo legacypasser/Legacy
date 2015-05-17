@@ -16,9 +16,8 @@
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/messageEditText"
-            app:met_primaryColor="#212121"
-            android:textColor="#212121"
-            app:met_baseColor="#eeeeee"
+            app:met_primaryColor="#3f51b5"
+            app:met_baseColor="#212121"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>

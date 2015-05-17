@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -62,7 +63,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbWidth;
     private MaterialEditText des;
     private MaterialEditText price;
-    private ButtonFloat publish;
+    private ImageButton publish;
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
@@ -82,7 +83,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
         price = (MaterialEditText)findViewById(R.id.price_to_publish);
-        publish = (ButtonFloat)findViewById(R.id.publish);
+        publish = (ImageButton)findViewById(R.id.publish);
         LinearLayout holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
         thumbs = (GridView)findViewById(R.id.cap_holder);
@@ -130,7 +131,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     }
 
     private void setToInput(){
-        publish.hide();
+        publish.setVisibility(View.INVISIBLE);
         publish.setOnClickListener(null);
         des.setEnabled(true);
         price.setEnabled(true);
@@ -158,7 +159,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         if(des.getText().toString().equals("")){
         }else if(price.getText().toString().equals("")){
         }else{
-            publish.show();
+            publish.setVisibility(View.VISIBLE);
             publish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
