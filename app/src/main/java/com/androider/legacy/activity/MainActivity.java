@@ -238,22 +238,26 @@ public class MainActivity extends ActionBarActivity {
                     RecommendFragment.instance.refreshList();
                 break;
                 case Constants.detailRequest:
-                    Log.v("panbo", "request reach");
                     PostDetailFragment.instance.setView();
                     break;
                 case Constants.registrationSent:
                     MainActivity.instance.autoLogin();
                     break;
                 case Constants.loginAttempt:
-                    if(User.alreadLogin)
+                    if(User.alreadLogin){
                         Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
-                    Thread backSender = new Thread(Sender.getInstance());
-                    Thread backReceiver = new Thread(Receiver.getInstance());
-                    backReceiver.start();
-                    backSender.start();
+                        Thread backSender = new Thread(Sender.getInstance());
+                        Thread backReceiver = new Thread(Receiver.getInstance());
+                        backReceiver.start();
+                        backSender.start();
+                        SessionListFragment.instance.startPull();
+                    }
                     break;
                 case Constants.pullMsg:
-                        SessionListFragment.instance.refreshSessions();
+                    SessionListFragment.instance.refreshSessions();
+                    break;
+                case Constants.myPublish:
+                    MyPostListFragment.instance.addItem();
                     break;
             }
         }

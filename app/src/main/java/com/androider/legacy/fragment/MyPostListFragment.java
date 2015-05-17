@@ -13,14 +13,16 @@ import android.view.ViewGroup;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
-import com.androider.legacy.adapter.MyPostAdapter;
 import com.androider.legacy.adapter.RecyclerListAdapter;
+import com.androider.legacy.adapter.SimpleAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,26 +56,26 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         commonSet(rootView);
-        adapter.setOnClickListener(this);
-        selfList.setAdapter(adapter);
-        Holder.myPost = Post.listFromBase(User.id);
-        swipeHolder.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Holder.myPost = Post.listFromBase(User.id);
-                refreshList();
-            }
-        });
-        refreshList();
+        swipeHolder.setEnabled(false);
+        ArrayList<Post> myList = Post.listFromBase(User.id);
+        if(myList.size() != 0){
+            adapter.setOnClickListener(this);
+            selfList.setAdapter(adapter);
+            for(Post item :myList)
+                adapter.addData(item);
+        }else {
+            selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.please_pub)));
+        }
         return rootView;
     }
 
-    public void refreshList(){
-
-        for(Post item : Holder.myPost){
-            Log.v("panbo", item.img);
-            adapter.addData(item);
+    public void addItem(){
+        if(!(selfList.getAdapter() instanceof RecyclerListAdapter)){
+            adapter.setOnClickListener(this);
+            selfList.setAdapter(adapter);
         }
+        adapter.addData(Holder.justPub);
+        Holder.justPub = null;
     }
 
     @Override

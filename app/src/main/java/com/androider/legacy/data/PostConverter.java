@@ -31,7 +31,8 @@ public class PostConverter {
                 Date publish = formater.parse(jsonPost.getString("publish"));
                 String abs = jsonPost.getString("abs");
                 int price = jsonPost.getInt("price");
-                Post added = new Post(id, img, publish, abs, price);
+                int seller = jsonPost.getInt("seller");
+                Post added = new Post(id, img, publish, abs, price, seller);
                 result.add(added);
             }
         } catch (JSONException e) {

@@ -13,7 +13,9 @@ import android.widget.FrameLayout;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
+import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.adapter.SessionListAdapter;
+import com.androider.legacy.adapter.SimpleAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -37,7 +39,7 @@ import java.util.Map;
  */
 public class SessionListFragment extends BaseListFragment implements SessionListAdapter.OnItemClickListner{
 
-    private SessionListAdapter adapter = new SessionListAdapter();
+    public SessionListAdapter adapter = new SessionListAdapter();
     public static SessionListFragment instance;
     public static SessionListFragment newInstance(String param1, String param2) {
         SessionListFragment fragment = new SessionListFragment();
@@ -56,20 +58,19 @@ public class SessionListFragment extends BaseListFragment implements SessionList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         commonSet(rootView);
-        adapter.setOnclickListener(this);
-        selfList.setAdapter(adapter);
-        swipeHolder.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                startPull();
-            }
-        });
+        swipeHolder.setEnabled(false);
         Session.drag();
         listSessions();
         return rootView;
     }
 
     public void listSessions(){
+        if(Holder.talks.size() == 0){
+            selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_session)));
+            return;
+        }
+        adapter.setOnclickListener(this);
+        selfList.setAdapter(adapter);
         Iterator it  = Holder.talks.entrySet().iterator();
         while(it.hasNext()){
             HashMap.Entry entry = (HashMap.Entry)it.next();
@@ -85,12 +86,15 @@ public class SessionListFragment extends BaseListFragment implements SessionList
     }
 
     public void refreshSessions(){
+        if(!(selfList.getAdapter() instanceof SessionListAdapter)){
+            adapter.setOnclickListener(this);
+            selfList.setAdapter(adapter);
+        }
         Iterator it  = Holder.talks.entrySet().iterator();
         while(it.hasNext()){
             HashMap.Entry entry = (HashMap.Entry)it.next();
             refreshSessions((Session)entry.getValue());
         }
-        swipeHolder.setRefreshing(false);
     }
 
     public void startPull(){

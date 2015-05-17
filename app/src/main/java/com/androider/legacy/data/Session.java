@@ -6,6 +6,7 @@ import android.hardware.usb.UsbRequest;
 import android.widget.ArrayAdapter;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.net.LegacyClient;
 
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class Session {
             cursor.moveToNext();
         }
         cursor.close();
+        draged = true;
     }
 
     public ArrayList<Record> getRecords(){
@@ -48,7 +50,6 @@ public class Session {
             return records;
         else {
             dragRecords();
-            draged = true;
             return records;
         }
     }
@@ -57,14 +58,18 @@ public class Session {
         Session result = Holder.talks.get(id);
         if(result == null){
             result = new Session(id, User.getPeerNick(id));
+            result.draged = true;
             Holder.talks.put(id, result);
             result.store();
+            SessionListFragment.instance.adapter.addData(result);
         }
         return result;
     }
 
     public static void drag(){
-        Cursor cursor = MainActivity.db.rawQuery("select * from session;", null);
+        if(User.id == -1)
+            return;
+        Cursor cursor = MainActivity.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.id});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Session item = getCursored(cursor);

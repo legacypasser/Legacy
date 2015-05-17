@@ -38,8 +38,6 @@ public class PostDetailFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public static int currentId;
     TextView detailDes;
@@ -47,6 +45,8 @@ public class PostDetailFragment extends Fragment {
     CardView detailNickCard;
     TextView detailPub;
     LinearLayout detailHolder;
+    TextView detailPrice;
+    ImageView icon;
     public static PostDetailFragment instance;
 
     /**
@@ -74,10 +74,6 @@ public class PostDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         instance = this;
     }
 
@@ -91,6 +87,8 @@ public class PostDetailFragment extends Fragment {
         detailPub = (TextView)rootView.findViewById(R.id.detail_pub);
         detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
         detailNickCard = (CardView)rootView.findViewById(R.id.detail_nick_card);
+        detailPrice = (TextView)rootView.findViewById(R.id.detail_price);
+        icon = (ImageView)rootView.findViewById(R.id.msg_icon);
         StateController.change(Constants.detailState);
         setView();
         return rootView;
@@ -113,17 +111,23 @@ public class PostDetailFragment extends Fragment {
             detailHolder.addView(img);
         }
 
-        detailNickname.setText(Holder.peers.get(current.seller));
         detailDes.setText(current.des);
+        detailPrice.setText("价格：" + current.price + "元");
         detailPub.setText(PostConverter.formater.format(current.publish));
-        detailNickCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("talker", Post.get(currentId).seller);
-                getActivity().startActivity(intent);
-            }
-        });
+        if(current.seller != User.id){
+            detailNickCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("talker", Post.get(currentId).seller);
+                    getActivity().startActivity(intent);
+                }
+            });
+            detailNickname.setText(Holder.peers.get(current.seller));
+        }else {
+            icon.setImageResource(R.drawable.ic_person_black_48dp);
+            detailNickname.setText("我的宝贝");
+        }
     }
 
     @Override

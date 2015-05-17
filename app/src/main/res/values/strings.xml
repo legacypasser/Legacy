@@ -10,11 +10,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- CardView -->
-    <string name="card_user_name_default">这个是用户的名字</string>
-    <string name="card_user_image_description">这个是用户头像</string>
-    <string name="card_post_time_default">4月5日 18:04</string>
-
     <string name="recommend_finish_broadcast">com.android.legacy.action.RECOMMEND_REFRESH</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_search">SearchActivity</string>
@@ -35,4 +30,10 @@
 
     <string name="price_flow">价格</string>
     <string name="price">虽然伤感情但必须的价格</string>
+
+    <string name="please_pub">还没有发布你的资产哦，请登陆或点击下方发布按钮</string>
+    <string name="empty_search">没有找到你想要的，换个词搜一下吧</string>
+    <string name="empty_session">还没有消息哦，夺去跟同学们交流吧</string>
+
+    <string name="search">搜索</string>
 </resources>

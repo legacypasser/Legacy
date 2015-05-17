@@ -60,10 +60,8 @@ public class NetService extends IntentService {
                 JSONObject jsonPost = new JSONObject(str);
                 Post certain = Holder.detailed.get(id);
                 certain.des = jsonPost.getString("des");
-                certain.seller = jsonPost.getInt("seller");
                 ContentValues cv = new ContentValues();
                 cv.put("des", certain.des);
-                cv.put("seller", certain.seller);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
                 User.getPeerNick(certain.seller);
                 break;

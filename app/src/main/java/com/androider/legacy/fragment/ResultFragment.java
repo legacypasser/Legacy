@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.adapter.RecyclerListAdapter;
+import com.androider.legacy.adapter.SimpleAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -22,7 +23,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ResultFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
-    private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static ResultFragment instance;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,9 +31,8 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter.setOnClickListener(this);
-        selfList.setAdapter(adapter);
         swipeHolder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
+        swipeHolder.setEnabled(false);
         return rootView;
     }
 
@@ -51,11 +50,17 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
     }
 
     public void refreshList(){
-        for(Post item : Holder.resultedPost){
-            adapter.addData(item);
+        if(Holder.resultedPost.size() != 0){
+            RecyclerListAdapter adapter = new RecyclerListAdapter();
+            adapter.setOnClickListener(this);
+            for(Post item : Holder.resultedPost){
+                adapter.addData(item);
+            }
+            selfList.setAdapter(adapter);
+        }else {
+            selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_search)));
         }
     }
-
     @Override
     public void onItemClick(int id) {
         PostDetailFragment.currentId = id;

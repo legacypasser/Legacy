@@ -7,10 +7,7 @@
     tools:context="com.androider.legacy.activity.SearchActivity">
 
     <include layout="@layout/common_toolbar"/>
-
         <LinearLayout
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:background="@color/text_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,12 +20,16 @@
                 app:met_baseColor="@color/primary_text"
                 app:met_primaryColor="@color/primary_color"
                 android:textSize="16sp"
+                app:met_iconLeft="@drawable/ic_search_white_36dp"
+                app:met_iconPadding="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/search_input"/>
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_search_black_36dp"
+            <com.gc.materialdesign.views.ButtonFlat
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@string/search"
+                android:background="@color/primary_color"
                 android:id="@+id/search_confirm"/>
         </LinearLayout>
 

@@ -37,7 +37,7 @@ public class Post{
 
     public static final String tableName = "post";
 
-    public Post(int id, String img, Date publish, String abs, int price) {
+    public Post(int id, String img, Date publish, String abs, int price, int seller) {
         this.id = id;
         this.des = "";
         this.img = img;
@@ -45,6 +45,7 @@ public class Post{
         this.publish = publish;
         this.abs = abs;
         this.price = price;
+        this.seller = seller;
     }
 
     public Post(int id,String des, String img, int seller, Date publish, String abs, int price) {
@@ -110,6 +111,7 @@ public class Post{
     public static void store(ArrayList<Post> added){
         for(Post item : added){
             Cursor cursor = MainActivity.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
+            cursor.moveToFirst();
             if(cursor.isAfterLast())
                 MainActivity.db.insert(tableName, null, getCv(item));
             cursor.close();

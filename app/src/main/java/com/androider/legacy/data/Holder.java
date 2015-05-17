@@ -11,15 +11,13 @@ import java.util.Observable;
  * Created by Think on 2015/4/19.
  */
 public class Holder{
-    public static ArrayList<Post> myPost = new ArrayList<Post>();
     public static ArrayList<Post> recommendPost = new ArrayList<Post>();
     public static HashMap<Integer, Post> detailed = new HashMap<Integer, Post>();
     public static ArrayList<Post> resultedPost = new ArrayList<Post>();
-
     public static HashMap<Integer, Session> talks = new HashMap<>();
-
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
 
+    public static Post justPub;
     public static String publishDes;
     public static String price;
 

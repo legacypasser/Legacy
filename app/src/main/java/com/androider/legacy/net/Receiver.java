@@ -28,9 +28,16 @@ public class Receiver implements Runnable{
                 recvBuf.clear();
                 common.channel.receive(recvBuf);
                 recvBuf.flip();
-                Log.v("panbo", "" +recvBuf.get(4));
+                int type = -1;
+                try {
+                    type = recvBuf.get(4) - '0';
+                }catch (IndexOutOfBoundsException e){
+                    continue;
+                }
+                if(type < 0)
+                    continue;
                 Intent intent = new Intent(MainActivity.instance, ChatService.class);
-                intent.putExtra(Constants.intentType, recvBuf.get(4) - '0');
+                intent.putExtra(Constants.intentType, type);
                 intent.putExtra(NetConstants.content, decoder.decode(recvBuf).toString());
                 MainActivity.instance.startService(intent);
             } catch (IOException e) {

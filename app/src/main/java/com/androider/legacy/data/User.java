@@ -92,7 +92,9 @@ public class User {
             JSONObject peerInfo = null;
             try {
                 peerInfo = new JSONObject(LegacyClient.getInstance().info(id));
-                User.storePeer(peerInfo.getInt("id"), peerInfo.getString("nickname"));
+                nickname = peerInfo.getString("nickname");
+                Holder.peers.put(id, nickname);
+                User.storePeer(peerInfo.getInt("id"), nickname);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

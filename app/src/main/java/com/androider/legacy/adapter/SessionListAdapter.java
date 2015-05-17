@@ -38,7 +38,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     @Override
     public void onBindViewHolder(RecycleHolder holder, int position) {
         holder.nickname.setText(data.get(position).nickname);
-        holder.portrait.setImageResource(R.drawable.ic_person_grey600_48dp);
+        holder.portrait.setImageResource(R.drawable.ic_person_black_48dp);
     }
 
     public void addData(Session one){

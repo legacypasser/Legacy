@@ -55,6 +55,7 @@ public class PublishService extends IntentService {
                         Holder.publishDes,
                         Integer.parseInt(Holder.price)
                 );
+                Holder.justPub = published;
                 Holder.detailed.put(newlyAddedId, published);
                 ContentValues publishedCv = Post.getCv(published);
                 MainActivity.db.insert(Post.tableName, null, publishedCv);
@@ -62,6 +63,10 @@ public class PublishService extends IntentService {
                 break;
         }
         try {
+            messenger.send(msg);
+            messenger = new Messenger(MainActivity.instance.netHandler);
+            msg = Message.obtain();
+            msg.what = Constants.myPublish;
             messenger.send(msg);
         } catch (RemoteException e) {
             e.printStackTrace();

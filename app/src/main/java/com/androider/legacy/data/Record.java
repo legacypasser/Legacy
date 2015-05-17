@@ -113,12 +113,7 @@ public class Record {
 
     public Session getSession(){
         int newPeer = (receiver == User.id)? sender: receiver;
-        Session owner = Holder.talks.get(newPeer);
-        if(owner == null){
-            owner = new Session(newPeer, User.getPeerNick(newPeer));
-            Holder.talks.put(newPeer, owner);
-            owner.store();
-        }
+        Session owner = Session.get(newPeer);
         return owner;
     }
 
