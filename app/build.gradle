@@ -1,9 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        test {
+            keyAlias 'panboxiaosa'
+            keyPassword 'panboxiaosa'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.androider.legacy"
         minSdkVersion 9

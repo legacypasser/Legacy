@@ -1,19 +1,14 @@
 <resources>
-    <string name="app_name">Legacy</string>
+    <string name="app_name">旧书</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_publish">PublishActivity</string>
-    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_publish">发布</string>
+    <string name="title_activity_chat">聊天</string>
     <string name="title_activity_setting">SettingActivity</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="recommend_finish_broadcast">com.android.legacy.action.RECOMMEND_REFRESH</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_simple">SimpleActivity</string>
+    <string name="title_activity_register">注册</string>
+    <string name="title_activity_search">搜索</string>
     <string name="cap_finish">拍照完成</string>
     <string name="cap_start">再拍几张</string>
 
@@ -33,7 +28,7 @@
 
     <string name="please_pub">还没有发布你的资产哦，请登陆或点击下方发布按钮</string>
     <string name="empty_search">没有找到你想要的，换个词搜一下吧</string>
-    <string name="empty_session">还没有消息哦，夺去跟同学们交流吧</string>
+    <string name="empty_session">还没有消息哦，多去跟同学们交流吧</string>
 
     <string name="search">搜索</string>
 </resources>

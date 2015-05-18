@@ -46,15 +46,6 @@
             android:exported="false" >
         </service>
 
-        <receiver
-            android:name=".broadcast.NetReceiver"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="@string/recommend_finish_broadcast" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" >
@@ -68,11 +59,6 @@
             android:name=".service.SearchService"
             android:exported="false" >
         </service>
-
-        <activity
-            android:name=".activity.SimpleActivity"
-            android:label="@string/title_activity_simple" >
-        </activity>
 
         <service
             android:name=".service.PublishService"
