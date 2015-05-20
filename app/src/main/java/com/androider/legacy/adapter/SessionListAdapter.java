@@ -28,7 +28,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
     private OnItemClickListner listner;
     public interface OnItemClickListner{
-        public void onItemClick(int id);
+        void onItemClick(int id);
     }
 
     public void setOnclickListener(OnItemClickListner listener){
@@ -51,6 +51,14 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         }
         data.add(pos, one);
         notifyItemInserted(pos);
+    }
+
+    public void clearData(){
+        int iniSize = data.size();
+        if(iniSize != 0){
+            data.clear();
+            notifyItemRangeRemoved(0, iniSize);
+        }
     }
 
     public void updateData(Session one){

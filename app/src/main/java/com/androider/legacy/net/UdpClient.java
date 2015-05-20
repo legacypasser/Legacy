@@ -10,19 +10,10 @@ import java.util.PriorityQueue;
  * Created by Think on 2015/5/9.
  */
 public class UdpClient {
-    Selector selector;
     DatagramChannel channel;
-    InetSocketAddress targetServer;
+    InetSocketAddress targetServer = new InetSocketAddress(NetConstants.serverAddr, NetConstants.serverPort);;
+    public boolean isRunning;
     private UdpClient(){
-        try {
-            channel = DatagramChannel.open();
-            channel.socket().bind(new InetSocketAddress(NetConstants.listenPort));
-            selector = Selector.open();
-            channel.configureBlocking(true);
-            targetServer = new InetSocketAddress(NetConstants.serverAddr, NetConstants.serverPort);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private static class SingletonHolder{
@@ -30,5 +21,24 @@ public class UdpClient {
     }
     public static UdpClient getInstance(){
         return SingletonHolder.instance;
+    }
+
+    public void open(){
+        try {
+            channel = DatagramChannel.open();
+            channel.socket().bind(new InetSocketAddress(NetConstants.listenPort));
+            channel.configureBlocking(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
+        channel.socket().close();
+        try {
+            channel.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

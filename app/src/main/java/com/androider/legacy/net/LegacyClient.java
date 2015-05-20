@@ -105,7 +105,7 @@ public class LegacyClient{
         return get(reqUrl);
     }
 
-    public boolean login(){
+    public String login(){
         JSONObject reqData = new JSONObject();
         try {
             reqData.put("email", User.email);
@@ -113,16 +113,7 @@ public class LegacyClient{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String result = post(Constants.requestPath + Constants.login, reqData.toString());
-        if(result == null ||result.equals("email_fail") || result.equals("password_fail"))
-            return false;
-        try {
-
-            User.resetUser(new JSONObject(result));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return true;
+        return post(Constants.requestPath + Constants.login, reqData.toString());
     }
 
     public String register(){
@@ -133,6 +124,8 @@ public class LegacyClient{
             reqData.put("nickname", User.nickname);
             reqData.put("school", User.school);
             reqData.put("major", User.major);
+            reqData.put("lati", User.lati);
+            reqData.put("longi", User.longi);
         } catch (JSONException e) {
             e.printStackTrace();
         }

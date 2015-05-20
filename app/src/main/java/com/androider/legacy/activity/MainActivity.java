@@ -2,32 +2,32 @@ package com.androider.legacy.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StrictMode;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.FragmentViewPagerAdapter;
-import com.androider.legacy.common.database.DatabaseHelper;
+import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Session;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
-import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.LoginFragment;
@@ -35,25 +35,20 @@ import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
-import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.Receiver;
 import com.androider.legacy.net.Sender;
+import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.NetService;
-import com.androider.legacy.util.DensityUtil;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.viewpagerindicator.LinePageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.UnderlinePageIndicator;
 
-import org.apache.http.cookie.params.CookieSpecPNames;
+import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -65,11 +60,13 @@ public class MainActivity extends ActionBarActivity {
     public static String filePath;
     private MaterialMenuIconToolbar materialMenu;
     private Toolbar overallToolBar;
-    private ImageButton overButton;
+    private AddFloatingActionButton overButton;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     public static SQLiteDatabase db;
     public static MainActivity instance;
+    Thread sendThread;
+    Thread receiveThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-        overButton = (ImageButton)findViewById(R.id.all_over_button);
+        overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
         overButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,13 +238,26 @@ public class MainActivity extends ActionBarActivity {
                     MainActivity.instance.autoLogin();
                     break;
                 case Constants.loginAttempt:
-                    if(User.alreadLogin){
-                        Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
-                        Thread backSender = new Thread(Sender.getInstance());
-                        Thread backReceiver = new Thread(Receiver.getInstance());
-                        backReceiver.start();
-                        backSender.start();
-                        SessionListFragment.instance.startPull();
+                    switch (msg.arg1){
+                        case Constants.email_fail:
+                            break;
+                        case Constants.password_fail:
+                            break;
+                        case Constants.unknow_login_fail:
+                            break;
+                        case Constants.userReseted:
+                            Session.clearSession();
+                            SessionListFragment.instance.useNewAdapter();
+                        case Constants.userNotReseted:
+                            Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
+                            UdpClient.getInstance().isRunning = true;
+                            instance.chatOn();
+                            SessionListFragment.instance.startPull();
+                            if(StateController.getCurrent() == Constants.detailState){
+                                instance.backControl();
+                            }
+                            User.alreadLogin = true;
+                            break;
                     }
                     break;
                 case Constants.pullMsg:
@@ -256,6 +266,8 @@ public class MainActivity extends ActionBarActivity {
                 case Constants.myPublish:
                     MyPostListFragment.instance.addItem();
                     break;
+                case Constants.sessionAdded:
+                    SessionListFragment.instance.addSession(Holder.talks.get(msg.arg1));
             }
         }
     }
@@ -264,5 +276,28 @@ public class MainActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         db.close();
+        chatOff();
+    }
+
+    public void chatOn(){
+        UdpClient.getInstance().isRunning = true;
+        UdpClient.getInstance().open();
+            instance.receiveThread = new Thread(Receiver.getInstance());
+            instance.receiveThread.start();
+            instance.sendThread = new Thread(Sender.getInstance());
+            instance.sendThread.start();
+    }
+
+    public void chatOff(){
+        UdpClient.getInstance().isRunning = false;
+        UdpClient.getInstance().close();
+        if(receiveThread != null){
+            receiveThread.interrupt();
+            receiveThread = null;
+        }
+        if(sendThread != null){
+            sendThread.interrupt();
+            sendThread = null;
+        }
     }
 }

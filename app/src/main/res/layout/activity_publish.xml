@@ -79,18 +79,18 @@
                 fabs:met_maxCharacters="20"
                 android:id="@+id/price_to_publish"/>
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_add_white_24dp"
-                android:scaleType="fitCenter"
-                android:padding="15dp"
-                android:background="@drawable/round_button"
+            <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_gravity="end"
-                android:id="@+id/publish"/>
+                android:id="@+id/publish"
+                fabs:fab_colorNormal="@color/accent_color"
+                fabs:fab_colorPressed="@color/pressed"
+                fabs:fab_colorDisabled="@color/disabled"
+                android:layout_width="60dp"
+                android:layout_height="60dp"/>
+
         </LinearLayout>
     </LinearLayout>
 

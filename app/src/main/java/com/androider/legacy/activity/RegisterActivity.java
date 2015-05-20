@@ -1,6 +1,8 @@
 package com.androider.legacy.activity;
 
 import android.content.Intent;
+import android.hardware.usb.UsbRequest;
+import android.location.Location;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,12 +19,15 @@ import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.Locator;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
+
 public class RegisterActivity extends SimpleActivity {
 
-    ImageButton button;
+    AddFloatingActionButton button;
     MaterialEditText email;
     MaterialEditText password;
     MaterialEditText nickname;
@@ -34,7 +39,7 @@ public class RegisterActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setToolBar();
-        button = (ImageButton)findViewById(R.id.register);
+        button = (AddFloatingActionButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
         nickname = (MaterialEditText)findViewById(R.id.nickname);
@@ -65,9 +70,9 @@ public class RegisterActivity extends SimpleActivity {
                         &&!nickname.getText().toString().equals("")
                         &&!school.getText().toString().equals("")
                         &&!major.getText().toString().equals("")){
-                    button.setVisibility(View.VISIBLE);
+                    button.setEnabled(true);
                 }else{
-                    button.setVisibility(View.VISIBLE);
+                    button.setEnabled(false);
                 }
 
             }
@@ -79,7 +84,7 @@ public class RegisterActivity extends SimpleActivity {
         school.addTextChangedListener(validator);
         major.addTextChangedListener(validator);
         nickname.setText(Nicker.getAdj() + Nicker.getNoun());
-        button.setVisibility(View.INVISIBLE);
+        button.setEnabled(false);
     }
 
     public void sendRegistration(){
@@ -88,9 +93,18 @@ public class RegisterActivity extends SimpleActivity {
         User.nickname = nickname.getText().toString();
         User.school = school.getText().toString();
         User.major = major.getText().toString();
+        Location location = Locator.getLocation(this);
+        if(location == null){
+            User.lati = 0;
+            User.longi = 0;
+        }else {
+            User.lati = location.getLatitude();
+            User.longi = location.getLongitude();
+        }
         Intent intent = new Intent(this, NetService.class);
         intent.putExtra(Constants.intentType, Constants.registrationSent);
         startService(intent);
+        finish();
     }
 
 

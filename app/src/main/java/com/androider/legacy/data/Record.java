@@ -113,15 +113,13 @@ public class Record {
 
     public Session getSession(){
         int newPeer = (receiver == User.id)? sender: receiver;
-        Session owner = Session.get(newPeer);
-        return owner;
+        return Session.get(newPeer);
     }
 
     public void moreCome(){
         store();
         if(getSession().draged)
             getSession().append(this);
-
     }
 
     @Override

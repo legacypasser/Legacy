@@ -8,6 +8,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
@@ -71,14 +72,26 @@ public class NetService extends IntentService {
                 User.store();
                 break;
             case Constants.loginAttempt:
-                User.alreadLogin = LegacyClient.getInstance().login();
+                String loginResult =  LegacyClient.getInstance().login();
+                if(loginResult == null){
+                    msg.arg1 = Constants.unknow_login_fail;
+                }else if(loginResult.equals("email_fail")){
+                    msg.arg1 = Constants.email_fail;
+                }else if(loginResult.equals("password_fail")){
+                    msg.arg1 = Constants.password_fail;
+                }else {
+                    msg.arg1 = User.resetUser(new JSONObject(loginResult));
+                }
                 break;
             case Constants.pullMsg:
                 ArrayList<Record> records = Record.getOnline();
-                if(records != null)
+                if(records != null){
                     for (Record item : records)
                         item.moreCome();
-                break;
+                    break;
+                }else {
+                    return;
+                }
         }
             msg.what = type;
             messenger.send(msg);

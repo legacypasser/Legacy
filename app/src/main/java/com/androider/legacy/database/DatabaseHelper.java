@@ -1,4 +1,4 @@
-package com.androider.legacy.common.database;
+package com.androider.legacy.database;
 
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -31,8 +31,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE session ( peer INT primary key, nickname VARCHAR);");
         db.execSQL("CREATE TABLE record ( id INTEGER, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");
-        db.execSQL("CREATE TABLE user (id INT primary key, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR);");
-        db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar);");
+        db.execSQL("CREATE TABLE user (id INT primary key, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR, lati FLOAT, longi FLOAT);");
+        db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar, lati DOUBLE, longi DOUBLE , school VARCHAR, major VARCHAR);");
         db.execSQL("CREATE TABLE nick_adj(id INTEGER, adj VARCHAR);");
         db.execSQL("CREATE TABLE nick_noun(id INTEGER, noun VARCHAR)");
     }

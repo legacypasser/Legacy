@@ -9,13 +9,6 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-bb3467d0c4099b04b53d94f7860d3aef21d8a216.jar" />
     </item>
     <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\library-2.4.0-420c2159ba77a36df5d86321a17c14810d804c43.jar" />
-    </item>
-    <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -37,11 +30,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\okhttp-2.3.0-836099df4eff6db5569dc1c05dd095f31b423aa8.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\Legacy\androidChatWidget\unspecified\classes.jar"
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\net.i2p.android.ext\floatingactionbutton\1.9.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="aeb10d600b52e5a4bc43a042bfe897041761afe1">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-51684ef41d2c02ee5fa8d61d89e0de7cfa14e0d0.jar" />
+        sha1="7c5e4db194c6ec3e62b70759ef913381ea4903d1">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\debug\classes-b646825519a5ecee5c308b6831f3a0cb1f10fe54.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\Legacy\ViewPagerIndicator\unspecified\classes.jar"
@@ -51,11 +44,11 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-6d13393b9dbfa79099d8b74e949c959cc7b22206.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\libs\universal-image-loader-1.9.3.jar"
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\Legacy\androidChatWidget\unspecified\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\universal-image-loader-1.9.3-56ac4304eb8c0ff4c74082c1eed7b302e38fd391.jar" />
+        sha1="aeb10d600b52e5a4bc43a042bfe897041761afe1">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-51684ef41d2c02ee5fa8d61d89e0de7cfa14e0d0.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\classes.jar"
@@ -63,6 +56,13 @@
         revision="21.1.2"
         sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-bed3bf4c528f1f689f8271a6f0dc9ce31cbce01a.jar" />
+    </item>
+    <item
+        jar="D:\github\Legacy\app\libs\universal-image-loader-1.9.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\universal-image-loader-1.9.3-56ac4304eb8c0ff4c74082c1eed7b302e38fd391.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\classes.jar"
@@ -86,6 +86,13 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\okio-1.3.0-d0b4d0054c655d5bec12f640d436d17c505998b8.jar" />
     </item>
     <item
+        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\library-2.4.0-420c2159ba77a36df5d86321a17c14810d804c43.jar" />
+    </item>
+    <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.joooonho\selectableroundedimageview\1.0.1\classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -93,18 +100,18 @@
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-ba168a7a7a7567fe6e7ffe541518a52608dd629c.jar" />
     </item>
     <item
-        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.1.1\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e0b0c35d02308b270015a74cada4887e2e49b889">
-        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-7165a77a83711015dbe01140e297d645b57d55e1.jar" />
-    </item>
-    <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.github.navasmdc\MaterialDesign\1.4\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="87405405e403de68f4057757b8a2e8de02bd65d0">
         <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-726049a01fa9702413e75e8f797e996178e051eb.jar" />
+    </item>
+    <item
+        jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.1.1\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e0b0c35d02308b270015a74cada4887e2e49b889">
+        <dex dex="D:\github\Legacy\app\build\intermediates\pre-dexed\release\classes-7165a77a83711015dbe01140e297d645b57d55e1.jar" />
     </item>
     <item
         jar="D:\github\Legacy\app\build\intermediates\exploded-aar\com.balysv.materialmenu\material-menu\1.5.1\classes.jar"

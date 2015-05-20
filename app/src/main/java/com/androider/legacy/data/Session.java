@@ -3,11 +3,14 @@ package com.androider.legacy.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.hardware.usb.UsbRequest;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.widget.ArrayAdapter;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.net.LegacyClient;
+import com.jialin.chat.Message;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,9 +64,23 @@ public class Session {
             result.draged = true;
             Holder.talks.put(id, result);
             result.store();
-            SessionListFragment.instance.adapter.addData(result);
+            Messenger messenger = new Messenger(MainActivity.instance.netHandler);
+            android.os.Message msg = android.os.Message.obtain();
+            msg.what = Constants.sessionAdded;
+            msg.arg1 = id;
+            try {
+                messenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
         return result;
+    }
+
+    public static void clearSession(){
+        MainActivity.db.execSQL("delete from session;");
+        MainActivity.db.execSQL("delete from record;");
+        Holder.talks.clear();
     }
 
     public static void drag(){

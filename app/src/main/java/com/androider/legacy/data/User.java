@@ -20,12 +20,14 @@ public class User {
     public static String school;
     public static String major;
     public static String password;
+    public static double lati;
+    public static double longi;
 
     public static boolean alreadLogin;
 
     public static String tableName = "user";
     public static void store(){
-        MainActivity.db.delete(tableName, null , null);
+        MainActivity.db.delete(tableName, null, null);
         ContentValues cv = new ContentValues();
         cv.put("email", email);
         cv.put("nickname", nickname);
@@ -33,21 +35,26 @@ public class User {
         cv.put("school", school);
         cv.put("id", id);
         cv.put("major", major);
+        cv.put("lati", lati);
+        cv.put("longi", longi);
         MainActivity.db.insert(tableName, null, cv);
     }
 
-    public static void resetUser(JSONObject returned){
+    public static int resetUser(JSONObject returned){
         try {
             if(returned.getInt("id") == User.id)
-                return;
+                return Constants.userNotReseted;
             User.id = returned.getInt("id");
             User.nickname = returned.getString("nickname");
             User.major = returned.getString("major");
             User.school = returned.getString("school");
+            User.lati = returned.getDouble("lati");
+            User.longi = returned.getDouble("longi");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         store();
+        return Constants.userReseted;
     }
 
     public static void drag(){
@@ -62,6 +69,8 @@ public class User {
             school = cursor.getString(cursor.getColumnIndex("school"));
             major = cursor.getString(cursor.getColumnIndex("major"));
             nickname = cursor.getString(cursor.getColumnIndex("nickname"));
+            longi = cursor.getFloat(cursor.getColumnIndex("longi"));
+            lati = cursor.getFloat(cursor.getColumnIndex("lati"));
             cursor.close();
             Holder.peers.put(id, nickname);
         }
@@ -77,11 +86,15 @@ public class User {
         cursor.close();
     }
 
-    public static void storePeer(int id, String nickname){
+    public static void storePeer(int id, String nickname, double lati, double longi, String school, String major){
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put("id", id);
         cv.put("nickname", nickname);
+        cv.put("lati", lati);
+        cv.put("longi", longi);
+        cv.put("school", school);
+        cv.put("major", major);
         MainActivity.db.insert("peer", null, cv);
         Holder.peers.put(id, nickname);
     }
@@ -89,16 +102,22 @@ public class User {
     public static String getPeerNick(int id){
         String nickname = Holder.peers.get(id);
         if(nickname == null){
-            JSONObject peerInfo = null;
+            JSONObject peerInfo;
             try {
                 peerInfo = new JSONObject(LegacyClient.getInstance().info(id));
                 nickname = peerInfo.getString("nickname");
                 Holder.peers.put(id, nickname);
-                User.storePeer(peerInfo.getInt("id"), nickname);
+                double lati = peerInfo.getDouble("lati");
+                double longi = peerInfo.getDouble("longi");
+                String school = peerInfo.getString("school");
+                String major = peerInfo.getString("major");
+                User.storePeer(peerInfo.getInt("id"), nickname, lati, longi, school, major);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return nickname;
     }
+
+
 }

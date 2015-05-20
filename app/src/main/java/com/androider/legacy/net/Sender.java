@@ -19,9 +19,10 @@ public class Sender implements Runnable{
 
     @Override
     public void run() {
-        while (true){
+        while (common.isRunning){
             try {
-                sendToServer(""+User.id, NetConstants.heartHead);
+                Log.v("panbo", "heard on");
+                sendToServer("" + User.id, NetConstants.heartHead);
                 Thread.currentThread();
                 Thread.sleep(NetConstants.heartSpace);
             } catch (InterruptedException e) {
@@ -61,7 +62,6 @@ public class Sender implements Runnable{
 
     public void sendToServer(String information, int type){
         String resultStr = NetConstants.prefix + type + NetConstants.regex + information;
-        Log.v("panbo", resultStr);
         send(common.targetServer, resultStr);
     }
 

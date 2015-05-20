@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class SessionListFragment extends BaseListFragment implements SessionListAdapter.OnItemClickListner{
 
-    public SessionListAdapter adapter = new SessionListAdapter();
+    public SessionListAdapter adapter;
     public static SessionListFragment instance;
     public static SessionListFragment newInstance(String param1, String param2) {
         SessionListFragment fragment = new SessionListFragment();
@@ -58,6 +58,7 @@ public class SessionListFragment extends BaseListFragment implements SessionList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         commonSet(rootView);
+        adapter = new SessionListAdapter();
         swipeHolder.setEnabled(false);
         Session.drag();
         listSessions();
@@ -69,8 +70,7 @@ public class SessionListFragment extends BaseListFragment implements SessionList
             selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_session)));
             return;
         }
-        adapter.setOnclickListener(this);
-        selfList.setAdapter(adapter);
+        useSessionAdapter();
         Iterator it  = Holder.talks.entrySet().iterator();
         while(it.hasNext()){
             HashMap.Entry entry = (HashMap.Entry)it.next();
@@ -85,10 +85,23 @@ public class SessionListFragment extends BaseListFragment implements SessionList
         }
     }
 
+    public void useNewAdapter(){
+        adapter = new SessionListAdapter();
+        selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_session)));
+    }
+
+    public void addSession(Session added){
+        adapter.addData(added);
+        if(!(selfList.getAdapter() instanceof SessionListAdapter))
+            useSessionAdapter();
+    }
+    private void useSessionAdapter(){
+        adapter.setOnclickListener(this);
+        selfList.setAdapter(adapter);
+    }
     public void refreshSessions(){
         if(!(selfList.getAdapter() instanceof SessionListAdapter)){
-            adapter.setOnclickListener(this);
-            selfList.setAdapter(adapter);
+            useSessionAdapter();
         }
         Iterator it  = Holder.talks.entrySet().iterator();
         while(it.hasNext()){

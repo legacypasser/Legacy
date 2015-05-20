@@ -73,6 +73,7 @@ public class ChatActivity extends SimpleActivity {
             }
         });
         setToolBar();
+        getSupportActionBar().setTitle(Holder.peers.get(currentSession.peer));
         initList();
     }
 

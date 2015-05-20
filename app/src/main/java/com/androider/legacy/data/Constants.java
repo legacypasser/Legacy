@@ -22,7 +22,6 @@ public class Constants {
     public static final String page = "page=";
     public static final String id = "id=";
     public static final String keyword = "keyword=";
-    public static final int eachPage = 5;
 
 
     public static final int mainState = 0;
@@ -36,6 +35,13 @@ public class Constants {
     public static final int myPublish = 4;
     public static final int pullMsg = 6;
     public static final int searchReq = 7;
+    public static final int sessionAdded = 8;
+
+    public static final int userReseted = 1;
+    public static final int userNotReseted = 0;
+    public static final int email_fail = 2;
+    public static final int password_fail = 3;
+    public static final int unknow_login_fail = 4;
 
     public static final String intentType = "intentType";
 }

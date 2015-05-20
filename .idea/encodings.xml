@@ -12,5 +12,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/fragment/PostDetailFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/fragment/ResultFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/service/SearchService.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/util/Locator.java" charset="UTF-8" />
   </component>
 </project>

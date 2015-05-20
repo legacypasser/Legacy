@@ -18,6 +18,8 @@ import com.androider.legacy.service.NetService;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -38,7 +40,7 @@ public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ImageButton loginButton;
+    AddFloatingActionButton loginButton;
     MaterialEditText username;
     MaterialEditText password;
 
@@ -80,7 +82,7 @@ public class LoginFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         username = (MaterialEditText)rootView.findViewById(R.id.login_username);
         password = (MaterialEditText)rootView.findViewById(R.id.login_password);
-        loginButton = (ImageButton)rootView.findViewById(R.id.just_login);
+        loginButton = (AddFloatingActionButton)rootView.findViewById(R.id.just_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

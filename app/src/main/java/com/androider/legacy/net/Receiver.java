@@ -23,7 +23,7 @@ public class Receiver implements Runnable{
 
     @Override
     public void run() {
-        while (true){
+        while (common.isRunning){
             try {
                 recvBuf.clear();
                 common.channel.receive(recvBuf);

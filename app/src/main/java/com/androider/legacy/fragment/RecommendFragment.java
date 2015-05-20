@@ -60,7 +60,6 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        loadingView = new LegacyProgress(getActivity());
         commonSet(rootView);
         adapter.setOnClickListener(this);
         selfList.setAdapter(adapter);
@@ -69,6 +68,7 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
     }
 
     private void request(){
+        loadingView = new LegacyProgress(getActivity());
         loadingView.show();
         currentPage++;
         Intent intent = new Intent(getActivity(), NetService.class);
@@ -81,7 +81,8 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
         for(Post item : Holder.recommendPost){
             adapter.addData(item);
         }
-        loadingView.hide();
+        if(loadingView != null)
+            loadingView.hide();
     }
 
     @Override

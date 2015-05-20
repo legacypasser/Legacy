@@ -33,6 +33,7 @@ import com.androider.legacy.adapter.GridAdapter;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.PublishService;
@@ -44,6 +45,9 @@ import com.gc.materialdesign.views.ButtonFlat;
 
 import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
+import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -63,7 +67,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbWidth;
     private MaterialEditText des;
     private MaterialEditText price;
-    private ImageButton publish;
+    private AddFloatingActionButton publish;
     CapturePreview preview;
     ButtonFlat capSwitch;
     View pusher;
@@ -83,7 +87,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbWidth = DensityUtil.dip2px(this, 80);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
         price = (MaterialEditText)findViewById(R.id.price_to_publish);
-        publish = (ImageButton)findViewById(R.id.publish);
+        publish = (AddFloatingActionButton)findViewById(R.id.publish);
         LinearLayout holder = (LinearLayout)findViewById(R.id.img_holder);
         capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
         thumbs = (GridView)findViewById(R.id.cap_holder);
@@ -119,6 +123,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     }
 
     private void setToCap(){
+        publish.setEnabled(true);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,8 +136,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     }
 
     private void setToInput(){
-        publish.setVisibility(View.INVISIBLE);
-        publish.setOnClickListener(null);
+        publish.setEnabled(false);
         des.setEnabled(true);
         price.setEnabled(true);
         TextWatcher watcher = new TextWatcher() {
@@ -159,7 +163,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         if(des.getText().toString().equals("")){
         }else if(price.getText().toString().equals("")){
         }else{
-            publish.setVisibility(View.VISIBLE);
+            publish.setEnabled(true);
             publish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -170,6 +174,10 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     }
 
     private void myPublish(){
+        if(!User.alreadLogin){
+            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT);
+            return;
+        }
         loadingView.show();
         Holder.publishDes = des.getText().toString();
         Holder.price = price.getText().toString();
