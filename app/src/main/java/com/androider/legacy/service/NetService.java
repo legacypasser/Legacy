@@ -23,6 +23,9 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.NetConstants;
+import com.androider.legacy.net.Sender;
+import com.androider.legacy.net.UdpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,6 +95,18 @@ public class NetService extends IntentService {
                 }else {
                     return;
                 }
+            case Constants.baiduLocation:
+                String woduResult = LegacyClient.getInstance().baiduLocation();
+                JSONObject whole = new JSONObject(woduResult);
+                JSONObject point = whole.getJSONObject("content").getJSONObject("point");
+                User.longi = point.getDouble("x");
+                User.lati = point.getDouble("y");
+                User.province = whole.getJSONObject("content").getJSONObject("address_detail").getString("province");
+                return;
+            case Constants.byebye:
+                Sender.getInstance().sendToServer(""+User.id, NetConstants.offline);
+                UdpClient.getInstance().close();
+                return;
         }
             msg.what = type;
             messenger.send(msg);

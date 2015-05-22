@@ -19,39 +19,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:id="@+id/pusher"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/divider_color"
-            android:orientation="vertical">
-            <com.gc.materialdesign.views.ButtonFlat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cap_switch"
-                android:text="@string/cap_finish"/>
-        </LinearLayout>
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/text_icon"
-            android:numColumns="4"
-            android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
-            android:id="@+id/cap_holder">
-        </GridView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/divider_color"
             android:padding="16dp"
+            android:background="@color/text_icon"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
-
             <com.rengwuxian.materialedittext.MaterialEditText
                 fabs:met_floatingLabel="highlight"
                 fabs:met_floatingLabelTextSize="16sp"
@@ -78,20 +53,39 @@
                 android:hint="@string/price"
                 fabs:met_maxCharacters="20"
                 android:id="@+id/price_to_publish"/>
-
-            <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_gravity="end"
-                android:id="@+id/publish"
-                fabs:fab_colorNormal="@color/accent_color"
-                fabs:fab_colorPressed="@color/pressed"
-                fabs:fab_colorDisabled="@color/disabled"
-                android:layout_width="60dp"
-                android:layout_height="60dp"/>
-
         </LinearLayout>
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/divider_color"
+            android:numColumns="4"
+            android:padding="4dp"
+            android:horizontalSpacing="8dp"
+            android:verticalSpacing="8dp"
+            android:id="@+id/cap_holder">
+        </GridView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/text_icon"
+            android:layout_weight="1"/>
     </LinearLayout>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
+            android:id="@+id/publish"
+            fabs:fab_colorNormal="@color/accent_color"
+            fabs:fab_colorPressed="@color/pressed"
+            fabs:fab_colorDisabled="@color/disabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </FrameLayout>

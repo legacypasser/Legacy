@@ -8,6 +8,10 @@
 
     <include layout="@layout/common_toolbar"/>
 
+    <android.support.v4.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/register_drawer">
         <LinearLayout
             android:layout_width="match_parent"
             android:background="@color/text_icon"
@@ -16,73 +20,99 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="16sp"
-            app:met_floatingLabelText="@string/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:met_primaryColor="@color/primary_color"
-            app:met_baseColor="@color/primary_text"
-            android:hint="@string/email"
-            android:id="@+id/email"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="16sp"
+                app:met_floatingLabelText="@string/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                android:hint="@string/email"
+                android:id="@+id/email"/>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="16sp"
-            app:met_floatingLabelText="@string/password"
-            android:layout_width="match_parent"
-            app:met_primaryColor="@color/primary_color"
-            app:met_baseColor="@color/primary_text"
-            android:hint="@string/password"
-            android:layout_height="wrap_content"
-            android:password="true"
-            android:id="@+id/password"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="16sp"
+                app:met_floatingLabelText="@string/password"
+                android:layout_width="match_parent"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                android:hint="@string/password"
+                android:layout_height="wrap_content"
+                android:password="true"
+                android:id="@+id/password"/>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="16sp"
-            app:met_floatingLabelText="@string/nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:met_primaryColor="@color/primary_color"
-            app:met_baseColor="@color/primary_text"
-            android:hint="@string/nickname"
-            android:id="@+id/nickname"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="16sp"
+                app:met_floatingLabelText="@string/nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                android:hint="@string/nickname"
+                android:id="@+id/nickname"/>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="16sp"
-            app:met_floatingLabelText="@string/school"
-            android:layout_width="match_parent"
-            app:met_primaryColor="@color/primary_color"
-            app:met_baseColor="@color/primary_text"
-            android:hint="@string/school"
-            android:layout_height="wrap_content"
-            android:id="@+id/school"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="16sp"
+                app:met_floatingLabelText="@string/school"
+                android:layout_width="match_parent"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                android:hint="@string/school"
+                android:layout_height="wrap_content"
+                android:id="@+id/school"/>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="16sp"
-            app:met_floatingLabelText="@string/major"
-            android:layout_width="match_parent"
-            app:met_primaryColor="@color/primary_color"
-            app:met_baseColor="@color/primary_text"
-            android:hint="@string/major"
-            android:layout_height="wrap_content"
-            android:id="@+id/major"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="16sp"
+                app:met_floatingLabelText="@string/major"
+                android:layout_width="match_parent"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                android:hint="@string/major"
+                android:layout_height="wrap_content"
+                android:id="@+id/major"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/accent_color"
+                app:fab_colorPressed="@color/pressed"
+                app:fab_colorDisabled="@color/disabled"
+                android:layout_gravity="end"
+                android:id="@+id/register"/>
         </LinearLayout>
 
-    <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:fab_colorNormal="@color/accent_color"
-        app:fab_colorPressed="@color/pressed"
-        app:fab_colorDisabled="@color/disabled"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="end"
-        android:id="@+id/register"/>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:background="@color/text_icon"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="start">
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                app:met_primaryColor="@color/primary_color"
+                app:met_baseColor="@color/primary_text"
+                app:met_iconPadding="0dp"
+                app:met_iconLeft="@drawable/ic_search_white_36dp"
+                android:id="@+id/pre_match"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/choose_list"/>
+        </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
+
+
 
 </LinearLayout>

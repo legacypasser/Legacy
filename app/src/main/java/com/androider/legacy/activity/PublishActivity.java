@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,6 +42,9 @@ import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.LegacyProgress;
+import com.androider.legacy.util.WatcherSimplifier;
+import com.balysv.materialmenu.MaterialMenuDrawable;
+import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.gc.materialdesign.views.ButtonFlat;
 
 
@@ -63,13 +68,13 @@ import java.util.Map;
 
 public class PublishActivity extends SimpleActivity implements Camera.PictureCallback{
 
+    MenuItem inform;
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
     private MaterialEditText price;
     private AddFloatingActionButton publish;
     CapturePreview preview;
-    ButtonFlat capSwitch;
     View pusher;
     GridView thumbs;
     GridAdapter thumbAdpter = new GridAdapter();
@@ -89,41 +94,23 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         price = (MaterialEditText)findViewById(R.id.price_to_publish);
         publish = (AddFloatingActionButton)findViewById(R.id.publish);
         LinearLayout holder = (LinearLayout)findViewById(R.id.img_holder);
-        capSwitch = (ButtonFlat)findViewById(R.id.cap_switch);
         thumbs = (GridView)findViewById(R.id.cap_holder);
         pusher = findViewById(R.id.pusher);
         thumbs.setAdapter(thumbAdpter);
-        capSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pusher.getVisibility() == View.VISIBLE) {
-                    if(thumbAdpter.getCount() == 0){
-                        Toast.makeText(instance, "请先拍几张",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    pusher.setVisibility(View.GONE);
-                    capSwitch.setText(getResources().getString(R.string.cap_start));
-                    preview.camera.stopPreview();
-                    setToInput();
-                } else {
-                    pusher.setVisibility(View.VISIBLE);
-                    capSwitch.setText(getResources().getString(R.string.cap_finish));
-                    preview.camera.startPreview();
-                    setToCap();
-                }
-            }
-        });
         preview = new CapturePreview(this);
+        des.addTextChangedListener(watcher);
+        price.addTextChangedListener(watcher);
         holder.addView(preview);
         setToolBar();
         setToCap();
         loadingView = new LegacyProgress(this);
         loadingView.setTitle(R.string.publishing);
-
     }
 
+
     private void setToCap(){
-        publish.setEnabled(true);
+        preview.camera.startPreview();
+        publish.setVisibility(View.VISIBLE);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,45 +119,33 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         });
         des.setEnabled(false);
         price.setEnabled(false);
-
     }
+    WatcherSimplifier watcher = new WatcherSimplifier() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(des.getText().toString().equals("") || price.getText().toString().equals(""))
+                setToInput();
+            else
+                setToPub();
+        }
+    };
 
     private void setToInput(){
-        publish.setEnabled(false);
+        preview.camera.stopPreview();
+        publish.setVisibility(View.GONE);
         des.setEnabled(true);
         price.setEnabled(true);
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setToPub();
-            }
-        };
-        des.addTextChangedListener(watcher);
-        price.addTextChangedListener(watcher);
     }
 
     private void setToPub(){
-        if(des.getText().toString().equals("")){
-        }else if(price.getText().toString().equals("")){
-        }else{
-            publish.setEnabled(true);
-            publish.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myPublish();
-                }
-            });
-        }
+        publish.setVisibility(View.VISIBLE);
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myPublish();
+            }
+        });
+        preview.camera.stopPreview();
     }
 
     private void myPublish(){
@@ -192,7 +167,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         des.setText("");
         price.setText("");
         loadingView.hide();
-        capSwitch.setText("继续发布");
         setToCap();
     }
 
@@ -256,5 +230,35 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         }
         paths.add(theName);
         camera.startPreview();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_pub, menu);
+        inform = menu.findItem(R.id.inform);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.photo_switch){
+            if (pusher.getVisibility() == View.VISIBLE) {
+                if(thumbAdpter.getCount() == 0){
+                    Toast.makeText(instance, "请先拍几张",Toast.LENGTH_SHORT).show();
+                }else{
+                    pusher.setVisibility(View.GONE);
+                    setToInput();
+                    item.setIcon(R.drawable.ic_photo_camera_white_18dp);
+                    inform.setTitle(R.string.take_photo);
+                }
+            } else {
+                pusher.setVisibility(View.VISIBLE);
+                setToCap();
+                item.setIcon(R.drawable.ic_edit_white_24dp);
+                inform.setTitle(R.string.edit_des);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

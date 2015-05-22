@@ -20,4 +20,5 @@ public class NetConstants {
     public static final int offline = 4;
 
     public static final int sendChat = 5;
+
 }

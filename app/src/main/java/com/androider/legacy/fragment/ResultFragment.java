@@ -1,5 +1,6 @@
 package com.androider.legacy.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class ResultFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
     public static ResultFragment instance;
+    static RecyclerListAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,9 +31,29 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if(adapter != null){
+            selfList.setAdapter(adapter);
+            adapter.setOnClickListener(this);
+        }
         swipeHolder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
         swipeHolder.setEnabled(false);
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("already", "yes");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     public ResultFragment(){
@@ -47,14 +69,18 @@ public class ResultFragment extends BaseListFragment implements RecyclerListAdap
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     public void refreshList(){
         if(Holder.resultedPost.size() != 0){
-            RecyclerListAdapter adapter = new RecyclerListAdapter();
-            adapter.setOnClickListener(this);
-            for(Post item : Holder.resultedPost){
+            adapter = new RecyclerListAdapter();
+            for(Post item : Holder.resultedPost)
                 adapter.addData(item);
-            }
             selfList.setAdapter(adapter);
+            adapter.setOnClickListener(this);
         }else {
             selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_search)));
         }

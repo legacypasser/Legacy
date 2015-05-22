@@ -27,6 +27,11 @@ public class Constants {
     public static final int mainState = 0;
     public static final int detailState = 1;
     public static final int funcState = 2;
+    public static final int drawerState = 3;
+
+    public static final int registerState = 4;
+    public static final int schoolChoosing = 5;
+    public static final int majorChoosing = 6;
 
     public static final int detailRequest = 1;
     public static final int recommendAdded = 0;
@@ -36,6 +41,8 @@ public class Constants {
     public static final int pullMsg = 6;
     public static final int searchReq = 7;
     public static final int sessionAdded = 8;
+    public static final int baiduLocation = 9;
+    public static final int byebye = 10;
 
     public static final int userReseted = 1;
     public static final int userNotReseted = 0;

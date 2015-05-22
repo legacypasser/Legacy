@@ -35,6 +35,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar, lati DOUBLE, longi DOUBLE , school VARCHAR, major VARCHAR);");
         db.execSQL("CREATE TABLE nick_adj(id INTEGER, adj VARCHAR);");
         db.execSQL("CREATE TABLE nick_noun(id INTEGER, noun VARCHAR)");
+        db.execSQL("CREATE TABLE school(id INTEGER PRIMARY KEY, name VARCHAR, region INT, major VARCHAR)");
+        db.execSQL("CREATE TABLE major(id INT primary key, name VARCHAR)");
+        db.execSQL("CREATE TABLE region(id INT primary key, name VARCHAR)");
     }
 
     @Override

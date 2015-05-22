@@ -3,6 +3,7 @@ package com.androider.legacy.activity;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,7 @@ import com.androider.legacy.data.Constants;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
-public class SimpleActivity extends ActionBarActivity {
+public class SimpleActivity extends AppCompatActivity {
 
     Toolbar searchTool;
     MaterialMenuIconToolbar mateMenu;
@@ -37,6 +38,11 @@ public class SimpleActivity extends ActionBarActivity {
         mateMenu.setNeverDrawTouch(true);
         mateMenu.setState(MaterialMenuDrawable.IconState.X);
         StateController.change(Constants.funcState);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

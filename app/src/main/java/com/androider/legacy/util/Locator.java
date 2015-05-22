@@ -6,10 +6,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
+import com.androider.legacy.activity.RegisterActivity;
+import com.androider.legacy.data.User;
+
 /**
  * Created by Think on 2015/5/19.
  */
 public class Locator {
+
     public static Location getLocation(Context context){
         LocationManager manager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, kidding);
@@ -42,4 +50,8 @@ public class Locator {
 
         }
     };
+
+
+
+
 }

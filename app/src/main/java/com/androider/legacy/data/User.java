@@ -2,7 +2,9 @@ package com.androider.legacy.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.location.Location;
 
+import com.amap.api.location.AMapLocation;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.net.LegacyClient;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -22,8 +24,8 @@ public class User {
     public static String password;
     public static double lati;
     public static double longi;
-
     public static boolean alreadLogin;
+    public static String province = "";
 
     public static String tableName = "user";
     public static void store(){

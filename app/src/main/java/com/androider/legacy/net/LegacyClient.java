@@ -189,4 +189,18 @@ public class LegacyClient{
     public String info(int id){
         return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
     }
+
+    public String baiduLocation(){
+        Request req = new Request.Builder()
+                .url("http://api.map.baidu.com/location/ip?ak=260569e20491d41b6def091cccf191b0&coor=bd09ll")
+                .build();
+        Response  resp = null;
+        try {
+            resp = client.newCall(req).execute();
+            return resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

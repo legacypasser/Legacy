@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.androider.legacy.R;
+import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -69,6 +72,7 @@ public class SearchActivity extends SimpleActivity {
         intent.putExtra(Constants.intentType, Constants.searchReq);
         intent.putExtra(Constants.keyword, keyword);
         this.startService(intent);
+        instance.switchFragment(ResultFragment.class.getSimpleName());
     }
 
     public NetHandler netHandler = new NetHandler(instance);
@@ -89,20 +93,26 @@ public class SearchActivity extends SimpleActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     public void switchFragment(String fragName){
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragName);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if(fragment == null){
-            if(fragName.equals(ResultFragment.class.getSimpleName())){
+        if(fragName.equals(ResultFragment.class.getSimpleName())){
+            if(fragment == null){
                 fragment = ResultFragment.newInstance("", "");
                 ft.add(R.id.search_holder, fragment, fragName);
-            }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
-                fragment = PostDetailFragment.newInstance("", "");
-                ft.replace(R.id.search_holder, fragment, fragName);
-                ft.addToBackStack(null);
-                mateMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
+            }else {
+                if(StateController.getCurrent() == Constants.detailState)
+                    onBackPressed();
             }
-        }else {
+        }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
+            if(fragment == null){
+                fragment = PostDetailFragment.newInstance("", "");
+            }
             ft.replace(R.id.search_holder, fragment, fragName);
             ft.addToBackStack(null);
             mateMenu.animateState(MaterialMenuDrawable.IconState.ARROW);

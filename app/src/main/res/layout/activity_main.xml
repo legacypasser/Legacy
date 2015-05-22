@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
     <android.support.v7.widget.Toolbar
             android:id="@+id/overall_toolbar"
             android:layout_height="wrap_content"
@@ -14,16 +13,19 @@
             android:minHeight="?attr/actionBarSize"
             fab:popupTheme="@style/Theme.AppCompat.Light"
         />
-
-    <FrameLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/legacy_drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_container">
-        <LinearLayout
+        android:layout_height="match_parent">
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:id="@+id/main_container">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
                     android:layout_width="wrap_content"
@@ -40,26 +42,33 @@
                     fab:selectedColor="@color/primary_color"
                     android:id="@+id/pager_indicator"
                     />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    fab:fab_colorNormal="@color/accent_color"
+                    fab:fab_colorPressed="@color/pressed"
+                    android:id="@+id/all_over_button"/>
+
+            </RelativeLayout>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="240dp"
+            android:layout_gravity="start"
+            android:layout_height="match_parent"
+            android:background="@color/text_icon">
+
         </LinearLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                fab:fab_colorNormal="@color/accent_color"
-                fab:fab_colorPressed="@color/pressed"
-                android:id="@+id/all_over_button"/>
-
-        </RelativeLayout>
-
-    </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 
 </LinearLayout>

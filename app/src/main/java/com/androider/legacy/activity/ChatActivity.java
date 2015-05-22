@@ -105,6 +105,7 @@ public class ChatActivity extends SimpleActivity {
                 return false;
             }
         });
+        list.setSelection(list.getBottom());
     }
 
 

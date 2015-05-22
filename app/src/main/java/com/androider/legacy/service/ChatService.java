@@ -19,6 +19,7 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.net.Sender;
+import com.androider.legacy.net.UdpClient;
 
 import java.util.Date;
 

@@ -2,17 +2,21 @@ package com.androider.legacy.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +25,14 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.FragmentViewPagerAdapter;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.School;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.controller.StateController;
@@ -35,10 +44,13 @@ import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
+import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.net.Receiver;
 import com.androider.legacy.net.Sender;
 import com.androider.legacy.net.UdpClient;
+import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.Locator;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.gc.materialdesign.views.ButtonFloat;
@@ -55,7 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity implements AMapLocationListener{
 
     public static String filePath;
     private MaterialMenuIconToolbar materialMenu;
@@ -67,18 +79,46 @@ public class MainActivity extends ActionBarActivity {
     public static MainActivity instance;
     Thread sendThread;
     Thread receiveThread;
+    DrawerLayout drawer;
+    LocationManagerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
         setContentView(R.layout.activity_main);
+        drawer = (DrawerLayout)findViewById(R.id.legacy_drawer);
         overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
         setSupportActionBar(overallToolBar);
         overallToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backControl();
+                if (StateController.getCurrent() == Constants.mainState) {
+                    drawer.openDrawer(Gravity.START);
+                    materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
+                    StateController.change(Constants.drawerState);
+                } else {
+                    backControl();
+                }
+
+            }
+        });
+        drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if (StateController.getCurrent() == Constants.drawerState) {
+                    materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+                    StateController.goBack();
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                if (StateController.getCurrent() == Constants.mainState) {
+                    drawer.openDrawer(Gravity.START);
+                    materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
+                    StateController.change(Constants.drawerState);
+                }
             }
         });
         materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
@@ -90,6 +130,7 @@ public class MainActivity extends ActionBarActivity {
         materialMenu.setNeverDrawTouch(true);
         db = new DatabaseHelper(this).getWritableDatabase();
         Nicker.initNick(this);
+        School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
         StateController.change(Constants.mainState);
         User.drag();
@@ -102,8 +143,12 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().popBackStack();
             materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
             StateController.goBack();
-        }else{
+        }else if (StateController.getCurrent() == Constants.mainState){
             finish();
+        }else if(StateController.getCurrent() == Constants.drawerState){
+            drawer.closeDrawer(Gravity.START);
+            materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+            StateController.goBack();
         }
     }
 
@@ -112,11 +157,20 @@ public class MainActivity extends ActionBarActivity {
         backControl();
     }
 
+    private void initLocation(){
+        proxy = LocationManagerProxy.getInstance(this);
+        proxy.setGpsEnable(false);
+        proxy.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 0, this);
+    }
+
     private void autoLogin(){
-        Log.v("panbo", "" + "user id is:" + User.id);
+        if(User.id == -1){
+            initLocation();
+        }else{
             Intent intent = new Intent(this, NetService.class);
             intent.putExtra(Constants.intentType, Constants.loginAttempt);
             startService(intent);
+        }
     }
     private void initView(){
         DisplayImageOptions options  = new DisplayImageOptions.Builder().
@@ -219,6 +273,36 @@ public class MainActivity extends ActionBarActivity {
 
     public NetHandler netHandler = new NetHandler(instance);
 
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        int code = aMapLocation.getAMapException().getErrorCode();
+        if(code != 0){
+            Intent intent = new Intent(this, NetService.class);
+            intent.putExtra(Constants.intentType, Constants.baiduLocation);
+            startService(intent);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
     private static class NetHandler extends Handler{
         WeakReference<MainActivity> activityWeakReference;
         NetHandler(MainActivity mainActivity){
@@ -289,8 +373,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void chatOff(){
+        if(!UdpClient.getInstance().isRunning)
+            return;
+        Intent intent = new Intent(this, NetService.class);
+        intent.putExtra(Constants.intentType, Constants.byebye);
+        startService(intent);
         UdpClient.getInstance().isRunning = false;
-        UdpClient.getInstance().close();
         if(receiveThread != null){
             receiveThread.interrupt();
             receiveThread = null;

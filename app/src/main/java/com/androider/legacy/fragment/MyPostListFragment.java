@@ -24,14 +24,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyPostListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyPostListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyPostListFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
 
     public static MyPostListFragment instance;
@@ -70,11 +62,11 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
     }
 
     public void addItem(){
+        adapter.addData(Holder.justPub);
         if(!(selfList.getAdapter() instanceof RecyclerListAdapter)){
             adapter.setOnClickListener(this);
             selfList.setAdapter(adapter);
         }
-        adapter.addData(Holder.justPub);
         Holder.justPub = null;
     }
 
