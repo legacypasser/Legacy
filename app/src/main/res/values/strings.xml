@@ -37,6 +37,16 @@
     <string name="edit_des">编辑</string>
     <string name="take_photo">再拍几张</string>
 
+    <string name="sound_on">拍照声音</string>
+
+    <string name="test">测试</string>
+    <string name="test_long">864633261@qq.com</string>
+
+    <string name="update">检查更新</string>
+    <string name="feedback">意见反馈</string>
+
+    <string name="not_login">未登录</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

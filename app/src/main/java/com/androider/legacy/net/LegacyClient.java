@@ -12,6 +12,7 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
+import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -126,6 +127,9 @@ public class LegacyClient{
             reqData.put("major", User.major);
             reqData.put("lati", User.lati);
             reqData.put("longi", User.longi);
+            reqData.put("schoolid", School.schoolId(User.school));
+            reqData.put("majorid", School.majorId(User.major));
+            reqData.put("region", School.proviceId(User.province));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -31,6 +31,7 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DividerDecorator;
+import com.androider.legacy.util.Encryption;
 import com.androider.legacy.util.Locator;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.gc.materialdesign.views.ButtonFloat;
@@ -164,7 +165,7 @@ public class RegisterActivity extends SimpleActivity implements View.OnClickList
 
     public void sendRegistration(){
         User.email = email.getText().toString();
-        User.password = password.getText().toString();
+        User.password = Encryption.encrypt(password.getText().toString());
         User.nickname = nickname.getText().toString();
         User.school = school.getText().toString();
         User.major = major.getText().toString();

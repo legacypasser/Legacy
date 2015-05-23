@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,11 +54,51 @@ public class School {
         return schools;
     }
 
-    public static ArrayList<String> regional(String province){
+    public static int proviceId(String province){
         Cursor cursor = MainActivity.db.rawQuery("select id from region where name = ?;", new String[]{province});
         cursor.moveToFirst();
-        ArrayList<School> schools = regional(cursor.getInt(0));
+        int result = cursor.getInt(0);
         cursor.close();
+        return result;
+    }
+
+    public static int schoolId(String school){
+        Cursor cursor = MainActivity.db.rawQuery("select id from school where name = ?;", new String[]{school});
+        int result = -1;
+        cursor .moveToFirst();
+        if(!cursor.isAfterLast()){
+            result = cursor.getInt(cursor.getColumnIndex("id"));
+            cursor.close();
+            return result;
+        }
+        cursor.close();
+        return result;
+    }
+
+    public static int majorId(String major){
+        Cursor cursor = MainActivity.db.rawQuery("select id from major where name = ?;", new String[]{major});
+        int result = -1;
+        cursor .moveToFirst();
+        if(!cursor.isAfterLast()){
+            result = cursor.getInt(cursor.getColumnIndex("id"));
+            cursor.close();
+            return result;
+        }else{
+            cursor.close();
+            cursor = MainActivity.db.rawQuery("select id form major where name like ?;", new String[]{"%" + major + "%"});
+            cursor.moveToFirst();
+            if(!cursor.isAfterLast()){
+                result = cursor.getInt(cursor.getColumnIndex("id"));
+                cursor.close();
+                return result;
+            }
+            cursor.close();
+        }
+        return result;
+    }
+
+    public static ArrayList<String> regional(String province){
+        ArrayList<School> schools = regional(proviceId(province));
         ArrayList<String> result = new ArrayList<>();
         maybeUsed = new HashMap<>();
         for(School item : schools){
@@ -102,13 +143,9 @@ public class School {
             while ((str = reader.readLine()) != null){
                 String[] majorFields = str.split(";");
                 cv = new ContentValues();
-                if(majorFields.length == 1){
-                    cv.put("id", Integer.parseInt(majorFields[0]));
-                    cv.put("name", "");
-                }else{
-                    cv.put("id", Integer.parseInt(majorFields[1]));
-                    cv.put("name", majorFields[0]);
-                }
+                cv.put("id", Integer.parseInt(majorFields[0]));
+                cv.put("name", majorFields[1]);
+
                 MainActivity.db.insert("major", null, cv);
             }
             reader.close();
@@ -118,8 +155,8 @@ public class School {
             while ((str = reader.readLine()) != null){
                 String[] schoolFields = str.split(";");
                 cv = new ContentValues();
-                cv.put("name", schoolFields[0]);
-                cv.put("id", Integer.parseInt(schoolFields[1]));
+                cv.put("name", schoolFields[1]);
+                cv.put("id", Integer.parseInt(schoolFields[0]));
                 MainActivity.db.insert("region", null, cv);
             }
             reader.close();
@@ -132,8 +169,7 @@ public class School {
                 cv = new ContentValues();
                 cv.put("region", Integer.parseInt(schoolFields[1]));
                 cv.put("name", schoolFields[0]);
-                if(schoolFields.length == 3)
-                    cv.put("major", schoolFields[2]);
+                cv.put("major", schoolFields[2]);
                 MainActivity.db.insert("school", null, cv);
             }
             reader.close();
@@ -154,4 +190,5 @@ public class School {
         }
         return prefixed;
     }
+
 }

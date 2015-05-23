@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -71,12 +72,11 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
 
     public static String filePath;
     private MaterialMenuIconToolbar materialMenu;
-    private Toolbar overallToolBar;
     private AddFloatingActionButton overButton;
-    private ViewPager viewPager;
-    private List<Fragment> fragmentList;
     public static SQLiteDatabase db;
     public static MainActivity instance;
+    TextView accountEmail;
+    TextView accountNickname;
     Thread sendThread;
     Thread receiveThread;
     DrawerLayout drawer;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         instance = this;
         setContentView(R.layout.activity_main);
         drawer = (DrawerLayout)findViewById(R.id.legacy_drawer);
-        overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
+        Toolbar overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
         setSupportActionBar(overallToolBar);
         overallToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,11 +190,13 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
             }
         });
 
-        fragmentList = new ArrayList<>();
+        accountEmail = (TextView)findViewById(R.id.account_email);
+        accountNickname = (TextView)findViewById(R.id.account_nickname);
+        ArrayList<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
         fragmentList.add(SessionListFragment.newInstance("",""));
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         FragmentViewPagerAdapter pagerAdapter = new FragmentViewPagerAdapter( fragmentList,this.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.pager_indicator);
@@ -334,6 +336,8 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
                             SessionListFragment.instance.useNewAdapter();
                         case Constants.userNotReseted:
                             Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
+                            instance.accountNickname.setText(User.nickname);
+                            instance.accountEmail.setText(User.email);
                             UdpClient.getInstance().isRunning = true;
                             instance.chatOn();
                             SessionListFragment.instance.startPull();
