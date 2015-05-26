@@ -47,6 +47,7 @@ import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.net.Receiver;
+import com.androider.legacy.net.SearchClient;
 import com.androider.legacy.net.Sender;
 import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         User.drag();
         autoLogin();
         initView();
+        SearchClient.initSearch();
     }
 
     private void backControl(){

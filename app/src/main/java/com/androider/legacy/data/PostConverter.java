@@ -20,27 +20,36 @@ import java.util.Date;
 public class PostConverter {
 
     public static SimpleDateFormat formater = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static ArrayList<Post> stringToList(String str){
+
+    public static ArrayList<Post> arryToList(ArrayList<JSONObject> objs){
         ArrayList<Post> result = new ArrayList<>();
         try {
-            JSONArray jsonPosts = new JSONArray(str);
-            for(int i = 0;i < jsonPosts.length(); i++){
-                JSONObject jsonPost = new JSONObject(jsonPosts.getString(i));
-                int id = jsonPost.getInt("id");
-                String img = jsonPost.getString("img");
-                Date publish = formater.parse(jsonPost.getString("publish"));
-                String abs = jsonPost.getString("abs");
-                int price = jsonPost.getInt("price");
-                int seller = jsonPost.getInt("seller");
+            for(JSONObject item : objs){
+                int id = item.getInt("id");
+                String img = item.getString("img");
+                Date publish = new Date(item.getLong("publish"));
+                String abs = item.getString("abs");
+                int price = item.getInt("price");
+                int seller = item.getInt("seller");
                 Post added = new Post(id, img, publish, abs, price, seller);
                 result.add(added);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
         return result;
+    }
+    public static ArrayList<Post> stringToList(String str){
+        ArrayList<JSONObject> objs = new ArrayList<>();
+        try {
+            JSONArray jsonPosts = new JSONArray(str);
+            for(int i = 0; i < jsonPosts.length(); i++){
+                objs.add(jsonPosts.getJSONObject(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return arryToList(objs);
     }
 
 

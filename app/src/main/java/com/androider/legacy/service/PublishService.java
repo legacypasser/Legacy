@@ -18,6 +18,7 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.SearchClient;
 
 import java.util.Date;
 
@@ -59,6 +60,7 @@ public class PublishService extends IntentService {
                 Holder.detailed.put(newlyAddedId, published);
                 ContentValues publishedCv = Post.getCv(published);
                 MainActivity.db.insert(Post.tableName, null, publishedCv);
+                SearchClient.uploadContent(published);
                 msg.what = Constants.myPublish;
                 break;
         }

@@ -5,6 +5,7 @@ import org.apache.http.HttpEntity;
 
 import android.provider.Telephony;
 import android.util.Log;
+import android.util.Pair;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
@@ -14,6 +15,7 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
@@ -22,12 +24,18 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Think on 2015/4/16.
@@ -36,6 +44,8 @@ public class LegacyClient{
     OkHttpClient client;
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType ALI_FORM = MediaType.parse("application/x-www-form-urlencoded");
+    private static final MediaType MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
         lastSession = "";
@@ -133,8 +143,7 @@ public class LegacyClient{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String result = post(Constants.requestPath + Constants.register, reqData.toString());
-        return result;
+        return post(Constants.requestPath + Constants.register, reqData.toString());
     }
 
     public String publish(){
@@ -146,7 +155,6 @@ public class LegacyClient{
             builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));
             temp++;
         }
-
         RequestBody body = builder.build();
         Request req = new Request.Builder()
                 .url(Constants.requestPath + Constants.publish)
@@ -165,8 +173,7 @@ public class LegacyClient{
 
     public String online(){
         String reqUrl = Constants.requestPath + Constants.online;
-        String result = get(reqUrl);
-        return result;
+        return get(reqUrl);
     }
 
     public String chat(String content, int receiver){
@@ -199,6 +206,41 @@ public class LegacyClient{
                 .url("http://api.map.baidu.com/location/ip?ak=260569e20491d41b6def091cccf191b0&coor=bd09ll")
                 .build();
         Response  resp = null;
+        try {
+            resp = client.newCall(req).execute();
+            return resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String aliSearch(String reqUrl){
+        Request req = new Request.Builder().url(reqUrl).build();
+        Response resp = null;
+        try {
+            resp = client.newCall(req).execute();
+            return resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String aliPush(String url, Map<String, String> content){
+        MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        Iterator<Map.Entry<String,String>> ite = content.entrySet().iterator();
+        while (ite.hasNext()){
+            Map.Entry<String,String> item = ite.next();
+            builder.addFormDataPart(item.getKey(), item.getValue());
+        }
+        Request req = new Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url(url)
+                    .post(builder.build())
+                    .build();
+
+        Response resp = null;
         try {
             resp = client.newCall(req).execute();
             return resp.body().string();

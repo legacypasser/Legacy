@@ -13,6 +13,7 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.SearchClient;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -36,7 +37,7 @@ public class SearchService extends IntentService {
         switch (intentType){
             case Constants.searchReq:
                 String keyword = intent.getStringExtra(Constants.keyword);
-                Holder.resultedPost = PostConverter.stringToList(LegacyClient.getInstance().search(keyword));
+                Holder.resultedPost = SearchClient.search(keyword);
                 msg.what = Constants.searchReq;
                 break;
         }
