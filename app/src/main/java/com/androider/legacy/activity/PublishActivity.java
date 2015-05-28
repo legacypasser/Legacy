@@ -75,12 +75,14 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private MaterialEditText price;
     private AddFloatingActionButton publish;
     CapturePreview preview;
+
+
     View pusher;
     GridView thumbs;
     GridAdapter thumbAdpter = new GridAdapter();
     public LegacyProgress loadingView;
     public ArrayList<String> paths = new ArrayList<>();
-
+    int scanCode = 0;
     public static PublishActivity instance;
 
     @Override
@@ -129,6 +131,15 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
                 setToPub();
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == scanCode){
+            String scannedCode = data.getStringExtra("barcode");
+            Toast.makeText(this, scannedCode, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void setToInput(){
         preview.camera.stopPreview();
@@ -258,6 +269,9 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
                 item.setIcon(R.drawable.ic_edit_white_24dp);
                 inform.setTitle(R.string.edit_des);
             }
+        }else if(id == R.id.just_scan){
+            Intent intent = new Intent(this, ScanningActivity.class);
+            startActivityForResult(intent, scanCode);
         }
         return super.onOptionsItemSelected(item);
     }

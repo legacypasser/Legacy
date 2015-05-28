@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,16 +25,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-public class MyPostListFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
+public class MyPostListFragment extends Fragment implements RecyclerListAdapter.RecycleClickListener{
 
     public static MyPostListFragment instance;
+    private RecyclerView selfList;
 
     private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static MyPostListFragment newInstance(String param1, String param2) {
         MyPostListFragment fragment = new MyPostListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,8 +47,8 @@ public class MyPostListFragment extends BaseListFragment implements RecyclerList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        commonSet(rootView);
-        swipeHolder.setEnabled(false);
+        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
         ArrayList<Post> myList = Post.listFromBase(User.id);
         if(myList.size() != 0){
             adapter.setOnClickListener(this);

@@ -29,23 +29,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SessionListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SessionListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SessionListFragment extends BaseListFragment implements SessionListAdapter.OnItemClickListner{
+
+public class SessionListFragment extends Fragment implements SessionListAdapter.OnItemClickListner{
 
     public SessionListAdapter adapter;
     public static SessionListFragment instance;
+    RecyclerView selfList;
     public static SessionListFragment newInstance(String param1, String param2) {
         SessionListFragment fragment = new SessionListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,9 +49,9 @@ public class SessionListFragment extends BaseListFragment implements SessionList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        commonSet(rootView);
+        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new SessionListAdapter();
-        swipeHolder.setEnabled(false);
         Session.drag();
         listSessions();
         return rootView;

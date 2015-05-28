@@ -40,7 +40,6 @@ import java.util.logging.SimpleFormatter;
  * Created by Think on 2015/5/23.
  */
 public class SearchClient {
-
     private static String accessKey = "zsblzfu3ZoR2dziS";
     private static String bigali = "D7CFmTmNiMxs8z05zhDMyHWkQMTq81";
     private static String tableName = "legacy";
@@ -115,7 +114,7 @@ public class SearchClient {
             urlObj.put(ACTION, PUSH);
             urlObj.put(TABLENAME, tableName);
             urlObj.put("sign_mode","1");
-            return /*serverUrl + "/index/doc/" + appName + "?" + */buildParamPart(urlObj, uploadParamList,POST);
+            return serverUrl + "/index/doc/" + appName + "?" + buildParamPart(urlObj, uploadParamList,POST);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -226,17 +225,5 @@ public class SearchClient {
             e.printStackTrace();
             return null;
         }
-        /*conductDate = new Date();
-        try {
-            String result = LegacyClient.getInstance().aliSearch(buildQueryUrl(keyWord, 0, 10));
-            JSONArray itemArray = new JSONObject(result).getJSONObject("result").getJSONArray("items");
-            ArrayList<JSONObject> objects = new ArrayList<>();
-            for(int i = 0; i < itemArray.length(); i++)
-                objects.add(itemArray.getJSONObject(i).getJSONObject("fields"));
-            return PostConverter.arryToList(objects);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;*/
     }
 }

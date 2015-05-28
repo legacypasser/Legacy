@@ -2,6 +2,9 @@
 <menu
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="scan" app:showAsAction="always"
+        android:orderInCategory="80"
+        android:id="@+id/just_scan"/>
     <item android:title="@string/edit_des" app:showAsAction="always"
         android:orderInCategory="90"
         android:id="@+id/inform"/>

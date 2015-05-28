@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,25 +31,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RecommendFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RecommendFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RecommendFragment extends BaseListFragment implements RecyclerListAdapter.RecycleClickListener{
+
+public class RecommendFragment extends Fragment implements RecyclerListAdapter.RecycleClickListener{
 
     LegacyProgress loadingView;
     private RecyclerListAdapter adapter = new RecyclerListAdapter();
     public static RecommendFragment instance;
     public int currentPage = 0;
+    RecyclerView selfList;
     public static RecommendFragment newInstance(String param1, String param2) {
         RecommendFragment fragment = new RecommendFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +52,9 @@ public class RecommendFragment extends BaseListFragment implements RecyclerListA
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
-        commonSet(rootView);
+        View rootView = inflater.inflate(R.layout.fragment_static_load, container, false);
+        selfList = (RecyclerView)rootView.findViewById(R.id.index_list);
+        selfList.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         adapter.setOnClickListener(this);
         selfList.setAdapter(adapter);
         request();
