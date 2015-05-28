@@ -34,9 +34,16 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     SurfaceHolder holder;
     public Camera camera;
+    Camera.PictureCallback callback;
 
-    public CapturePreview(Context context) {
+    public CapturePreview(PublishActivity context) {
         super(context);
+        callback = context;
+    }
+
+    public void startPreview(){
+        if(camera != null)
+            return;
         camera = Camera.open(0);
         holder = getHolder();
         holder.addCallback(this);
@@ -51,17 +58,23 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
         p.setJpegQuality(100);
         camera.setParameters(p);
         camera.cancelAutoFocus();
+        camera.startPreview();
+    }
+
+    public void stopPreview(){
+        camera.stopPreview();
+        camera.release();
+        camera = null;
     }
 
     public void takePicture(){
-        camera.takePicture(this, null, PublishActivity.instance);
+        camera.takePicture(this, null, callback);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         camera.startPreview();
     }
-
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -78,15 +91,11 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        camera.stopPreview();
-        camera.release();
-        camera = null;
+        stopPreview();
     }
-
 
     @Override
     public void onShutter() {
         new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME).startTone(ToneGenerator.TONE_PROP_BEEP2);
     }
-
 }

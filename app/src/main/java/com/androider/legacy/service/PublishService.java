@@ -13,6 +13,7 @@ import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.data.Constants;
+import com.androider.legacy.data.Douban;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
@@ -61,10 +62,16 @@ public class PublishService extends IntentService {
                 ContentValues publishedCv = Post.getCv(published);
                 MainActivity.db.insert(Post.tableName, null, publishedCv);
                 SearchClient.uploadContent(published);
-                msg.what = Constants.myPublish;
+                break;
+            case Constants.fromDouban:
+                String isbn = intent.getStringExtra(PublishActivity.ISBN);
+                Douban one = new Douban(isbn);
+                one.fill();
+                PublishActivity.instance.oneDou = one;
                 break;
         }
         try {
+            msg.what = intentType;
             messenger.send(msg);
             messenger = new Messenger(MainActivity.instance.netHandler);
             msg = Message.obtain();

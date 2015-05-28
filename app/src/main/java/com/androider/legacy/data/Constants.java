@@ -43,6 +43,7 @@ public class Constants {
     public static final int sessionAdded = 8;
     public static final int baiduLocation = 9;
     public static final int byebye = 10;
+    public static final int fromDouban = 11;
 
     public static final int userReseted = 1;
     public static final int userNotReseted = 0;

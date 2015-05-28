@@ -94,6 +94,20 @@ public class LegacyClient{
         return null;
     }
 
+    public String thirdGet(String url){
+        Request req = new Request.Builder()
+                .url(url)
+                .build();
+        Response  resp = null;
+        try {
+            resp = client.newCall(req).execute();
+            return resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String getRecommend(int pageNum){
         String reqUrl = Constants.requestPath + Constants.recommend + Constants.ask + Constants.page + pageNum;
         return get(reqUrl);

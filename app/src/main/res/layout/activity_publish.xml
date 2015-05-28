@@ -1,85 +1,49 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:fabs="http://schemas.android.com/apk/res-auto"
-    tools:context="com.androider.legacy.activity.PublishActivity">
+    android:layout_height="match_parent"
+    tools:context="com.androider.legacy.activity.PublishActivity"
+    android:id="@+id/pub_holder">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/img_holder">
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        tools:context="com.androider.legacy.fragment.ContentFragment"
         android:orientation="vertical">
         <include layout="@layout/common_toolbar"/>
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:id="@+id/pusher"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/text_icon"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
-            <com.rengwuxian.materialedittext.MaterialEditText
-                fabs:met_floatingLabel="highlight"
-                fabs:met_floatingLabelTextSize="16sp"
-                fabs:met_floatingLabelText="@string/legacy_des"
-                fabs:met_primaryColor="@color/primary_color"
-                fabs:met_baseColor="@color/primary_text"
-                android:textSize="16sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/legacy_story"
-                fabs:met_maxCharacters="20"
-                android:id="@+id/des_to_publish"/>
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                fabs:met_floatingLabel="highlight"
-                fabs:met_floatingLabelTextSize="16sp"
-                fabs:met_floatingLabelText="@string/price_flow"
-                fabs:met_primaryColor="@color/primary_color"
-                fabs:met_baseColor="@color/primary_text"
-                android:textSize="16sp"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/price"
-                fabs:met_maxCharacters="20"
-                android:id="@+id/price_to_publish"/>
-        </LinearLayout>
         <GridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/divider_color"
-            android:numColumns="4"
+            android:numColumns="6"
             android:padding="4dp"
             android:horizontalSpacing="8dp"
             android:verticalSpacing="8dp"
-            android:id="@+id/cap_holder">
-        </GridView>
-        <View
+            android:id="@+id/cap_holder"/>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            fabs:met_floatingLabel="highlight"
+            fabs:met_floatingLabelTextSize="16sp"
+            fabs:met_floatingLabelText="@string/legacy_des"
+            fabs:met_primaryColor="@color/primary_color"
+            fabs:met_baseColor="@color/primary_text"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/legacy_story"
+            fabs:met_maxCharacters="20"
+            android:id="@+id/des_to_publish"/>
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/text_icon"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_weight="1"
+            android:id="@+id/douban_list"/>
         <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_gravity="end"
             android:id="@+id/publish"
             fabs:fab_colorNormal="@color/accent_color"
@@ -87,5 +51,11 @@
             fabs:fab_colorDisabled="@color/disabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/cap_view"/>
 </FrameLayout>
