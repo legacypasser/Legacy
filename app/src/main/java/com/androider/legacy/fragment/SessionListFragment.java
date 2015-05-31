@@ -22,6 +22,7 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.DividerDecorator;
 
 
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        selfList.addItemDecoration(new DividerDecorator());
         adapter = new SessionListAdapter();
         Session.drag();
         listSessions();

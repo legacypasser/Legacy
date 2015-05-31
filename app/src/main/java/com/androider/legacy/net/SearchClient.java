@@ -113,7 +113,7 @@ public class SearchClient {
         try {
             urlObj.put(ACTION, PUSH);
             urlObj.put(TABLENAME, tableName);
-            urlObj.put("sign_mode","1");
+            urlObj.put("sign_mode", "1");
             return serverUrl + "/index/doc/" + appName + "?" + buildParamPart(urlObj, uploadParamList,POST);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -121,23 +121,17 @@ public class SearchClient {
         return null;
     }
 
-    public static void uploadContent(Post post){
+    public static void uploadContent(ArrayList<Post> posts){
         JSONArray dataArray = new JSONArray();
         conductDate = new Date();
         try {
-            JSONObject data = new JSONObject();
-            data.put("id", post.id);
-            data.put("des", post.des);
-            data.put("abs", post.abs);
-            data.put("img", post.img);
-            data.put("price", post.price);
-            data.put("seller", post.seller);
-            data.put("publish", post.publish.getTime());
-            JSONObject fullData = new JSONObject();
-            fullData.put("cmd", "add");
-            fullData.put("timestamp", conductDate.getTime());
-            fullData.put("fields", data);
-            dataArray.put(fullData);
+            for(Post post : posts){
+                JSONObject fullData = new JSONObject();
+                fullData.put("cmd", "add");
+                fullData.put("timestamp", conductDate.getTime());
+                fullData.put("fields", post.toAliJson());
+                dataArray.put(fullData);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

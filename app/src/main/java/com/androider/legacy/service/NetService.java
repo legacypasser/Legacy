@@ -60,10 +60,8 @@ public class NetService extends IntentService {
                 break;
             case Constants.detailRequest:
                 int id = intent.getIntExtra(Constants.id, -1);
-                String str = LegacyClient.getInstance().getRest(id);
-                JSONObject jsonPost = new JSONObject(str);
                 Post certain = Holder.detailed.get(id);
-                certain.des = jsonPost.getString("des");
+                certain.des = LegacyClient.getInstance().getRest(id);
                 ContentValues cv = new ContentValues();
                 cv.put("des", certain.des);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});

@@ -21,6 +21,7 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 
+import com.androider.legacy.service.PublishService;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -62,12 +63,13 @@ public class MyPostListFragment extends Fragment implements RecyclerListAdapter.
     }
 
     public void addItem(){
-        adapter.addData(Holder.justPub);
+        for(Post item : PublishService.toStore)
+            adapter.addData(item);
         if(!(selfList.getAdapter() instanceof RecyclerListAdapter)){
             adapter.setOnClickListener(this);
             selfList.setAdapter(adapter);
         }
-        Holder.justPub = null;
+        PublishService.toStore = null;
     }
 
     @Override

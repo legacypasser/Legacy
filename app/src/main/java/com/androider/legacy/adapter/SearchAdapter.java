@@ -5,42 +5,32 @@ import android.graphics.Color;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
+import com.gc.materialdesign.views.Card;
 import com.joooonho.SelectableRoundedImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
- * Created by Think on 2015/5/27.
+ * Created by Think on 2015/5/31.
  */
-public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>{
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHolder> {
 
-
-    protected ArrayList<Post> data = new ArrayList<>();
-
-    @Override
-    public IndexHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.index_item, parent, false);
-        return new IndexHolder(item);
-    }
-
+    ArrayList<Post> data = new ArrayList<>();
     public void setData(ArrayList<Post> data){
         this.data = data;
     }
@@ -49,9 +39,14 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
         data.add(one);
         notifyItemInserted(data.size() - 1);
     }
+    @Override
+    public SearchHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, null);
+        return new SearchHolder(view);
+    }
 
     @Override
-    public void onBindViewHolder(final IndexHolder holder, final int position) {
+    public void onBindViewHolder(final SearchHolder holder, int position) {
         final Post item = data.get(position);
         holder.title.setText(item.abs);
         holder.price.setText("" + item.price + "元");
@@ -61,7 +56,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 holder.img.setImageBitmap(loadedImage);
                 Palette p = Palette.from(loadedImage).generate();
-                holder.banner.setBackgroundColor(p.getLightMutedColor(Color.WHITE));
             }
 
             @Override
@@ -69,15 +63,14 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
                 Bitmap already = ImageLoader.getInstance().loadImageSync(imageUri);
                 holder.img.setImageBitmap(already);
                 Palette p = Palette.from(already).generate();
-                holder.banner.setBackgroundColor(p.getLightMutedColor(Color.WHITE));
             }
         });
 
-        holder.indexCard.setOnClickListener(new View.OnClickListener() {
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PostDetailFragment.currentId = item.id;
-                MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
+                SearchActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
             }
         });
     }
@@ -87,23 +80,21 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
         return data.size();
     }
 
-    public static class IndexHolder extends RecyclerView.ViewHolder{
-        public TextView title;
-        public TextView price;
-        public TextView location;
-        public TextView pub;
+    public static class SearchHolder extends RecyclerView.ViewHolder{
         public ImageView img;
-        public CardView indexCard;
-        public LinearLayout banner;
-        public IndexHolder(View itemView) {
+        public TextView title;
+        public TextView pub;
+        public TextView pos;
+        public TextView price;
+        CardView card;
+        public SearchHolder(View itemView) {
             super(itemView);
-            title = (TextView)itemView.findViewById(R.id.index_title);
-            price = (TextView)itemView.findViewById(R.id.index_price);
-            location = (TextView)itemView.findViewById(R.id.index_pos);
-            pub = (TextView)itemView.findViewById(R.id.index_pub);
-            img = (SelectableRoundedImageView)itemView.findViewById(R.id.index_img);
-            indexCard = (CardView)itemView.findViewById(R.id.index_card);
-            banner = (LinearLayout)itemView.findViewById(R.id.index_banner);
+            img = (SelectableRoundedImageView)itemView.findViewById(R.id.search_img);
+            title = (TextView)itemView.findViewById(R.id.search_title);
+            pub = (TextView)itemView.findViewById(R.id.search_pub);
+            pos = (TextView)itemView.findViewById(R.id.search_pos);
+            price = (TextView)itemView.findViewById(R.id.search_price);
+            card = (CardView)itemView.findViewById(R.id.search_card);
         }
     }
 }

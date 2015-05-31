@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -80,9 +81,12 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     private int thumbHeight;
     private int thumbWidth;
     private MaterialEditText des;
+    private EditText title;
+    private EditText price;
+    LinearLayout selfContent;
     private AddFloatingActionButton publish;
     public static final String ISBN = "isbn";
-    public Douban oneDou;
+    public ArrayList<Douban> beans;
     GridView thumbs;
     RecyclerView list;
     GridAdapter thumbAdpter = new GridAdapter();
@@ -92,7 +96,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     FrameLayout surface;
     public static PublishActivity instance;
     ZBarScannerView scannerView;
-
     CapturePreview preview;
 
     @Override
@@ -104,7 +107,10 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         thumbHeight = DensityUtil.dip2px(this, 80);
         thumbWidth = DensityUtil.dip2px(this, 60);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
+        price = (MaterialEditText)findViewById(R.id.price_to_publish);
+        title = (MaterialEditText)findViewById(R.id.title_to_publish);
         publish = (AddFloatingActionButton)findViewById(R.id.publish);
+        selfContent = (LinearLayout)findViewById(R.id.self_content);
         surface = (FrameLayout)findViewById(R.id.cap_view);
         thumbs = (GridView)findViewById(R.id.cap_holder);
         thumbs.setAdapter(thumbAdpter);
@@ -143,20 +149,29 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         scannerView.startCamera();
     }
 
-    private void setToInput(){
+
+    private void setToMain(){
         surface.removeAllViews();
         surface.setVisibility(View.GONE);
-        des.setEnabled(true);
+    }
+    private void setToInput(){
+        if(selfContent.getVisibility() == View.GONE)
+            selfContent.setVisibility(View.VISIBLE);
     }
 
     private void myPublish(){
         if(!User.alreadLogin){
-            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
             return;
         }
         loadingView.show();
-        Holder.publishDes = des.getText().toString();
         Intent intent = new Intent(this, PublishService.class);
+        if(!paths.isEmpty()){
+            intent.putExtra("rawDes", des.getText().toString());
+            intent.putExtra("rawTitle", title.getText().toString());
+            intent.putExtra("rawPrice", price.getText().toString());
+            intent.putStringArrayListExtra("paths", paths);
+        }
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
     }
@@ -177,7 +192,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         intent.putExtra(Constants.intentType, Constants.fromDouban);
         intent.putExtra(ISBN, result.getContents());
         startService(intent);
-        setToInput();
+        setToMain();
     }
 
     private static class NetHandler extends Handler {
@@ -193,14 +208,14 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
                     instance.publishFinished();
                     break;
                 case Constants.fromDouban:
-                    instance.addFormattedBook();
+                    instance.addFormattedBook(msg.arg1);
                     break;
             }
         }
     }
 
-    private void addFormattedBook(){
-        doubanAdapter.addBook(oneDou);
+    private void addFormattedBook(int index){
+        doubanAdapter.addBook(beans.get(index));
     }
 
     @Override
@@ -240,6 +255,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
             e.printStackTrace();
         }
         paths.add(theName);
+        setToMain();
         setToInput();
     }
 

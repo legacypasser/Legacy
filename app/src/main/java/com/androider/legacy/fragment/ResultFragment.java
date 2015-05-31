@@ -13,18 +13,20 @@ import android.view.ViewGroup;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.adapter.RecyclerListAdapter;
+import com.androider.legacy.adapter.SearchAdapter;
 import com.androider.legacy.adapter.SimpleAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.service.SearchService;
+import com.androider.legacy.util.DividerDecorator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
-public class ResultFragment extends Fragment implements RecyclerListAdapter.RecycleClickListener{
+public class ResultFragment extends Fragment{
 
     public static ResultFragment instance;
-    static RecyclerListAdapter adapter;
+    static SearchAdapter adapter;
     RecyclerView selfList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,9 +35,9 @@ public class ResultFragment extends Fragment implements RecyclerListAdapter.Recy
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        selfList.addItemDecoration(new DividerDecorator());
         if(adapter != null){
             selfList.setAdapter(adapter);
-            adapter.setOnClickListener(this);
         }
         return rootView;
     }
@@ -74,18 +76,13 @@ public class ResultFragment extends Fragment implements RecyclerListAdapter.Recy
 
     public void refreshList(){
         if(Holder.resultedPost.size() != 0){
-            adapter = new RecyclerListAdapter();
+            adapter = new SearchAdapter();
             for(Post item : Holder.resultedPost)
                 adapter.addData(item);
             selfList.setAdapter(adapter);
-            adapter.setOnClickListener(this);
         }else {
             selfList.setAdapter(new SimpleAdapter(getResources().getString(R.string.empty_search)));
         }
     }
-    @Override
-    public void onItemClick(int id) {
-        PostDetailFragment.currentId = id;
-        SearchActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
-    }
+
 }

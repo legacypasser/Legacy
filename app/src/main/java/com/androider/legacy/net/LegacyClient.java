@@ -160,14 +160,15 @@ public class LegacyClient{
         return post(Constants.requestPath + Constants.register, reqData.toString());
     }
 
-    public String publish(){
+    public String publish(String content, ArrayList<String> paths){
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
-        builder.addFormDataPart("des", Holder.publishDes);
-        builder.addFormDataPart("price", Holder.price);
-        int temp = 0;
-        for(String path: PublishActivity.instance.paths){
-            builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));
-            temp++;
+        builder.addFormDataPart("content", content);
+        if(paths != null){
+            int temp = 0;
+            for(String path: paths){
+                builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));
+                temp++;
+            }
         }
         RequestBody body = builder.build();
         Request req = new Request.Builder()

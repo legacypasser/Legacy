@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -21,6 +22,11 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.SearchClient;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,6 +38,7 @@ import java.util.Date;
  */
 public class PublishService extends IntentService {
 
+    public static ArrayList<Post> toStore;
     public PublishService() {
         super("PublishService");
     }
@@ -43,40 +50,61 @@ public class PublishService extends IntentService {
         Message msg = Message.obtain();
         switch (intentType){
             case Constants.myPublish:
-                String idStr = LegacyClient.getInstance().publish();
-                int newlyAddedId = Integer.parseInt(idStr);
-                String imgStr = "";
-                for(String item : PublishActivity.instance.paths){
-                    imgStr += item + ";";
+                toStore = new ArrayList<>();
+                JSONArray dataArray = new JSONArray();
+                ArrayList<String> paths = intent.getStringArrayListExtra("paths");
+                if(paths != null){
+                    String rawDes = intent.getStringExtra("rawDes");
+                    String rawTitle = intent.getStringExtra("rawTitle");
+                    int rawPrice = Integer.parseInt(intent.getStringExtra("rawPrice"));
+                    String imgStr = "";
+                    for(String item : paths){
+                        if(item != paths.get(0))
+                            imgStr += ";";
+                        imgStr += item;
+                    }
+                    Post published = new Post(-1, rawDes, imgStr, User.id, new Date(), rawTitle, rawPrice);
+                    published.type = Post.selfType;
+                    dataArray.put(published.toServerJson());
+                    toStore.add(published);
                 }
-                Post published = new Post(newlyAddedId,
-                        Holder.publishDes,
-                        imgStr,
-                        User.id,
-                        new Date(),
-                        Holder.publishDes,
-                        Integer.parseInt(Holder.price)
-                );
-                Holder.justPub = published;
-                Holder.detailed.put(newlyAddedId, published);
-                ContentValues publishedCv = Post.getCv(published);
-                MainActivity.db.insert(Post.tableName, null, publishedCv);
-                SearchClient.uploadContent(published);
+
+                for(Douban item :PublishActivity.instance.beans){
+                    dataArray.put(item.toJson());
+                    Post temp = new Post(-1, item.des, item.img, User.id, new Date(), item.name, item.price);
+                    temp.type = Post.doubanType;
+                    toStore.add(temp);
+                }
+                String pubResult = LegacyClient.getInstance().publish(dataArray.toString(), paths);
+                String[] ids = pubResult.split(";");
+                for(int i = 0; i < ids.length; i++){
+                    int id = Integer.parseInt(ids[i]);
+                    toStore.get(i).id = id;
+                    Holder.detailed.put(id, toStore.get(i));
+                    MainActivity.db.insert(Post.tableName, null, Post.getCv(toStore.get(i)));
+                }
+                SearchClient.uploadContent(toStore);
                 break;
             case Constants.fromDouban:
                 String isbn = intent.getStringExtra(PublishActivity.ISBN);
                 Douban one = new Douban(isbn);
                 one.fill();
-                PublishActivity.instance.oneDou = one;
+                if(PublishActivity.instance.beans == null)
+                    PublishActivity.instance.beans = new ArrayList<>();
+                PublishActivity.instance.beans.add(one);
+                msg.arg1 = PublishActivity.instance.beans.size() - 1;
                 break;
         }
         try {
             msg.what = intentType;
             messenger.send(msg);
-            messenger = new Messenger(MainActivity.instance.netHandler);
-            msg = Message.obtain();
-            msg.what = Constants.myPublish;
-            messenger.send(msg);
+            if(intentType == Constants.myPublish){
+                messenger = new Messenger(MainActivity.instance.netHandler);
+                msg = Message.obtain();
+                msg.what = Constants.myPublish;
+                messenger.send(msg);
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }

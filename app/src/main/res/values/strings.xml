@@ -19,8 +19,8 @@
     <string name="nickname">昵称</string>
     <string name="major">专业</string>
     <string name="key_word">请输入关键字</string>
-    <string name="legacy_story">含泪甩卖</string>
-    <string name="legacy_des">自拍记得写价格</string>
+    <string name="legacy_story">我有话说</string>
+    <string name="legacy_des">含泪甩卖的理由</string>
     <string name="publishing">正在上传</string>
 
     <string name="price_flow">价格</string>
@@ -41,6 +41,8 @@
 
     <string name="test">测试</string>
     <string name="test_long">864633261@qq.com</string>
+
+    <string name="title">请输入书名</string>
 
     <string name="update">检查更新</string>
     <string name="feedback">意见反馈</string>

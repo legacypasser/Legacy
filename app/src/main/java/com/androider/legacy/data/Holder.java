@@ -16,11 +16,6 @@ public class Holder{
     public static ArrayList<Post> resultedPost = new ArrayList<Post>();
     public static HashMap<Integer, Session> talks = new HashMap<>();
     public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
-
-    public static Post justPub;
-    public static String publishDes;
-    public static String price;
-
     public static HashMap<Long, Record> waitBack = new HashMap<>();
 
 }

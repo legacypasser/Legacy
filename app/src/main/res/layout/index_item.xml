@@ -1,58 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardPreventCornerOverlap="false"
+    android:layout_height="180dp"
     app:cardCornerRadius="0dp"
+    android:id="@+id/index_card"
     app:cardUseCompatPadding="true">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:topLeftRadius="8dp"
-        android:topRightRadius="8dp"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        android:paddingBottom="8dp">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="90dp"
+            android:id="@+id/index_banner"
+            android:padding="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:id="@+id/index_title" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"
-                android:id="@+id/abs_pub"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:padding="16dp"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"
-                android:id="@+id/abs_price"/>
-        </RelativeLayout>
-
-
-        <com.joooonho.SelectableRoundedImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:id="@+id/abs_img"
-            />
+                android:layout_marginTop="8dp"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp"
+                android:id="@+id/index_price"/>
+        </LinearLayout>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/index_pub"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/index_pub"
+            android:layout_alignStart="@id/index_pub"
+            android:layout_above="@id/index_pub"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:id="@+id/abs_des"/>
-    </LinearLayout>
-
+            android:text="深圳"
+            android:id="@+id/index_pos"/>
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="72dp"
+            android:layout_height="96dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_alignBottom="@id/index_pub"
+            android:id="@+id/index_img" />
+        </RelativeLayout>
 </android.support.v7.widget.CardView>

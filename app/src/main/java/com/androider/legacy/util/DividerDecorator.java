@@ -23,8 +23,8 @@ public class DividerDecorator extends RecyclerView.ItemDecoration{
         paint.setColor(Color.LTGRAY);
         for (int i = 0, size = parent.getChildCount(); i < size; i++) {
             View child = parent.getChildAt(i);
-            c.drawLine(child.getLeft(), child.getBottom(),
-                    child.getRight(), child.getBottom(), paint);
+            c.drawLine(child.getLeft(), child.getTop(),
+                    child.getRight(), child.getTop(), paint);
         }
     }
 }

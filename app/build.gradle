@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     compile 'net.i2p.android.ext:floatingactionbutton:1.9.0'
     compile 'com.android.support:support-v4:22.1.1'
-    compile 'me.dm7.barcodescanner:zxing:1.7.1'
     compile 'me.dm7.barcodescanner:zbar:1.7.1'
+    compile 'com.android.support:palette-v7:22.1.1'
+    compile files('libs/universal-image-loader-1.9.4.jar')
 }

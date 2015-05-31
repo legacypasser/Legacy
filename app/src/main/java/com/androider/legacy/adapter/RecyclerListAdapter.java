@@ -12,6 +12,7 @@ import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
+import com.androider.legacy.util.DateConverter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -51,13 +52,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.absDes.setText(data.get(position).abs);
         holder.absPrice.setText("价格："+ data.get(position).price +"元");
-        holder.absPub.setText(PostConverter.formater.format(data.get(position).publish));
-        String path = "file://" + MainActivity.filePath + data.get(position).img.split(";")[0];
-        File file = new File(path);
-        if(file.exists())
-            ImageLoader.getInstance().displayImage(path, holder.absImg);
-        else
-            ImageLoader.getInstance().displayImage(Constants.imgPath + data.get(position).img.split(";")[0], holder.absImg);
+        holder.absPub.setText(DateConverter.formatDate(data.get(position).publish));
+        ImageLoader.getInstance().displayImage(data.get(position).getAbsImg(), holder.absImg);
     }
 
     @Override

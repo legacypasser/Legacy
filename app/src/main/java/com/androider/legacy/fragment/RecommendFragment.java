@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.adapter.IndexAdapter;
 import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
@@ -32,10 +33,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 
-public class RecommendFragment extends Fragment implements RecyclerListAdapter.RecycleClickListener{
+public class RecommendFragment extends Fragment{
 
     LegacyProgress loadingView;
-    private RecyclerListAdapter adapter = new RecyclerListAdapter();
+    private IndexAdapter adapter;
     public static RecommendFragment instance;
     public int currentPage = 0;
     RecyclerView selfList;
@@ -54,8 +55,8 @@ public class RecommendFragment extends Fragment implements RecyclerListAdapter.R
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_static_load, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.index_list);
-        selfList.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        adapter.setOnClickListener(this);
+        selfList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        adapter = new IndexAdapter();
         selfList.setAdapter(adapter);
         request();
         return rootView;
@@ -79,11 +80,6 @@ public class RecommendFragment extends Fragment implements RecyclerListAdapter.R
             loadingView.hide();
     }
 
-    @Override
-    public void onItemClick(int id) {
-        PostDetailFragment.currentId = id;
-        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
-    }
 
     @Override
     public void onDestroy() {

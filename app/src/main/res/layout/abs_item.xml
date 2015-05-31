@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardPreventCornerOverlap="false"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="0dp"
     app:cardUseCompatPadding="true"
-    android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/text_icon">
 
         <LinearLayout

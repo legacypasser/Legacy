@@ -19,8 +19,6 @@ import java.util.Date;
  */
 public class PostConverter {
 
-    public static SimpleDateFormat formater = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     public static ArrayList<Post> arryToList(ArrayList<JSONObject> objs){
         ArrayList<Post> result = new ArrayList<>();
         try {
@@ -32,6 +30,7 @@ public class PostConverter {
                 int price = item.getInt("price");
                 int seller = item.getInt("seller");
                 Post added = new Post(id, img, publish, abs, price, seller);
+                added.type = item.getInt("type");
                 result.add(added);
             }
         } catch (JSONException e) {

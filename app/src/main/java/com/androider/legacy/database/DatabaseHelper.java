@@ -27,7 +27,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "   seller  INT," +
                 "   publish  TIMESTAMP," +
                 "   abs  VARCHAR," +
-                "   price int);");
+                "   price int," +
+                "   type int);");
 
         db.execSQL("CREATE TABLE session ( peer INT primary key, nickname VARCHAR);");
         db.execSQL("CREATE TABLE record ( id INTEGER, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.NetConstants;
+import com.androider.legacy.util.DateConverter;
 import com.jialin.chat.Message;
 
 import org.json.JSONArray;
@@ -90,9 +91,9 @@ public class Record {
                     jObj.getInt("sender"),
                     jObj.getInt("receiver"),
                     jObj.getString("content"),
-                    PostConverter.formater.parse(jObj.getString("edit")).getTime()
+                    DateConverter.toNormalDate(jObj.getString("edit")).getTime()
             );
-        } catch (JSONException|ParseException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;

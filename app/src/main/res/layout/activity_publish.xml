@@ -10,48 +10,105 @@
         tools:context="com.androider.legacy.fragment.ContentFragment"
         android:orientation="vertical">
         <include layout="@layout/common_toolbar"/>
-        <GridView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/divider_color"
-            android:numColumns="6"
-            android:padding="4dp"
-            android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
-            android:id="@+id/cap_holder"/>
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            fabs:met_floatingLabel="highlight"
-            fabs:met_floatingLabelTextSize="16sp"
-            fabs:met_floatingLabelText="@string/legacy_des"
-            fabs:met_primaryColor="@color/primary_color"
-            fabs:met_baseColor="@color/primary_text"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/legacy_story"
-            fabs:met_maxCharacters="20"
-            android:id="@+id/des_to_publish"/>
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/douban_list"/>
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/self_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                    <GridView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/divider_color"
+                        android:numColumns="6"
+                        android:padding="4dp"
+                        android:horizontalSpacing="8dp"
+                        android:verticalSpacing="8dp"
+                        android:id="@+id/cap_holder"/>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
+                        fabs:met_floatingLabel="highlight"
+                        fabs:met_floatingLabelTextSize="16sp"
+                        fabs:met_floatingLabelText="书名"
+                        fabs:met_primaryColor="@color/primary_color"
+                        fabs:met_baseColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="请输入书名"
+                        fabs:met_maxCharacters="20"
+                        android:id="@+id/title_to_publish"/>
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:inputType="number"
+                        fabs:met_floatingLabel="highlight"
+                        fabs:met_floatingLabelTextSize="16sp"
+                        fabs:met_floatingLabelText="@string/price_flow"
+                        fabs:met_primaryColor="@color/primary_color"
+                        fabs:met_baseColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/price"
+                        fabs:met_maxCharacters="20"
+                        android:id="@+id/price_to_publish"/>
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
+                        fabs:met_floatingLabel="highlight"
+                        fabs:met_floatingLabelTextSize="16sp"
+                        fabs:met_floatingLabelText="@string/legacy_des"
+                        fabs:met_primaryColor="@color/primary_color"
+                        fabs:met_baseColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/legacy_story"
+                        fabs:met_maxCharacters="20"
+                        android:id="@+id/des_to_publish"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="480dp"
+                    android:id="@+id/douban_list"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:layout_gravity="end"
             android:id="@+id/publish"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             fabs:fab_colorNormal="@color/accent_color"
             fabs:fab_colorPressed="@color/pressed"
             fabs:fab_colorDisabled="@color/disabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
