@@ -25,6 +25,7 @@ import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 
 import com.androider.legacy.util.LegacyProgress;
@@ -33,13 +34,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 
-public class RecommendFragment extends Fragment{
+public class RecommendFragment extends Fragment implements IndexAdapter.BottomListener{
 
     LegacyProgress loadingView;
     private IndexAdapter adapter;
     public static RecommendFragment instance;
     public int currentPage = 0;
     RecyclerView selfList;
+    SwipeRefreshLayout holder;
     public static RecommendFragment newInstance(String param1, String param2) {
         RecommendFragment fragment = new RecommendFragment();
         Bundle args = new Bundle();
@@ -56,15 +58,27 @@ public class RecommendFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_static_load, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.index_list);
         selfList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new IndexAdapter();
+        adapter = new IndexAdapter(this);
         selfList.setAdapter(adapter);
-        request();
+        holder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
+        holder.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                request();
+            }
+        });
+        if(User.id == -1)
+            request();
         return rootView;
     }
 
-    private void request(){
+    public void request(){
         loadingView = new LegacyProgress(getActivity());
         loadingView.show();
+        more();
+    }
+
+    private void more(){
         currentPage++;
         Intent intent = new Intent(getActivity(), NetService.class);
         intent.putExtra(Constants.intentType, Constants.recommendAdded);
@@ -78,12 +92,19 @@ public class RecommendFragment extends Fragment{
         }
         if(loadingView != null)
             loadingView.hide();
+        holder.setRefreshing(false);
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(loadingView != null)
         loadingView.dismiss();
+    }
+
+    @Override
+    public void onEndReach() {
+        more();
     }
 }

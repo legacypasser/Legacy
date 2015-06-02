@@ -69,8 +69,13 @@ public class NetService extends IntentService {
                 break;
             case Constants.registrationSent:
                 String regiResult = LegacyClient.getInstance().register();
-                User.id = Integer.parseInt(regiResult);
-                User.store();
+                if(regiResult.equals("email_used")){
+                    msg.arg1 = Constants.mail_occupied;
+                }else {
+                    User.id = Integer.parseInt(regiResult);
+                    User.store();
+                    msg.arg1 = Constants.please_active;
+                }
                 break;
             case Constants.loginAttempt:
                 String loginResult =  LegacyClient.getInstance().login();
@@ -80,7 +85,9 @@ public class NetService extends IntentService {
                     msg.arg1 = Constants.email_fail;
                 }else if(loginResult.equals("password_fail")){
                     msg.arg1 = Constants.password_fail;
-                }else {
+                }else if(loginResult.equals("not_actived")){
+                    msg.arg1 = Constants.not_active;
+                }else{
                     msg.arg1 = User.resetUser(new JSONObject(loginResult));
                 }
                 break;
@@ -95,11 +102,7 @@ public class NetService extends IntentService {
                 }
             case Constants.baiduLocation:
                 String woduResult = LegacyClient.getInstance().baiduLocation();
-                JSONObject whole = new JSONObject(woduResult);
-                JSONObject point = whole.getJSONObject("content").getJSONObject("point");
-                User.longi = point.getDouble("x");
-                User.lati = point.getDouble("y");
-                User.province = whole.getJSONObject("content").getJSONObject("address_detail").getString("province");
+                User.positionUser(woduResult);
                 return;
             case Constants.byebye:
                 Sender.getInstance().sendToServer(""+User.id, NetConstants.offline);

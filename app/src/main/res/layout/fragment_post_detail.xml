@@ -10,15 +10,20 @@
     <!-- TODO: Update blank fragment layout -->
 <LinearLayout
     android:layout_width="match_parent"
-    android:padding="8dp"
-    android:layout_height="wrap_content" android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:id="@+id/detail_img"
+        android:layout_marginBottom="4dp"/>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="4dp"
         android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/text_icon"
-        >
+        app:cardBackgroundColor="@color/text_icon">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,11 +50,7 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:id="@+id/detail_img"
-        android:layout_marginBottom="4dp"/>
+
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

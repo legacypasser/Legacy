@@ -79,6 +79,10 @@
             android:label="@string/title_activity_scanning"
             android:theme="@style/FullscreenTheme" >
         </activity>
+        <activity
+            android:name=".activity.MailActivity"
+            android:label="@string/title_activity_mail" >
+        </activity>
     </application>
 
 </manifest>

@@ -35,6 +35,16 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
 
     protected ArrayList<Post> data = new ArrayList<>();
 
+    public interface BottomListener{
+        void onEndReach();
+    }
+
+    private BottomListener listener;
+
+    public IndexAdapter(BottomListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public IndexHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.index_item, parent, false);
@@ -80,6 +90,9 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
                 MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
             }
         });
+
+        if(position == data.size() - 1)
+            listener.onEndReach();
     }
 
     @Override

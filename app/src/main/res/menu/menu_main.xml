@@ -8,4 +8,6 @@
         app:showAsAction="never"/>
     <item android:id="@+id/action_login" android:title="登陆" android:orderInCategory="100"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_mail" android:title="邮箱" android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

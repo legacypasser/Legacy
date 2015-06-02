@@ -13,8 +13,10 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
+import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
+import com.androider.legacy.util.ConnectDetector;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ContentHandler;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +47,6 @@ public class LegacyClient{
     OkHttpClient client;
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private static final MediaType ALI_FORM = MediaType.parse("application/x-www-form-urlencoded");
-    private static final MediaType MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
         lastSession = "";
@@ -79,6 +80,8 @@ public class LegacyClient{
     }
 
     public String get(String url){
+        if(!ConnectDetector.isConnectedToNet())
+            return RequestData.fromBase(url);
         Request req = new Request.Builder()
                 .url(url)
                 .addHeader("Cookie", lastSession)
@@ -87,7 +90,9 @@ public class LegacyClient{
         try {
             resp = client.newCall(req).execute();
             lastSession = resp.header("Set-Cookie").split(";")[0];
-            return resp.body().string();
+            String result = resp.body().string();
+            RequestData.save(url, result);
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,13 +222,18 @@ public class LegacyClient{
     }
 
     public String baiduLocation(){
+        if(!ConnectDetector.isConnectedToNet()){
+            return RequestData.fromBase(Constants.baiduUrl);
+        }
         Request req = new Request.Builder()
-                .url("http://api.map.baidu.com/location/ip?ak=260569e20491d41b6def091cccf191b0&coor=bd09ll")
+                .url(Constants.baiduUrl)
                 .build();
         Response  resp = null;
         try {
             resp = client.newCall(req).execute();
-            return resp.body().string();
+            String result = resp.body().string();
+            RequestData.save(Constants.baiduUrl, result);
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }

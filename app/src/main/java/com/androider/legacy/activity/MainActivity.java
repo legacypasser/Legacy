@@ -52,6 +52,7 @@ import com.androider.legacy.net.Sender;
 import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.ConnectDetector;
 import com.androider.legacy.util.Locator;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -137,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         User.drag();
         autoLogin();
         initView();
-        SearchClient.initSearch();
     }
 
     private void backControl(){
@@ -166,6 +166,9 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
     }
 
     private void autoLogin(){
+        if(!ConnectDetector.isConnectedToNet()){
+            return;
+        }
         if(User.id == -1){
             initLocation();
         }else{
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
-        fragmentList.add(SessionListFragment.newInstance("",""));
+        fragmentList.add(SessionListFragment.newInstance("", ""));
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         FragmentViewPagerAdapter pagerAdapter = new FragmentViewPagerAdapter( fragmentList,this.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -212,10 +215,9 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1){
+                if (position == 1) {
                     overButton.setVisibility(View.VISIBLE);
-                }
-                else
+                } else
                     overButton.setVisibility(View.INVISIBLE);
             }
 
@@ -272,6 +274,12 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
             startActivity(intent);
             return true;
         }
+
+        if(id == R.id.action_mail){
+            Intent intent = new Intent(this, MailActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -323,7 +331,10 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
                     PostDetailFragment.instance.setView();
                     break;
                 case Constants.registrationSent:
-                    MainActivity.instance.autoLogin();
+                    if(msg.arg1 == Constants.mail_occupied)
+                        Toast.makeText(instance, "这个邮箱已被注册过了，亲", Toast.LENGTH_SHORT).show();
+                    else if(msg.arg1 == Constants.please_active)
+                        Toast.makeText(instance, "注册成功，请登陆邮箱激活账号，么么哒", Toast.LENGTH_SHORT).show();
                     break;
                 case Constants.loginAttempt:
                     switch (msg.arg1){
@@ -331,12 +342,15 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
                             break;
                         case Constants.password_fail:
                             break;
+                        case Constants.not_active:
+                            break;
                         case Constants.unknow_login_fail:
                             break;
                         case Constants.userReseted:
                             Session.clearSession();
                             SessionListFragment.instance.useNewAdapter();
                         case Constants.userNotReseted:
+                            RecommendFragment.instance.request();
                             Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
                             instance.accountNickname.setText(User.nickname);
                             instance.accountEmail.setText(User.email);

@@ -25,7 +25,7 @@ public class User {
     public static double lati;
     public static double longi;
     public static boolean alreadLogin;
-    public static String province = "";
+    public static String province;
 
     public static String tableName = "user";
     public static void store(){
@@ -40,6 +40,20 @@ public class User {
         cv.put("lati", lati);
         cv.put("longi", longi);
         MainActivity.db.insert(tableName, null, cv);
+    }
+
+    public static void positionUser(String accrodingBaidu){
+        JSONObject whole;
+        try {
+            whole = new JSONObject(accrodingBaidu);
+            JSONObject point = whole.getJSONObject("content").getJSONObject("point");
+            User.longi = point.getDouble("x");
+            User.lati = point.getDouble("y");
+            User.province = whole.getJSONObject("content").getJSONObject("address_detail").getString("province");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static int resetUser(JSONObject returned){

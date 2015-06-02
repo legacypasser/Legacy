@@ -26,6 +26,7 @@ import com.androider.legacy.adapter.ChooseAdapter;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Nicker;
+import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
@@ -146,6 +147,8 @@ public class RegisterActivity extends SimpleActivity implements View.OnClickList
         }
         search.setHint(getString(R.string.school_name));
         search.addTextChangedListener(schoolWatcher);
+        if(User.province == null)
+            User.positionUser(RequestData.fromBase(Constants.baiduUrl));
         list.setAdapter(new ChooseAdapter(School.regional(User.province), this));
     }
 
