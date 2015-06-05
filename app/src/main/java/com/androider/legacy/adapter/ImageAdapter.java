@@ -11,6 +11,7 @@ import com.androider.legacy.R;
 import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         data.add(url);
         notifyItemInserted(data.size() - 1);
     }
+
     @Override
     public void onBindViewHolder(ImageHolder holder, int position){
         ImageLoader.getInstance().displayImage(data.get(position), holder.img);
@@ -44,7 +46,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         public ImageView img;
         public ImageHolder(View itemView) {
             super(itemView);
-            img = (SelectableRoundedImageView)itemView.findViewById(R.id.detail_img);
+            img = (ImageView)itemView.findViewById(R.id.detail_img);
         }
     }
 }

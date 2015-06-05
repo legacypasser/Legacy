@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,34 +45,37 @@ public class Post{
     public static final int doubanType = 0;
 
     public String getAbsImg(){
-        if(seller == User.id){
-            if(type == selfType)
-                return "file://" + MainActivity.filePath + img.split(";")[0];
-            else if(type == doubanType)
-                return img;
-        }
-        else if(type == selfType){
-            return Constants.imgPath + img.split(";")[0];
-        }else if(type == doubanType){
+        if(type == doubanType){
             return img;
+        }else{
+            String name = img.split(";")[0];
+            String path = "file://" + MainActivity.filePath + "s_" + name;
+            if(fileExists(path))
+                return path;
+            else
+                return Constants.imgPath + "s_" + name;
         }
-        return null;
     }
 
+    private boolean fileExists(String path){
+        File file = new File(path);
+        return file.exists();
+    }
 
     public ArrayList<String> getDetailImg(){
         ArrayList<String> imgs = new ArrayList<>();
         if(type == doubanType){
-            String big = img.replace("com/s", "com/l");
+            String big = img.replace("mpic", "lpic");
             imgs.add(big);
         }else if(type == selfType){
-            String[] all = img.split(";");
-            if(User.id == seller)
-                for(String item : all)
-                    imgs.add("file://" + MainActivity.filePath + item);
-            else
-                for (String item : all)
-                    imgs.add(Constants.imgPath + item);
+            String[] all = img.replace("mpic", "lpic").split(";");
+                for(String item : all){
+                    String path = "file://" + MainActivity.filePath + item;
+                    if(fileExists(path))
+                        imgs.add(path);
+                    else
+                        imgs.add(Constants.imgPath + item);
+                }
         }
         return imgs;
     }

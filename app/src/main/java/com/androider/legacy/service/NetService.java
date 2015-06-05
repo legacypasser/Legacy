@@ -16,6 +16,7 @@ import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.Record;
@@ -65,15 +66,15 @@ public class NetService extends IntentService {
                 ContentValues cv = new ContentValues();
                 cv.put("des", certain.des);
                 MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
-                User.getPeerNick(certain.seller);
+                Mate.getPeer(certain.seller);
                 break;
             case Constants.registrationSent:
                 String regiResult = LegacyClient.getInstance().register();
                 if(regiResult.equals("email_used")){
                     msg.arg1 = Constants.mail_occupied;
                 }else {
-                    User.id = Integer.parseInt(regiResult);
-                    User.store();
+                    User.instance.id = Integer.parseInt(regiResult);
+                    User.instance.store();
                     msg.arg1 = Constants.please_active;
                 }
                 break;
@@ -88,7 +89,7 @@ public class NetService extends IntentService {
                 }else if(loginResult.equals("not_actived")){
                     msg.arg1 = Constants.not_active;
                 }else{
-                    msg.arg1 = User.resetUser(new JSONObject(loginResult));
+                    msg.arg1 = User.instance.resetUser(new JSONObject(loginResult));
                 }
                 break;
             case Constants.pullMsg:
@@ -102,10 +103,10 @@ public class NetService extends IntentService {
                 }
             case Constants.baiduLocation:
                 String woduResult = LegacyClient.getInstance().baiduLocation();
-                User.positionUser(woduResult);
+                User.instance.positionUser(woduResult);
                 return;
             case Constants.byebye:
-                Sender.getInstance().sendToServer(""+User.id, NetConstants.offline);
+                Sender.getInstance().sendToServer(""+User.instance.id, NetConstants.offline);
                 UdpClient.getInstance().close();
                 return;
         }

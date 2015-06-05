@@ -34,6 +34,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
     public void setData(ArrayList<Post> data){
         this.data = data;
     }
+    View.OnClickListener listener;
+
+    public SearchAdapter(View.OnClickListener listener) {
+        this.listener = listener;
+    }
 
     public void addData(Post one){
         data.add(one);
@@ -65,14 +70,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
                 Palette p = Palette.from(already).generate();
             }
         });
-
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PostDetailFragment.currentId = item.id;
-                SearchActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
-            }
-        });
+        holder.card.setTag(data.get(position).id);
+        holder.card.setOnClickListener(listener);
     }
 
     @Override

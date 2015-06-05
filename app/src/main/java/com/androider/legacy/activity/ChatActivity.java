@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Record;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
@@ -73,7 +74,7 @@ public class ChatActivity extends SimpleActivity {
             }
         });
         setToolBar();
-        getSupportActionBar().setTitle(Holder.peers.get(currentSession.peer));
+        getSupportActionBar().setTitle(Mate.peers.get(currentSession.peer).nickname);
         initList();
     }
 
@@ -110,7 +111,7 @@ public class ChatActivity extends SimpleActivity {
 
 
     private void sendOnline(String content){
-        if(User.alreadLogin){
+        if(User.instance.alreadLogin){
             Intent intent = new Intent(this, ChatService.class);
             intent.putExtra(Constants.intentType, NetConstants.sendChat);
             intent.putExtra(NetConstants.content, content);

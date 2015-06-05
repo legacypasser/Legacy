@@ -113,7 +113,7 @@ public class Record {
     }
 
     public Session getSession(){
-        int newPeer = (receiver == User.id)? sender: receiver;
+        int newPeer = (receiver == User.instance.id)? sender: receiver;
         return Session.get(newPeer);
     }
 
@@ -129,6 +129,6 @@ public class Record {
     }
 
     public Message formMessage(){
-        return new Message(0, 1, Holder.peers.get(sender), "avatar", Holder.peers.get(receiver), "avatar", content, User.id == sender, true, new Date(edit));
+        return new Message(0, 1, Mate.peers.get(sender).nickname, "avatar", Mate.peers.get(receiver).nickname, "avatar", content, User.instance.id == sender, true, new Date(edit));
     }
 }

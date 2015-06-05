@@ -114,7 +114,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
             price = (TextView)itemView.findViewById(R.id.index_price);
             location = (TextView)itemView.findViewById(R.id.index_pos);
             pub = (TextView)itemView.findViewById(R.id.index_pub);
-            img = (SelectableRoundedImageView)itemView.findViewById(R.id.index_img);
+            img = (ImageView)itemView.findViewById(R.id.index_img);
             indexCard = (CardView)itemView.findViewById(R.id.index_card);
             banner = (LinearLayout)itemView.findViewById(R.id.index_banner);
         }

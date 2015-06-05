@@ -23,7 +23,7 @@ import com.androider.legacy.util.DividerDecorator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
-public class ResultFragment extends Fragment{
+public class ResultFragment extends Fragment implements View.OnClickListener{
 
     public static ResultFragment instance;
     static SearchAdapter adapter;
@@ -76,7 +76,7 @@ public class ResultFragment extends Fragment{
 
     public void refreshList(){
         if(Holder.resultedPost.size() != 0){
-            adapter = new SearchAdapter();
+            adapter = new SearchAdapter(this);
             for(Post item : Holder.resultedPost)
                 adapter.addData(item);
             selfList.setAdapter(adapter);
@@ -85,4 +85,9 @@ public class ResultFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        PostDetailFragment.currentId = (int)v.getTag();
+        SearchActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
+    }
 }

@@ -63,7 +63,7 @@ public class PublishService extends IntentService {
                             imgStr += ";";
                         imgStr += item;
                     }
-                    Post published = new Post(-1, rawDes, imgStr, User.id, new Date(), rawTitle, rawPrice);
+                    Post published = new Post(-1, rawDes, imgStr, User.instance.id, new Date(), rawTitle, rawPrice);
                     published.type = Post.selfType;
                     dataArray.put(published.toServerJson());
                     toStore.add(published);
@@ -71,7 +71,7 @@ public class PublishService extends IntentService {
 
                 for(Douban item :PublishActivity.instance.beans){
                     dataArray.put(item.toJson());
-                    Post temp = new Post(-1, item.des, item.img, User.id, new Date(), item.name, item.price);
+                    Post temp = new Post(-1, item.des, item.img, User.instance.id, new Date(), item.name, item.price);
                     temp.type = Post.doubanType;
                     toStore.add(temp);
                 }
@@ -89,8 +89,6 @@ public class PublishService extends IntentService {
                 String isbn = intent.getStringExtra(PublishActivity.ISBN);
                 Douban one = new Douban(isbn);
                 one.fill();
-                if(PublishActivity.instance.beans == null)
-                    PublishActivity.instance.beans = new ArrayList<>();
                 PublishActivity.instance.beans.add(one);
                 msg.arg1 = PublishActivity.instance.beans.size() - 1;
                 break;

@@ -6,63 +6,80 @@
     android:layout_height="match_parent"
     android:background="@color/divider_color"
     tools:context="com.androider.legacy.fragment.PostDetailFragment">
-
     <!-- TODO: Update blank fragment layout -->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:id="@+id/detail_img"
-        android:layout_marginBottom="4dp"/>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:background="@color/secondary_text"
+            android:gravity="center"
+            android:id="@+id/img_holder"/>
+    </HorizontalScrollView>
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/text_icon">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="4dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/primary_text"
                 android:textSize="16sp"
-                android:padding="16dp"
+                android:id="@+id/detail_title"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/detail_title"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:textColor="@color/primary_text"
-                android:layout_gravity="start"
+                android:textColor="@color/secondary_text"
                 android:id="@+id/detail_pub"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:textSize="16sp"
-                android:padding="16dp"
-                android:layout_gravity="end"
-                android:textColor="@color/primary_text"
+                android:layout_alignParentBottom="true"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text"
                 android:id="@+id/detail_price"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
-
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/text_icon"
-        >
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:padding="16dp"
             android:textColor="@color/primary_text"
             android:id="@+id/detail_des"/>
@@ -72,30 +89,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/text_icon"
+        android:layout_margin="8dp"
         android:id="@+id/detail_nick_card">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
             <TextView
                 android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:layout_margin="16dp"
+                android:textSize="16sp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_nickname"
                 android:textColor="@color/primary_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/detail_nickname"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_school"
+                android:textColor="@color/secondary_text"/>
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignTop="@id/detail_nickname"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:contentDescription="发消息"
+                android:contentDescription="@string/contract_seller"
                 android:id="@+id/msg_icon"
                 android:src="@drawable/ic_textsms_black_24dp"/>
         </RelativeLayout>

@@ -147,9 +147,9 @@ public class RegisterActivity extends SimpleActivity implements View.OnClickList
         }
         search.setHint(getString(R.string.school_name));
         search.addTextChangedListener(schoolWatcher);
-        if(User.province == null)
-            User.positionUser(RequestData.fromBase(Constants.baiduUrl));
-        list.setAdapter(new ChooseAdapter(School.regional(User.province), this));
+        if(User.instance.province == null)
+            User.instance.positionUser(RequestData.fromBase(Constants.baiduUrl));
+        list.setAdapter(new ChooseAdapter(School.regional(User.instance.province), this));
     }
 
     private void setToChooseMajor(){
@@ -167,11 +167,11 @@ public class RegisterActivity extends SimpleActivity implements View.OnClickList
     }
 
     public void sendRegistration(){
-        User.email = email.getText().toString();
-        User.password = Encryption.encrypt(password.getText().toString());
-        User.nickname = nickname.getText().toString();
-        User.school = school.getText().toString();
-        User.major = major.getText().toString();
+        User.instance.email = email.getText().toString();
+        User.instance.password = Encryption.encrypt(password.getText().toString());
+        User.instance.nickname = nickname.getText().toString();
+        User.instance.school = school.getText().toString();
+        User.instance.major = major.getText().toString();
         Intent intent = new Intent(this, NetService.class);
         intent.putExtra(Constants.intentType, Constants.registrationSent);
         startService(intent);

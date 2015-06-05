@@ -77,8 +77,8 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User.email = username.getText().toString();
-                User.password = Encryption.encrypt(password.getText().toString());
+                User.instance.email = username.getText().toString();
+                User.instance.password = Encryption.encrypt(password.getText().toString());
                 login();
             }
         });

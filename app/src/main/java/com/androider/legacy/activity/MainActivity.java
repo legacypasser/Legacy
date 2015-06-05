@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
         StateController.change(Constants.mainState);
-        User.drag();
+        User.instance.drag();
         autoLogin();
         initView();
     }
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         if(!ConnectDetector.isConnectedToNet()){
             return;
         }
-        if(User.id == -1){
+        if(User.instance.id == -1){
             initLocation();
         }else{
             Intent intent = new Intent(this, NetService.class);
@@ -351,16 +351,16 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
                             SessionListFragment.instance.useNewAdapter();
                         case Constants.userNotReseted:
                             RecommendFragment.instance.request();
-                            Toast.makeText(instance, "登陆成功 " + User.nickname, Toast.LENGTH_SHORT).show();
-                            instance.accountNickname.setText(User.nickname);
-                            instance.accountEmail.setText(User.email);
+                            Toast.makeText(instance, "登陆成功 " + User.instance.nickname, Toast.LENGTH_SHORT).show();
+                            instance.accountNickname.setText(User.instance.nickname);
+                            instance.accountEmail.setText(User.instance.email);
                             UdpClient.getInstance().isRunning = true;
                             instance.chatOn();
                             SessionListFragment.instance.startPull();
                             if(StateController.getCurrent() == Constants.detailState){
                                 instance.backControl();
                             }
-                            User.alreadLogin = true;
+                            User.instance.alreadLogin = true;
                             break;
                     }
                     break;

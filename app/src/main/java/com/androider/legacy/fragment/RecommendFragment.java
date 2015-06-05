@@ -67,7 +67,7 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
                 request();
             }
         });
-        if(User.id == -1)
+        if(User.instance.id == -1)
             request();
         return rootView;
     }

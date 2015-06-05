@@ -55,7 +55,7 @@
             android:textSize="16sp"
             android:text="深圳"
             android:id="@+id/index_pos"/>
-        <com.joooonho.SelectableRoundedImageView
+        <ImageView
             android:layout_width="72dp"
             android:layout_height="96dp"
             android:scaleType="centerCrop"

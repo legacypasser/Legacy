@@ -24,12 +24,14 @@ import com.androider.legacy.adapter.ImageAdapter;
 import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
 
 import com.androider.legacy.util.DateConverter;
 import com.androider.legacy.util.DensityUtil;
+import com.androider.legacy.util.FitManager;
 import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -49,10 +51,11 @@ public class PostDetailFragment extends Fragment {
     TextView detailNickname;
     CardView detailNickCard;
     TextView detailPub;
-    RecyclerView detailHolder;
+    TextView detailTitle;
+    LinearLayout imgHolder;
     TextView detailPrice;
+    TextView detailSchool;
     ImageView icon;
-    ImageAdapter adapter;
     public static PostDetailFragment instance;
 
     /**
@@ -88,16 +91,15 @@ public class PostDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_post_detail, container, false);
-        detailHolder = (RecyclerView)rootView.findViewById(R.id.detail_img);
+        imgHolder = (LinearLayout)rootView.findViewById(R.id.img_holder);
         detailDes = (TextView)rootView.findViewById(R.id.detail_des);
         detailPub = (TextView)rootView.findViewById(R.id.detail_pub);
         detailNickname = (TextView)rootView.findViewById(R.id.detail_nickname);
         detailNickCard = (CardView)rootView.findViewById(R.id.detail_nick_card);
+        detailTitle = (TextView)rootView.findViewById(R.id.detail_title);
+        detailSchool = (TextView)rootView.findViewById(R.id.detail_school);
         detailPrice = (TextView)rootView.findViewById(R.id.detail_price);
         icon = (ImageView)rootView.findViewById(R.id.msg_icon);
-        detailHolder.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ImageAdapter();
-        detailHolder.setAdapter(adapter);
         StateController.change(Constants.detailState);
         setView();
         return rootView;
@@ -112,12 +114,17 @@ public class PostDetailFragment extends Fragment {
         Post current = Post.get(currentId);
         if(current == null)
             return;
-        for(String item : current.getDetailImg())
-            adapter.addData(item);
+        for(String item : current.getDetailImg()){
+            View imageCard = LayoutInflater.from(getActivity()).inflate(R.layout.item_img, null);
+            ImageView img = (ImageView)imageCard.findViewById(R.id.detail_img);
+            ImageLoader.getInstance().displayImage(item, img);
+            imgHolder.addView(imageCard);
+        }
         detailDes.setText(current.des);
         detailPrice.setText("价格：" + current.price + "元");
         detailPub.setText(DateConverter.formatDate(current.publish));
-        if(current.seller != User.id){
+        detailTitle.setText(current.abs);
+        if(current.seller != User.instance.id){
             detailNickCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,10 +133,12 @@ public class PostDetailFragment extends Fragment {
                     getActivity().startActivity(intent);
                 }
             });
-            detailNickname.setText(Holder.peers.get(current.seller));
+            detailNickname.setText(Mate.peers.get(current.seller).nickname);
+            detailSchool.setText(Mate.getPeer(current.seller).school);
         }else {
             icon.setImageResource(R.drawable.ic_person_black_48dp);
             detailNickname.setText("我的宝贝");
+            detailSchool.setText(User.instance.school);
         }
     }
 

@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.adapter.RecyclerListAdapter;
+import com.androider.legacy.adapter.SearchAdapter;
 import com.androider.legacy.adapter.SimpleAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
@@ -26,12 +28,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-public class MyPostListFragment extends Fragment implements RecyclerListAdapter.RecycleClickListener{
+public class MyPostListFragment extends Fragment implements View.OnClickListener{
 
     public static MyPostListFragment instance;
     private RecyclerView selfList;
 
-    private RecyclerListAdapter adapter = new RecyclerListAdapter();
+    private SearchAdapter adapter;
     public static MyPostListFragment newInstance(String param1, String param2) {
         MyPostListFragment fragment = new MyPostListFragment();
         Bundle args = new Bundle();
@@ -50,9 +52,9 @@ public class MyPostListFragment extends Fragment implements RecyclerListAdapter.
         View rootView = inflater.inflate(R.layout.fragment_base_list, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ArrayList<Post> myList = Post.listFromBase(User.id);
+        ArrayList<Post> myList = Post.listFromBase(User.instance.id);
+        adapter = new SearchAdapter(this);
         if(myList.size() != 0){
-            adapter.setOnClickListener(this);
             selfList.setAdapter(adapter);
             for(Post item :myList)
                 adapter.addData(item);
@@ -66,15 +68,15 @@ public class MyPostListFragment extends Fragment implements RecyclerListAdapter.
         for(Post item : PublishService.toStore)
             adapter.addData(item);
         if(!(selfList.getAdapter() instanceof RecyclerListAdapter)){
-            adapter.setOnClickListener(this);
             selfList.setAdapter(adapter);
         }
         PublishService.toStore = null;
     }
 
+
     @Override
-    public void onItemClick(int id) {
-        PostDetailFragment.currentId = id;
+    public void onClick(View v) {
+        PostDetailFragment.currentId = (int)v.getTag();
         MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
     }
 }

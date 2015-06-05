@@ -15,7 +15,6 @@ public class Holder{
     public static HashMap<Integer, Post> detailed = new HashMap<Integer, Post>();
     public static ArrayList<Post> resultedPost = new ArrayList<Post>();
     public static HashMap<Integer, Session> talks = new HashMap<>();
-    public static HashMap<Integer, String> peers = new HashMap<Integer, String>();
     public static HashMap<Long, Record> waitBack = new HashMap<>();
 
 }

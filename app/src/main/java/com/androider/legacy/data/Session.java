@@ -60,7 +60,7 @@ public class Session {
     public static Session get(int id){
         Session result = Holder.talks.get(id);
         if(result == null){
-            result = new Session(id, User.getPeerNick(id));
+            result = new Session(id, Mate.getPeer(id).nickname);
             result.draged = true;
             Holder.talks.put(id, result);
             result.store();
@@ -84,9 +84,9 @@ public class Session {
     }
 
     public static void drag(){
-        if(User.id == -1)
+        if(User.instance.id == -1)
             return;
-        Cursor cursor = MainActivity.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.id});
+        Cursor cursor = MainActivity.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.instance.id});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Session item = getCursored(cursor);

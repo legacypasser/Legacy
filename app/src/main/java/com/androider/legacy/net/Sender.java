@@ -22,7 +22,7 @@ public class Sender implements Runnable{
         while (common.isRunning){
             try {
                 Log.v("panbo", "heard on");
-                sendToServer("" + User.id, NetConstants.heartHead);
+                sendToServer("" + User.instance.id, NetConstants.heartHead);
                 Thread.currentThread();
                 Thread.sleep(NetConstants.heartSpace);
             } catch (InterruptedException e) {
@@ -66,7 +66,7 @@ public class Sender implements Runnable{
     }
 
     public void sendToPeer(int id, String information){
-        Record message = new Record(User.id, id, information);
+        Record message = new Record(User.instance.id, id, information);
         Holder.waitBack.put(message.edit, message);
         sendToServer(message.toString(), NetConstants.message);
     }

@@ -138,8 +138,8 @@ public class LegacyClient{
     public String login(){
         JSONObject reqData = new JSONObject();
         try {
-            reqData.put("email", User.email);
-            reqData.put("password", User.password);
+            reqData.put("email", User.instance.email);
+            reqData.put("password", User.instance.password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -149,16 +149,16 @@ public class LegacyClient{
     public String register(){
         JSONObject reqData = new JSONObject();
         try {
-            reqData.put("email", User.email);
-            reqData.put("password", User.password);
-            reqData.put("nickname", User.nickname);
-            reqData.put("school", User.school);
-            reqData.put("major", User.major);
-            reqData.put("lati", User.lati);
-            reqData.put("longi", User.longi);
-            reqData.put("schoolid", School.schoolId(User.school));
-            reqData.put("majorid", School.majorId(User.major));
-            reqData.put("region", School.proviceId(User.province));
+            reqData.put("email", User.instance.email);
+            reqData.put("password", User.instance.password);
+            reqData.put("nickname", User.instance.nickname);
+            reqData.put("school", User.instance.school);
+            reqData.put("major", User.instance.major);
+            reqData.put("lati", User.instance.lati);
+            reqData.put("longi", User.instance.longi);
+            reqData.put("schoolid", School.schoolId(User.instance.school));
+            reqData.put("majorid", School.majorId(User.instance.major));
+            reqData.put("region", School.proviceId(User.instance.province));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -169,10 +169,10 @@ public class LegacyClient{
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         builder.addFormDataPart("content", content);
         if(paths != null){
-            int temp = 0;
-            for(String path: paths){
-                builder.addFormDataPart("imgs" + temp, path, RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + path)));
-                temp++;
+            for(int i = 0; i < paths.size(); i++){
+                if(i == 0)
+                    builder.addFormDataPart("imgs" + (i), "s_" + paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + "s_" + paths.get(i))));
+                builder.addFormDataPart("imgs" + (i + 1), paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + paths.get(i))));
             }
         }
         RequestBody body = builder.build();
