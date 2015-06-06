@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +38,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.lang.ref.WeakReference;
 
-public class SearchActivity extends SimpleActivity {
+public class SearchActivity extends AppCompatActivity {
 
     EditText searchInput;
     ButtonFlat searchButton;
@@ -47,7 +48,6 @@ public class SearchActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         instance = this;
-        setToolBar();
         searchInput = (EditText)findViewById(R.id.search_input);
         searchButton = (ButtonFlat)findViewById(R.id.search_confirm);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,6 @@ public class SearchActivity extends SimpleActivity {
             }
             ft.replace(R.id.search_holder, fragment, fragName);
             ft.addToBackStack(null);
-            mateMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
         }
         ft.commit();
     }

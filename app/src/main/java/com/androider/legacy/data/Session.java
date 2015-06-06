@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import android.widget.ArrayAdapter;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.fragment.SessionListFragment;
 import com.androider.legacy.net.LegacyClient;
 import com.jialin.chat.Message;
@@ -37,7 +38,7 @@ public class Session {
     }
 
     public void dragRecords(){
-        Cursor cursor = MainActivity.db.rawQuery("select * from record where receiver = ? or sender = ? order by edit asc;", new String[]{"" + peer, "" + peer});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from record where receiver = ? or sender = ? order by edit asc;", new String[]{"" + peer, "" + peer});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Record item = Record.getCursored(cursor);
@@ -78,15 +79,15 @@ public class Session {
     }
 
     public static void clearSession(){
-        MainActivity.db.execSQL("delete from session;");
-        MainActivity.db.execSQL("delete from record;");
+        DatabaseHelper.db.execSQL("delete from session;");
+        DatabaseHelper.db.execSQL("delete from record;");
         Holder.talks.clear();
     }
 
     public static void drag(){
         if(User.instance.id == -1)
             return;
-        Cursor cursor = MainActivity.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.instance.id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.instance.id});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Session item = getCursored(cursor);
@@ -107,7 +108,7 @@ public class Session {
         ContentValues cv = new ContentValues();
         cv.put("peer", peer);
         cv.put("nickname", nickname);
-        MainActivity.db.insert(tableName, null, cv);
+        DatabaseHelper.db.insert(tableName, null, cv);
     }
 
     public void append(Record record){

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -36,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class ChatActivity extends SimpleActivity {
+public class ChatActivity extends AppCompatActivity {
 
     public int talker;
     public Session currentSession;
@@ -73,7 +74,6 @@ public class ChatActivity extends SimpleActivity {
 
             }
         });
-        setToolBar();
         getSupportActionBar().setTitle(Mate.peers.get(currentSession.peer).nickname);
         initList();
     }

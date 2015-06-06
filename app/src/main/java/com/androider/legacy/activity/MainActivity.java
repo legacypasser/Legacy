@@ -26,10 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.FragmentViewPagerAdapter;
 import com.androider.legacy.data.Holder;
@@ -53,7 +49,6 @@ import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.ConnectDetector;
-import com.androider.legacy.util.Locator;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.gc.materialdesign.views.ButtonFloat;
@@ -70,24 +65,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements AMapLocationListener{
+public class MainActivity extends AppCompatActivity{
 
     public static String filePath;
     private MaterialMenuIconToolbar materialMenu;
-    private AddFloatingActionButton overButton;
-    public static SQLiteDatabase db;
     public static MainActivity instance;
     TextView accountEmail;
     TextView accountNickname;
     Thread sendThread;
     Thread receiveThread;
     DrawerLayout drawer;
-    LocationManagerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
+        new DatabaseHelper(this);
         setContentView(R.layout.activity_main);
         drawer = (DrawerLayout)findViewById(R.id.legacy_drawer);
         Toolbar overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
@@ -130,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
             }
         };
         materialMenu.setNeverDrawTouch(true);
-        db = new DatabaseHelper(this).getWritableDatabase();
         Nicker.initNick(this);
         School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
@@ -160,9 +152,9 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
     }
 
     private void initLocation(){
-        proxy = LocationManagerProxy.getInstance(this);
-        proxy.setGpsEnable(false);
-        proxy.requestLocationData(LocationProviderProxy.AMapNetwork, -1, 0, this);
+        Intent intent = new Intent(this, NetService.class);
+        intent.putExtra(Constants.intentType, Constants.baiduLocation);
+        startService(intent);
     }
 
     private void autoLogin(){
@@ -186,14 +178,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-        overButton = (AddFloatingActionButton)findViewById(R.id.all_over_button);
-        overButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.instance, PublishActivity.class);
-                MainActivity.instance.startActivity(intent);
-            }
-        });
+
 
         accountEmail = (TextView)findViewById(R.id.account_email);
         accountNickname = (TextView)findViewById(R.id.account_nickname);
@@ -207,26 +192,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
         LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 1) {
-                    overButton.setVisibility(View.VISIBLE);
-                } else
-                    overButton.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        overButton.setVisibility(View.INVISIBLE);
     }
 
     public void switchFragment(String fragmentName){
@@ -285,35 +251,6 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
 
     public NetHandler netHandler = new NetHandler(instance);
 
-    @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        int code = aMapLocation.getAMapException().getErrorCode();
-        if(code != 0){
-            Intent intent = new Intent(this, NetService.class);
-            intent.putExtra(Constants.intentType, Constants.baiduLocation);
-            startService(intent);
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     private static class NetHandler extends Handler{
         WeakReference<MainActivity> activityWeakReference;
@@ -379,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements AMapLocationListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.close();
+        DatabaseHelper.db.close();
         chatOff();
     }
 

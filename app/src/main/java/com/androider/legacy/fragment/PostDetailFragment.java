@@ -32,7 +32,6 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.util.DateConverter;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.FitManager;
-import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.zip.Inflater;

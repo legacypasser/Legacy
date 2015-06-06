@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,7 +54,6 @@ import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.DividerDecorator;
-import com.androider.legacy.util.LegacyProgress;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -80,15 +81,15 @@ import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 
-public class PublishActivity extends SimpleActivity implements Camera.PictureCallback, ZBarScannerView.ResultHandler{
+public class PublishActivity extends AppCompatActivity implements Camera.PictureCallback, ZBarScannerView.ResultHandler{
 
     private int thumbHeight;
     private int requiredWidth;
     private MaterialEditText des;
     private EditText title;
     private EditText price;
-    ImageButton addScan;
-    ImageButton addPhoto;
+    Button addScan;
+    Button addPhoto;
     CardView selfContent;
     LinearLayout whenCap;
     private Button publish;
@@ -100,7 +101,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     GridView thumbs;
     LinearLayout list;
     GridAdapter thumbAdpter = new GridAdapter();
-    public LegacyProgress loadingView;
     public ArrayList<String> paths = new ArrayList<>();
     FrameLayout surface;
     public static PublishActivity instance;
@@ -112,7 +112,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
         instance = this;
-        setToolBar();
         thumbHeight = DensityUtil.dip2px(this, 96);
         requiredWidth = DensityUtil.dip2px(this, 150);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
@@ -130,10 +129,8 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
                 myPublish();
             }
         });
-        loadingView = new LegacyProgress(this);
-        loadingView.setTitle(R.string.publishing);
-        addPhoto = (ImageButton)findViewById(R.id.add_photo);
-        addScan = (ImageButton)findViewById(R.id.add_scan);
+        addPhoto = (Button)findViewById(R.id.add_photo);
+        addScan = (Button)findViewById(R.id.add_scan);
         addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +199,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
             Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
             return;
         }
-        loadingView.show();
         Intent intent = new Intent(this, PublishService.class);
         if(!paths.isEmpty()){
             intent.putExtra("rawDes", des.getText().toString());
@@ -218,7 +214,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
         paths.clear();
         thumbAdpter.clearImg();
         des.setText("");
-        loadingView.hide();
     }
     public NetHandler netHandler = new NetHandler(instance);
 
@@ -274,8 +269,6 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(loadingView != null)
-            loadingView.dismiss();
     }
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
@@ -320,8 +313,7 @@ public class PublishActivity extends SimpleActivity implements Camera.PictureCal
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_pub, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

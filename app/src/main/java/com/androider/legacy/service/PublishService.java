@@ -19,6 +19,7 @@ import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.SearchClient;
 
@@ -81,7 +82,7 @@ public class PublishService extends IntentService {
                     int id = Integer.parseInt(ids[i]);
                     toStore.get(i).id = id;
                     Holder.detailed.put(id, toStore.get(i));
-                    MainActivity.db.insert(Post.tableName, null, Post.getCv(toStore.get(i)));
+                    DatabaseHelper.db.insert(Post.tableName, null, Post.getCv(toStore.get(i)));
                 }
                 SearchClient.uploadContent(toStore);
                 break;

@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
 
@@ -148,7 +149,7 @@ public class Post{
     }
 
     private static Post detailFromBase(int id){
-        Cursor cursor = MainActivity.db.rawQuery("select * from post where id=?;", new String[]{"" + id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id=?;", new String[]{"" + id});
         cursor.moveToFirst();
         Post result = getCursored(cursor);
         cursor.close();
@@ -158,7 +159,7 @@ public class Post{
 
     public static ArrayList<Post> listFromBase(int seller){
         ArrayList<Post> result = new ArrayList<Post>();
-        Cursor cursor = MainActivity.db.rawQuery("select * from post where seller = ?;", new String[]{"" + seller});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where seller = ?;", new String[]{"" + seller});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             result.add(getCursored(cursor));
@@ -184,10 +185,10 @@ public class Post{
 
     public static void store(ArrayList<Post> added){
         for(Post item : added){
-            Cursor cursor = MainActivity.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
+            Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
             cursor.moveToFirst();
             if(cursor.isAfterLast())
-                MainActivity.db.insert(tableName, null, getCv(item));
+                DatabaseHelper.db.insert(tableName, null, getCv(item));
             cursor.close();
         }
     }

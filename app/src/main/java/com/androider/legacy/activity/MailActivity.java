@@ -29,7 +29,6 @@ public class MailActivity extends AppCompatActivity {
         });
         page.setWebChromeClient(new WebChromeClient());
         page.getSettings().setJavaScriptEnabled(true);
-
         page.loadData("<html><head></head><body>" +
                 "<a href=\"http://mail.163.com\">http://mail.163.com</a><br>" +
                 "<a href=\"http://mail.126.com\">http://mail.126.com</a><br>" +
@@ -53,10 +52,6 @@ public class MailActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

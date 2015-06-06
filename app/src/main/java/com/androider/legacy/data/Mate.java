@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 
 import org.json.JSONException;
@@ -24,7 +25,7 @@ public class Mate {
     public static HashMap<Integer, Mate> peers = new HashMap();
 
     public static void dragAll(){
-        Cursor cursor = MainActivity.db.rawQuery("select * from peer;", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from peer;", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Mate one = fromCursor(cursor);
@@ -35,7 +36,7 @@ public class Mate {
     }
 
     public void store(){
-        MainActivity.db.insert("peer", null, getCV());
+        DatabaseHelper.db.insert("peer", null, getCV());
     }
 
     public static Mate getPeer(int id){
@@ -52,7 +53,7 @@ public class Mate {
     }
 
     private static Mate fromBase(int id){
-        Cursor cursor = MainActivity.db.rawQuery("select * from peer where id = ?;", new String[]{"" + id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from peer where id = ?;", new String[]{"" + id});
         cursor.moveToFirst();
         if(cursor.isAfterLast()){
             cursor.close();

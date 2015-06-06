@@ -21,6 +21,7 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.Record;
 import com.androider.legacy.data.User;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.net.LegacyClient;
@@ -65,7 +66,7 @@ public class NetService extends IntentService {
                 certain.des = LegacyClient.getInstance().getRest(id);
                 ContentValues cv = new ContentValues();
                 cv.put("des", certain.des);
-                MainActivity.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
+                DatabaseHelper.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
                 Mate.getPeer(certain.seller);
                 break;
             case Constants.registrationSent:

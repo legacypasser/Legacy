@@ -28,7 +28,6 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 
-import com.androider.legacy.util.LegacyProgress;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 
 public class RecommendFragment extends Fragment implements IndexAdapter.BottomListener{
 
-    LegacyProgress loadingView;
     private IndexAdapter adapter;
     public static RecommendFragment instance;
     public int currentPage = 0;
@@ -73,8 +71,6 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
     }
 
     public void request(){
-        loadingView = new LegacyProgress(getActivity());
-        loadingView.show();
         more();
     }
 
@@ -90,8 +86,6 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
         for(Post item : Holder.recommendPost){
             adapter.addData(item);
         }
-        if(loadingView != null)
-            loadingView.hide();
         holder.setRefreshing(false);
     }
 
@@ -99,8 +93,6 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(loadingView != null)
-        loadingView.dismiss();
     }
 
     @Override

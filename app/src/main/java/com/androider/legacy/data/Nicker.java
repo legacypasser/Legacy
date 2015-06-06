@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 
 import java.io.BufferedReader;
 import java.io.FilterReader;
@@ -21,16 +22,16 @@ public class Nicker {
     public static int adjTotal;
     public static int nounTotal;
     public static void initNick(Context context){
-        Cursor cursor = MainActivity.db.rawQuery("select * from nick_adj", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from nick_adj", null);
         adjTotal = cursor.getCount();
         cursor.close();
-        cursor = MainActivity.db.rawQuery("select * from nick_noun;", null);
+        cursor = DatabaseHelper.db.rawQuery("select * from nick_noun;", null);
         nounTotal = cursor.getCount();
         cursor.close();
         if(adjTotal != 0)
             return;
         AssetManager manager = context.getAssets();
-        MainActivity.db.beginTransaction();
+        DatabaseHelper.db.beginTransaction();
         try {
             InputStream in = manager.open("adj.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -40,7 +41,7 @@ public class Nicker {
                 cv = new ContentValues();
                 cv.put("adj", str);
 
-                MainActivity.db.insert("nick_adj", null, cv);
+                DatabaseHelper.db.insert("nick_adj", null, cv);
                 adjTotal++;
             }
             reader.close();
@@ -50,28 +51,28 @@ public class Nicker {
             while ((str = reader.readLine()) != null){
                 cv = new ContentValues();
                 cv.put("noun", str);
-                MainActivity.db.insert("nick_noun", null, cv);
+                DatabaseHelper.db.insert("nick_noun", null, cv);
                 nounTotal++;
             }
             reader.close();
             in.close();
-            MainActivity.db.setTransactionSuccessful();
+            DatabaseHelper.db.setTransactionSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            MainActivity.db.endTransaction();
+            DatabaseHelper.db.endTransaction();
         }
     }
 
     public static String getAdj(){
-        Cursor cursor = MainActivity.db.rawQuery("select adj from nick_adj;", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select adj from nick_adj;", null);
         cursor.move(new Random().nextInt(adjTotal));
         String adj = cursor.getString(0);
         cursor.close();
         return adj;
     }
     public static String getNoun(){
-        Cursor cursor = MainActivity.db.rawQuery("select noun from nick_noun;", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select noun from nick_noun;", null);
         cursor.move(new Random().nextInt(nounTotal));
         String noun = cursor.getString(0);
         cursor.close();

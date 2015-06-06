@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.util.DateConverter;
@@ -100,7 +101,7 @@ public class Record {
     }
 
     public void store(){
-        MainActivity.db.insert(tableName, null, getCV());
+        DatabaseHelper.db.insert(tableName, null, getCV());
     }
 
     public ContentValues getCV(){

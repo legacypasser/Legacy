@@ -6,6 +6,7 @@ import android.location.Location;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,8 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.ChooseAdapter;
 import com.androider.legacy.controller.StateController;
@@ -33,14 +32,13 @@ import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.Encryption;
-import com.androider.legacy.util.Locator;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
 
-public class RegisterActivity extends SimpleActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     AddFloatingActionButton button;
     MaterialEditText email;
@@ -74,7 +72,6 @@ public class RegisterActivity extends SimpleActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        setToolBar();
         button = (AddFloatingActionButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);

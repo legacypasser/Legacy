@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class School {
         if(majors.equals(""))
             return null;
         majorlist = new ArrayList<>();
-        Cursor cursor = MainActivity.db.query("major", new String[]{"name"}, "id in (" + majors + ")", null, null, null, null);
+        Cursor cursor = DatabaseHelper.db.query("major", new String[]{"name"}, "id in (" + majors + ")", null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             majorlist.add(cursor.getString(0));
@@ -39,7 +40,7 @@ public class School {
     }
 
     public static ArrayList<School> regional(int region){
-        Cursor cursor = MainActivity.db.rawQuery("select * from school where region = ?;", new String[]{"" + region});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from school where region = ?;", new String[]{"" + region});
         ArrayList<School> schools = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
@@ -55,7 +56,7 @@ public class School {
     }
 
     public static int proviceId(String province){
-        Cursor cursor = MainActivity.db.rawQuery("select id from region where name = ?;", new String[]{province});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select id from region where name = ?;", new String[]{province});
         cursor.moveToFirst();
         int result = cursor.getInt(0);
         cursor.close();
@@ -63,7 +64,7 @@ public class School {
     }
 
     public static int schoolId(String school){
-        Cursor cursor = MainActivity.db.rawQuery("select id from school where name = ?;", new String[]{school});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select id from school where name = ?;", new String[]{school});
         int result = -1;
         cursor .moveToFirst();
         if(!cursor.isAfterLast()){
@@ -76,7 +77,7 @@ public class School {
     }
 
     public static int majorId(String major){
-        Cursor cursor = MainActivity.db.rawQuery("select id from major where name = ?;", new String[]{major});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select id from major where name = ?;", new String[]{major});
         int result = -1;
         cursor .moveToFirst();
         if(!cursor.isAfterLast()){
@@ -85,7 +86,7 @@ public class School {
             return result;
         }else{
             cursor.close();
-            cursor = MainActivity.db.rawQuery("select id form major where name like ?;", new String[]{"%" + major + "%"});
+            cursor = DatabaseHelper.db.rawQuery("select id form major where name like ?;", new String[]{"%" + major + "%"});
             cursor.moveToFirst();
             if(!cursor.isAfterLast()){
                 result = cursor.getInt(cursor.getColumnIndex("id"));
@@ -109,7 +110,7 @@ public class School {
     }
 
     public static ArrayList<String> prefixed(String pre){
-        Cursor cursor = MainActivity.db.rawQuery("select * from school where name like ?;", new String[]{pre + "%"});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from school where name like ?;", new String[]{pre + "%"});
         ArrayList<String> schools = new ArrayList<>();
         maybeUsed = new HashMap<>();
         cursor.moveToFirst();
@@ -127,14 +128,14 @@ public class School {
     }
 
     public static void iniSchool(Context context){
-        Cursor cursor = MainActivity.db.rawQuery("select * from School;", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from School;", null);
         int judger = cursor.getCount();
         if(judger != 0){
             cursor.close();
             return;
         }
         AssetManager manager = context.getAssets();
-        MainActivity.db.beginTransaction();
+        DatabaseHelper.db.beginTransaction();
         try {
             InputStream in = manager.open("majorbase.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -146,7 +147,7 @@ public class School {
                 cv.put("id", Integer.parseInt(majorFields[0]));
                 cv.put("name", majorFields[1]);
 
-                MainActivity.db.insert("major", null, cv);
+                DatabaseHelper.db.insert("major", null, cv);
             }
             reader.close();
             in.close();
@@ -157,7 +158,7 @@ public class School {
                 cv = new ContentValues();
                 cv.put("name", schoolFields[1]);
                 cv.put("id", Integer.parseInt(schoolFields[0]));
-                MainActivity.db.insert("region", null, cv);
+                DatabaseHelper.db.insert("region", null, cv);
             }
             reader.close();
             in.close();
@@ -170,15 +171,15 @@ public class School {
                 cv.put("region", Integer.parseInt(schoolFields[1]));
                 cv.put("name", schoolFields[0]);
                 cv.put("major", schoolFields[2]);
-                MainActivity.db.insert("school", null, cv);
+                DatabaseHelper.db.insert("school", null, cv);
             }
             reader.close();
             in.close();
-            MainActivity.db.setTransactionSuccessful();
+            DatabaseHelper.db.setTransactionSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            MainActivity.db.endTransaction();
+            DatabaseHelper.db.endTransaction();
         }
     }
 

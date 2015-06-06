@@ -19,7 +19,6 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
-import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;

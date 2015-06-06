@@ -27,11 +27,11 @@
                     android:paddingRight="8dp"
                     android:id="@+id/douban_list"/>
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="点击添加"
                     android:layout_margin="8dp"
-                    android:background="@drawable/ic_add_to_photos_grey600_36dp"
                     android:id="@+id/add_scan"/>
 
                 <View
@@ -46,12 +46,11 @@
                     android:textColor="@color/primary_text"
                     android:text="拍摄内容"/>
 
-
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="点击添加"
                     android:layout_margin="8dp"
-                    android:background="@drawable/ic_add_to_photos_grey600_36dp"
                     android:id="@+id/add_photo"/>
                 <android.support.v7.widget.CardView
                     android:id="@+id/self_content"

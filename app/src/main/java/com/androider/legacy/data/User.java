@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.location.Location;
 
-import com.amap.api.location.AMapLocation;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -28,7 +28,7 @@ public class User extends Mate{
     }
 
     public void store(){
-        MainActivity.db.delete(tableName, null, null);
+        DatabaseHelper.db.delete(tableName, null, null);
         ContentValues cv = new ContentValues();
         cv.put("email", email);
         cv.put("nickname", nickname);
@@ -38,7 +38,7 @@ public class User extends Mate{
         cv.put("major", major);
         cv.put("lati", lati);
         cv.put("longi", longi);
-        MainActivity.db.insert(tableName, null, cv);
+        DatabaseHelper.db.insert(tableName, null, cv);
     }
 
     public void positionUser(String accrodingBaidu){
@@ -72,7 +72,7 @@ public class User extends Mate{
     }
 
     public void drag(){
-        Cursor cursor = MainActivity.db.rawQuery("select * from user;", null);
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from user;", null);
         if(cursor.isAfterLast()){
             id = -1;
         }else{

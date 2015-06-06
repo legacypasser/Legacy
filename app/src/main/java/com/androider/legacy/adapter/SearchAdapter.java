@@ -18,7 +18,6 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
 import com.gc.materialdesign.views.Card;
-import com.joooonho.SelectableRoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -88,7 +87,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
         CardView card;
         public SearchHolder(View itemView) {
             super(itemView);
-            img = (SelectableRoundedImageView)itemView.findViewById(R.id.search_img);
+            img = (ImageView)itemView.findViewById(R.id.search_img);
             title = (TextView)itemView.findViewById(R.id.search_title);
             pub = (TextView)itemView.findViewById(R.id.search_pub);
             pos = (TextView)itemView.findViewById(R.id.search_pos);

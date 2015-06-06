@@ -15,8 +15,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String dbName = "legacybase";
     public DatabaseHelper(Context context) {
         super(context, dbName, null, 1);
+        db = this.getWritableDatabase();
     }
-
+    public static SQLiteDatabase db;
 
     @Override
     public void onCreate(SQLiteDatabase db) {
