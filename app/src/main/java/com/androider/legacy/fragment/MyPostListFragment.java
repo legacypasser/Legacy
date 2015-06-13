@@ -55,7 +55,7 @@ public class MyPostListFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_self_post, container, false);
-        selfList = (RecyclerView)rootView.findViewById(R.id.card_list);
+        selfList = (RecyclerView)rootView.findViewById(R.id.self_cards);
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
         overButton = (AddFloatingActionButton)rootView.findViewById(R.id.all_over_button);
         overButton.setOnClickListener(new View.OnClickListener() {

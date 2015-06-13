@@ -4,8 +4,8 @@ package com.androider.legacy.data;
  * Created by Think on 2015/4/16.
  */
 public class Constants {
-    public static final String requestPath = "http://114.215.210.22/passer/public/";
-    public static final String imgPath = "http://114.215.210.22/passerImg/";
+    public static final String requestPath = "http://120.24.69.137/passer/public/index.php/";
+    public static final String imgPath = "http://120.24.69.137/passerImg/";
     public static final String register = "register";
     public static final String login = "login";
     public static final String recommend = "recommend";
@@ -22,7 +22,7 @@ public class Constants {
     public static final String page = "page=";
     public static final String id = "id=";
     public static final String keyword = "keyword=";
-    public static final String baiduUrl = "http://api.map.baidu.com/location/ip?ak=260569e20491d41b6def091cccf191b0&coor=bd09ll";
+    public static final String baiduUrl = "http://api.map.baidu.com/location/ip?coor=bd09ll&ak=";
 
 
     public static final int mainState = 0;

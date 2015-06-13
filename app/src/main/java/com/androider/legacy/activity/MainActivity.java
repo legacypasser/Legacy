@@ -1,6 +1,7 @@
 package com.androider.legacy.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Handler;
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity{
         intent.putExtra(Constants.intentType, Constants.baiduLocation);
         startService(intent);
     }
+
 
     private void autoLogin(){
         if(!ConnectDetector.isConnectedToNet()){

@@ -3,6 +3,7 @@ package com.androider.legacy.net;
 
 import org.apache.http.HttpEntity;
 
+import android.content.pm.PackageManager;
 import android.provider.Telephony;
 import android.util.Log;
 import android.util.Pair;
@@ -75,11 +76,10 @@ public class LegacyClient{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
-    public String get(String url){
+    private String get(String url){
         if(!ConnectDetector.isConnectedToNet())
             return RequestData.fromBase(url);
         Request req = new Request.Builder()
@@ -221,12 +221,12 @@ public class LegacyClient{
         return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
     }
 
-    public String baiduLocation(){
+    public String baiduLocation(String apiKey){
         if(!ConnectDetector.isConnectedToNet()){
             return RequestData.fromBase(Constants.baiduUrl);
         }
         Request req = new Request.Builder()
-                .url(Constants.baiduUrl)
+                .url(Constants.baiduUrl + apiKey)
                 .build();
         Response  resp = null;
         try {

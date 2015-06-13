@@ -21,7 +21,6 @@ public class Sender implements Runnable{
     public void run() {
         while (common.isRunning){
             try {
-                Log.v("panbo", "heard on");
                 sendToServer("" + User.instance.id, NetConstants.heartHead);
                 Thread.currentThread();
                 Thread.sleep(NetConstants.heartSpace);

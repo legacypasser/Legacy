@@ -40,15 +40,13 @@
             android:name=".activity.ChatActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name=".activity.SettingActivity"
-            android:label="@string/title_activity_setting"
-            android:screenOrientation="portrait" >
-        </activity>
 
         <service
             android:name=".service.NetService"
             android:exported="false" >
+            <meta-data
+                android:name="map.baidu.api.ak"
+                android:value="260569e20491d41b6def091cccf191b0"/>
         </service>
 
         <activity
@@ -73,12 +71,6 @@
             android:exported="false" >
         </service>
 
-        <activity
-            android:name=".activity.ScanningActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_scanning"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
         <activity
             android:name=".activity.MailActivity"
             android:label="@string/title_activity_mail" >

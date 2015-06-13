@@ -1,9 +1,12 @@
 package com.androider.legacy.service;
 
 import android.app.IntentService;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -103,7 +106,7 @@ public class NetService extends IntentService {
                     return;
                 }
             case Constants.baiduLocation:
-                String woduResult = LegacyClient.getInstance().baiduLocation();
+                String woduResult = LegacyClient.getInstance().baiduLocation(getApiKey());
                 User.instance.positionUser(woduResult);
                 return;
             case Constants.byebye:
@@ -116,5 +119,16 @@ public class NetService extends IntentService {
         } catch (RemoteException|JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getApiKey(){
+        try {
+            ComponentName cn = new ComponentName(this, NetService.class);
+            ServiceInfo info = this.getPackageManager().getServiceInfo(cn, PackageManager.GET_META_DATA);
+            return info.metaData.getString("map.baidu.api.ak");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
