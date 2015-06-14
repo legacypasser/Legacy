@@ -9,7 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/ViewPagerIndicator" />
+            <option value="$PROJECT_DIR$/android-view-pager-indicator-0.9.0" />
             <option value="$PROJECT_DIR$/androidChatWidget" />
             <option value="$PROJECT_DIR$/app" />
           </set>

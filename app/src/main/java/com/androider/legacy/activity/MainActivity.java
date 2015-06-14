@@ -58,6 +58,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.viewpagerindicator.LinePageIndicator;
+import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
 
@@ -107,7 +110,6 @@ public class MainActivity extends AppCompatActivity{
                     StateController.goBack();
                 }
             }
-
             @Override
             public void onDrawerOpened(View drawerView) {
                 if (StateController.getCurrent() == Constants.mainState) {
@@ -180,8 +182,6 @@ public class MainActivity extends AppCompatActivity{
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-
-
         accountEmail = (TextView)findViewById(R.id.account_email);
         accountNickname = (TextView)findViewById(R.id.account_nickname);
         ArrayList<Fragment> fragmentList = new ArrayList<>();
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity{
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         FragmentViewPagerAdapter pagerAdapter = new FragmentViewPagerAdapter( fragmentList,this.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.pager_indicator);
+        PageIndicator indicator = (TabPageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
 
@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity{
                 fragment = PostDetailFragment.newInstance("", "");
             }
         }
-
         materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_container, fragment, fragmentName);

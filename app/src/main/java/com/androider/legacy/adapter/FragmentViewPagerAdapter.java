@@ -22,6 +22,17 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter  {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        if(position == 0)
+            return "首页";
+        else if(position == 1)
+            return "我的";
+        else if(position == 2)
+            return "对话";
+        return null;
+    }
+
+    @Override
     public int getCount() {
         return fragments.size();
     }

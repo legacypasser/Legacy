@@ -4,6 +4,7 @@ package com.androider.legacy.net;
 import org.apache.http.HttpEntity;
 
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.provider.Telephony;
 import android.util.Log;
 import android.util.Pair;
@@ -79,7 +80,7 @@ public class LegacyClient{
         return null;
     }
 
-    private String get(String url){
+    public String get(String url){
         if(!ConnectDetector.isConnectedToNet())
             return RequestData.fromBase(url);
         Request req = new Request.Builder()
@@ -126,7 +127,6 @@ public class LegacyClient{
     public String search(String keyword){
         String reqUrl = Constants.requestPath + Constants.search + Constants.ask + Constants.keyword + keyword;
         String str = get(reqUrl);
-        Log.v("panbo", str);
         return str;
     }
 
@@ -135,15 +135,34 @@ public class LegacyClient{
         return get(reqUrl);
     }
 
-    public String login(){
+    public String online(){
+        String reqUrl = Constants.requestPath + Constants.online;
+        return get(reqUrl);
+    }
+
+    public String info(int id){
+        return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
+    }
+
+    public String interest(int id){
         JSONObject reqData = new JSONObject();
         try {
-            reqData.put("email", User.instance.email);
-            reqData.put("password", User.instance.password);
+            reqData.put("id", id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return post(Constants.requestPath + Constants.login, reqData.toString());
+        return post(Constants.requestPath + Constants.interest, reqData.toString());
+    }
+
+    public String chat(String content, int receiver){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("content", content);
+            reqData.put("receiver", receiver);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return post(Constants.requestPath + Constants.chat, reqData.toString());
     }
 
     public String register(){
@@ -163,6 +182,17 @@ public class LegacyClient{
             e.printStackTrace();
         }
         return post(Constants.requestPath + Constants.register, reqData.toString());
+    }
+
+    public String login(){
+        JSONObject reqData = new JSONObject();
+        try {
+            reqData.put("email", User.instance.email);
+            reqData.put("password", User.instance.password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return post(Constants.requestPath + Constants.login, reqData.toString());
     }
 
     public String publish(String content, ArrayList<String> paths){
@@ -189,36 +219,6 @@ public class LegacyClient{
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String online(){
-        String reqUrl = Constants.requestPath + Constants.online;
-        return get(reqUrl);
-    }
-
-    public String chat(String content, int receiver){
-        JSONObject reqData = new JSONObject();
-        try {
-            reqData.put("content", content);
-            reqData.put("receiver", receiver);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return post(Constants.requestPath + Constants.chat, reqData.toString());
-    }
-
-    public String interest(int id){
-        JSONObject reqData = new JSONObject();
-        try {
-            reqData.put("id", id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return post(Constants.requestPath + Constants.interest, reqData.toString());
-    }
-
-    public String info(int id){
-        return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
     }
 
     public String baiduLocation(String apiKey){
@@ -274,4 +274,10 @@ public class LegacyClient{
         }
         return null;
     }
+
+    public void callTask(String url, LegacyTask.RequestCallback callback){
+        LegacyTask task = new LegacyTask(callback);
+        task.execute(url);
+    }
+
 }
