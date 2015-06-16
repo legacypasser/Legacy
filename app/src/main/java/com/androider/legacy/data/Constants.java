@@ -5,11 +5,10 @@ package com.androider.legacy.data;
  */
 public class Constants {
     public static final String requestPath = "http://hereprovides.com/passer/public/index.php/";
-    public static final String imgPath = "http://hereprovides.com/passerImg/";
+    public static final String imgPath = "http://hereprovides.com:8000/passerImg/";
     public static final String register = "register";
     public static final String login = "login";
     public static final String recommend = "recommend";
-    public static final String search = "search";
     public static final String personal = "persoanl";
     public static final String detail = "detail";
     public static final String publish = "publish";
@@ -21,30 +20,14 @@ public class Constants {
     public static final String ask = "?";
     public static final String page = "page=";
     public static final String id = "id=";
-    public static final String keyword = "keyword=";
     public static final String baiduUrl = "http://api.map.baidu.com/location/ip?coor=bd09ll&ak=";
 
-
-    public static final int mainState = 0;
-    public static final int detailState = 1;
-    public static final int funcState = 2;
-    public static final int drawerState = 3;
-
-    public static final int registerState = 4;
-    public static final int schoolChoosing = 5;
-    public static final int majorChoosing = 6;
-
-    public static final int detailRequest = 1;
-    public static final int recommendAdded = 0;
+    public static final int emptySession = 1;
     public static final int registrationSent = 2;
     public static final int loginAttempt = 3;
     public static final int myPublish = 4;
-    public static final int pullMsg = 6;
-    public static final int searchReq = 7;
-    public static final int sessionAdded = 8;
-    public static final int baiduLocation = 9;
+    public static final int msgArrive = 6;
     public static final int byebye = 10;
-    public static final int fromDouban = 11;
 
     public static final int userReseted = 1;
     public static final int userNotReseted = 0;
@@ -55,6 +38,5 @@ public class Constants {
 
     public static final int mail_occupied = 6;
     public static final int please_active = 7;
-
     public static final String intentType = "intentType";
 }

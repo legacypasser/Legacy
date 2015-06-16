@@ -15,12 +15,16 @@ import com.androider.legacy.activity.ChatActivity;
 import com.androider.legacy.adapter.SessionListAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Mate;
+import com.androider.legacy.data.Record;
 import com.androider.legacy.data.Session;
-import com.androider.legacy.service.NetService;
+import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.util.DividerDecorator;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 
@@ -34,11 +38,8 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         SessionListFragment fragment = new SessionListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        instance = fragment;
         return fragment;
-    }
-
-    public SessionListFragment(){
-        instance = this;
     }
 
     @Override
@@ -68,35 +69,85 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         }
     }
 
-    public void refreshSessions(Session item){
-        if(item.affected){
-            adapter.updateData(item);
-            item.affected = false;
-        }
+    public void directAdd(Session session){
+        adapter.addData(session);
+        if(sessionCover.getVisibility() == View.VISIBLE)
+            sessionCover.setVisibility(View.GONE);
     }
 
-    public void addSession(Session added){
-        adapter.addData(added);
-    }
-
-    public void refreshSessions(){
-        Iterator it  = Holder.talks.entrySet().iterator();
-        while(it.hasNext()){
-            HashMap.Entry entry = (HashMap.Entry)it.next();
-            refreshSessions((Session)entry.getValue());
-        }
+    public void oneCome(final Record one){
+        Session owner = one.getSession();
+        if(owner == null)
+            Mate.getPeer(one.getPeerId(), new LegacyTask.RequestCallback() {
+                @Override
+                public void onRequestDone(String result) {
+                    Mate mate = Mate.fromString(result);
+                    Session session = Session.get(mate);
+                    adapter.addData(session);
+                }
+            });
+        else
+            adapter.refresh(one.getSession());
     }
 
     public void startPull(){
-        Intent intent = new Intent(getActivity(), NetService.class);
-        intent.putExtra(Constants.intentType, Constants.pullMsg);
-        getActivity().startService(intent);
+        Record.getOnline(new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                final ArrayList<Record> all = Record.strToList(result);
+                String requestStr = "";
+                for (int i = 0; i < all.size(); i++){
+                    Record one = all.get(i);
+                    one.store();
+                    if(one.getSession() == null)
+                        if (requestStr.equals(""))
+                            requestStr += one.getPeerId();
+                        else
+                            requestStr += "," + one.getPeerId();
+                }
+                if(requestStr.equals(""))
+                    refreshSession(all);
+                else{
+                    String url = Constants.requestPath + "infos?ids=" + requestStr;
+                    LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
+                        @Override
+                        public void onRequestDone(String result) {
+                            ArrayList<Mate> more = Mate.stringToList(result);
+                            ArrayList<Session> added = Session.get(more);
+                            for (Session item : added)
+                                adapter.addData(item);
+                            refreshSession(all);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void refreshSession(ArrayList<Record> all){
+        HashSet<Session> affected = new HashSet<>();
+        for(Record item : all)
+            affected.add(item.getSession());
+        ArrayList<Session> sorted = new ArrayList<>();
+        for(Session item : affected){
+            int pos = 0;
+            for (Session session : sorted) {
+                if (session.getLast() < item.getLast())
+                    break;
+                else
+                    pos++;
+            }
+            sorted.add(pos, item);
+        }
+        for (Session item: sorted)
+            adapter.refresh(item);
     }
 
     @Override
     public void onItemClick(int id) {
         Intent intent = new Intent(getActivity(), ChatActivity.class);
-        intent.putExtra("talker", id);
+        intent.putExtra(Constants.chat, Session.get(Mate.getPeer(id)));
         getActivity().startActivity(intent);
     }
+
 }

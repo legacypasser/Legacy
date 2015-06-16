@@ -22,11 +22,11 @@ import android.widget.TextView;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
 import com.androider.legacy.adapter.ImageAdapter;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Post;
+import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 
 import com.androider.legacy.database.DatabaseHelper;
@@ -101,7 +101,6 @@ public class PostDetailFragment extends Fragment {
         detailSchool = (TextView)rootView.findViewById(R.id.detail_school);
         detailPrice = (TextView)rootView.findViewById(R.id.detail_price);
         icon = (ImageView)rootView.findViewById(R.id.msg_icon);
-        StateController.change(Constants.detailState);
         setView();
         return rootView;
     }
@@ -133,36 +132,35 @@ public class PostDetailFragment extends Fragment {
 
     private void fillSeller(final int id){
         if(id == User.instance.id) {
-            icon.setImageResource(R.drawable.ic_person_black_48dp);
+            icon.setImageResource(R.drawable.ic_account_circle_white_36dp);
             detailNickname.setText("我的宝贝");
             detailSchool.setText(User.instance.school);
             return;
         }
-            detailNickCard.setOnClickListener(new View.OnClickListener() {
+        final Mate one = Mate.getPeer(id);
+        if (one == null){
+            Mate.getPeer(id, new LegacyTask.RequestCallback() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra("talker", Post.get(currentId).seller);
-                    getActivity().startActivity(intent);
+                public void onRequestDone(String result) {
+                    Mate neted = Mate.fromString(result);
+                    setEntry(neted);
                 }
             });
-        Mate one = Mate.getPeer(id);
-            if (one == null){
-                Mate.getPeer(id, new LegacyTask.RequestCallback() {
-                    @Override
-                    public void onRequestDone(String result) {
-                        Mate neted = Mate.fromString(result);
-                        neted.id = id;
-                        neted.store();
-                        detailNickname.setText(neted.nickname);
-                        detailSchool.setText(neted.school);
-                    }
-                });
-            }else {
-                detailNickname.setText(one.nickname);
-                detailSchool.setText(one.school);
+        }else {
+            setEntry(one);
+        }
+    }
+    private void setEntry(final Mate one){
+        detailNickname.setText(one.nickname);
+        detailSchool.setText(one.school);
+        detailNickCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(Constants.chat, Session.get(one));
+                getActivity().startActivity(intent);
             }
-
+        });
     }
 
     private void fillContent(Post current){

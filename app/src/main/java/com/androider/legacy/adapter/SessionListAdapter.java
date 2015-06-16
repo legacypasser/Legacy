@@ -1,13 +1,17 @@
 package com.androider.legacy.adapter;
 
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Session;
 
@@ -38,19 +42,39 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     @Override
     public void onBindViewHolder(RecycleHolder holder, int position) {
         holder.nickname.setText(data.get(position).nickname);
-        holder.portrait.setImageResource(R.drawable.ic_person_black_48dp);
+        switch (position%6){
+            case 0:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_one));
+                break;
+            case 1:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_two));
+                break;
+            case 2:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_three));
+                break;
+            case 3:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_four));
+                break;
+            case 4:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_five));
+                break;
+            case 5:
+                holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_six));
+                break;
+        }
     }
 
     public void addData(Session one){
         int pos = 0;
-        for (Session session : data) {
-            if (session.getLast() < one.getLast())
-                break;
-            else
-                pos++;
-        }
         data.add(pos, one);
         notifyItemInserted(pos);
+    }
+
+    public void refresh(Session one){
+        int pos = data.indexOf(one);
+        data.remove(one);
+        data.addFirst(one);
+        notifyItemMoved(pos, 0);
     }
 
     public void clearData(){
@@ -61,33 +85,19 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         }
     }
 
-    public void updateData(Session one){
-        int pos = 0;
-        for (Iterator<Session> iterator = data.iterator(); iterator.hasNext(); ) {
-            Session next =  iterator.next();
-            if(one.peer == next.peer){
-                data.remove();
-                notifyItemRemoved(pos);
-                break;
-            }
-            pos++;
-        }
-        addData(one);
-    }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
 
     public class RecycleHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public ImageView portrait;
         public TextView nickname;
         private OnItemClickListner sessionListener;
+        public RelativeLayout card;
         public RecycleHolder(View itemView, OnItemClickListner listner) {
             super(itemView);
-            portrait = (ImageView)itemView.findViewById(R.id.session_img);
             nickname = (TextView)itemView.findViewById(R.id.session_name);
+            card = (RelativeLayout)itemView.findViewById(R.id.entry_holder);
             sessionListener = listner;
             itemView.setOnClickListener(this);
         }

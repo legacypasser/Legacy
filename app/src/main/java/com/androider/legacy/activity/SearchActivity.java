@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.androider.legacy.R;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -33,6 +33,7 @@ import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.net.SearchClient;
 import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.WatcherSimplifier;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.lang.ref.WeakReference;
@@ -47,12 +48,24 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         instance = this;
+        Toolbar toolbar = (Toolbar)findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
         searchInput = (EditText)findViewById(R.id.search_input);
         searchButton = (Button)findViewById(R.id.search_confirm);
+        searchButton.setEnabled(false);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSearch();
+            }
+        });
+        searchInput.addTextChangedListener(new WatcherSimplifier() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().equals(""))
+                    searchButton.setEnabled(false);
+                else
+                    searchButton.setEnabled(true);
             }
         });
         switchFragment(ResultFragment.class.getSimpleName());
@@ -74,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                 ResultFragment.instance.refreshList(SearchClient.formSearchStr(result));
             }
         });
-
+        searchInput.setText("");
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -89,8 +102,6 @@ public class SearchActivity extends AppCompatActivity {
                 fragment = ResultFragment.newInstance("", "");
                 ft.add(R.id.search_holder, fragment, fragName);
             }else {
-                if(StateController.getCurrent() == Constants.detailState)
-                    onBackPressed();
             }
         }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
             if(fragment == null){

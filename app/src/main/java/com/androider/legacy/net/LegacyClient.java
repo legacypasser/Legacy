@@ -131,14 +131,6 @@ public class LegacyClient{
         return Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
     }
 
-    public String getOnlineUrl(){
-        return Constants.requestPath + Constants.online;
-    }
-
-    public String getInfoUrl(int id){
-        return Constants.requestPath + Constants.info + Constants.ask + Constants.id + id;
-    }
-
     public String interest(int id){
         JSONObject reqData = new JSONObject();
         try {

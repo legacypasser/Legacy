@@ -16,9 +16,7 @@ public class NetConstants {
     public static final int heartHead = 1;
     public static final int message = 2;
     public static final int feedback = 3;
-
     public static final int offline = 4;
-
     public static final int sendChat = 5;
 
 }

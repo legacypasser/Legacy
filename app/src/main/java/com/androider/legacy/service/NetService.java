@@ -81,7 +81,6 @@ public class NetService extends IntentService {
                     msg.arg1 = User.instance.resetUser(new JSONObject(loginResult));
                 }
                 break;
-
             case Constants.byebye:
                 Sender.getInstance().sendToServer(""+User.instance.id, NetConstants.offline);
                 UdpClient.getInstance().close();

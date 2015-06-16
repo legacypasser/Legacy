@@ -8,15 +8,18 @@ import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by Think on 2015/6/4.
  */
-public class Mate {
+public class Mate implements Serializable{
     public int id;
     public String nickname;
     public String school;
@@ -51,9 +54,17 @@ public class Mate {
         return mate;
     }
 
+    public static Mate justGet(int id){
+        String result = LegacyClient.getInstance().get(getUrl(id));
+        return fromString(result);
+    }
+
+    private static String getUrl(int id){
+        return Constants.requestPath + Constants.info + Constants.ask + Constants.id + id;
+    }
+
     public static void getPeer(int id, LegacyTask.RequestCallback callback){
-        String url = LegacyClient.getInstance().getInfoUrl(id);
-        LegacyClient.getInstance().callTask(url, callback);
+        LegacyClient.getInstance().callTask(getUrl(id), callback);
     }
 
     private static Mate fromBase(int id){
@@ -90,16 +101,34 @@ public class Mate {
         return mate;
     }
 
+    public static ArrayList<Mate> stringToList(String result){
+        ArrayList<Mate> mates = new ArrayList<>();
+        try {
+            JSONArray array = new JSONArray(result);
+            for(int i = 0; i < array.length(); i++){
+                Mate mate = fromString(array.getString(i));
+                mate.store();
+                mates.add(mate);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mates;
+    }
+
     public static Mate fromString(String str){
         JSONObject peerInfo;
         try {
             peerInfo = new JSONObject(str);
             Mate mate= new Mate();
+            mate.id = peerInfo.getInt("id");
             mate.nickname = peerInfo.getString("nickname");
             mate.lati = peerInfo.getDouble("lati");
             mate.longi = peerInfo.getDouble("longi");
             mate.school = peerInfo.getString("school");
             mate.major = peerInfo.getString("major");
+            mate.store();
+            Mate.peers.put(mate.id, mate);
             return mate;
         } catch (JSONException e) {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import android.hardware.usb.UsbRequest;
 import android.location.Location;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.ChooseAdapter;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.RequestData;
@@ -53,6 +51,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     RecyclerView list;
     View.OnClickListener listener;
     LinearLayout chooser;
+    int state;
+    final int atSchool = 0;
+    final int atMajor = 1;
+    final int readyRegi = 2;
 
     WatcherSimplifier validator = new WatcherSimplifier() {
         @Override
@@ -99,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         major.addTextChangedListener(validator);
         nickname.setText(Nicker.getAdj() + Nicker.getNoun());
         button.setEnabled(false);
-        StateController.change(Constants.registerState);
         setToChooseSchool();
     }
 
@@ -134,13 +135,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     };
 
     private void setToChooseSchool(){
-        if(StateController.getCurrent() == Constants.registerState){
-            StateController.change(Constants.schoolChoosing);
-        }else if(StateController.getCurrent() == Constants.majorChoosing){
-            StateController.goBack();
-            StateController.change(Constants.schoolChoosing);
-            search.removeTextChangedListener(majorWatcher);
-        }
+        state = atSchool;
+        search.removeTextChangedListener(majorWatcher);
         search.setHint(getString(R.string.school_name));
         search.addTextChangedListener(schoolWatcher);
         if(User.instance.province == null)
@@ -149,13 +145,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setToChooseMajor(){
-        if(StateController.getCurrent() == Constants.registerState){
-            StateController.change(Constants.schoolChoosing);
-        }else if(StateController.getCurrent() == Constants.schoolChoosing){
-            StateController.goBack();
-            StateController.change(Constants.majorChoosing);
-            search.removeTextChangedListener(schoolWatcher);
-        }
+        state = atMajor;
+        search.removeTextChangedListener(schoolWatcher);
         search.setHint(getString(R.string.major_name));
         search.addTextChangedListener(majorWatcher);
         list.setAdapter(new ChooseAdapter(choosedSchool.getMajors(), this));
@@ -174,22 +165,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        while (StateController.getCurrent() != Constants.mainState)
-            StateController.goBack();
+    public void onBackPressed() {
+        if(state == atSchool)
+            finish();
+        if(state == atMajor)
+            setToChooseSchool();
+        if(state == readyRegi)
+            setToChooseMajor();
     }
 
     @Override
     public void onClick(View v) {
-        if(StateController.getCurrent() == Constants.schoolChoosing){
+        if(state == atSchool){
             choosedSchool = School.maybeUsed.get(((TextView) v).getText().toString());
             school.setText(choosedSchool.name);
             setToChooseMajor();
-        }else if(StateController.getCurrent() == Constants.majorChoosing){
+        }else if(state == atMajor){
             major.setText(((TextView) v).getText().toString());
-            StateController.goBack();
             chooser.setVisibility(View.GONE);
+            state = readyRegi;
         }
     }
 }

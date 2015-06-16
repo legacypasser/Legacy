@@ -3,6 +3,7 @@ package com.androider.legacy.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.hardware.usb.UsbRequest;
+import android.os.Bundle;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import com.jialin.chat.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -23,12 +25,12 @@ import java.util.LinkedList;
 /**
  * Created by Think on 2015/4/16.
  */
-public class Session {
+public class Session implements Serializable{
     public int peer;
     public String nickname;
     public ArrayList<Record> records;
     public boolean draged = false;
-    public boolean affected =false;
+    public int owner;
 
     public static final String tableName = "session";
     public Session(int peer, String nickname) {
@@ -58,37 +60,40 @@ public class Session {
         }
     }
 
-    public static Session get(int id){
-        Session result = Holder.talks.get(id);
-        if(result == null){
-
-            result = new Session(id, Mate.getPeer(id).nickname);
-            result.draged = true;
-            Holder.talks.put(id, result);
-            result.store();
-            Messenger messenger = new Messenger(MainActivity.instance.netHandler);
-            android.os.Message msg = android.os.Message.obtain();
-            msg.what = Constants.sessionAdded;
-            msg.arg1 = id;
-            try {
-                messenger.send(msg);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+    public static Session get(Mate item){
+        Session one = Holder.talks.get(item.id);
+        if(one != null)
+            return one;
+        one = new Session(item.id, item.nickname);
+        one.owner = User.instance.id;
+        one.draged = true;
+        Holder.talks.put(item.id, one);
+        one.store();
+        android.os.Message msg = android.os.Message.obtain();
+        try {
+            msg.what = Constants.emptySession;
+            Bundle data = new Bundle();
+            data.putSerializable(Constants.chat, one);
+            msg.setData(data);
+            new Messenger(MainActivity.instance.netHandler).send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
-        return result;
+        return one;
     }
 
-    public static void clearSession(){
-        DatabaseHelper.db.execSQL("delete from session;");
-        DatabaseHelper.db.execSQL("delete from record;");
-        Holder.talks.clear();
+    public static ArrayList<Session> get(ArrayList<Mate> mates){
+        ArrayList<Session> created = new ArrayList<>();
+        for(Mate item : mates){
+            created.add(get(item));
+        }
+        return created;
     }
 
     public static void drag(){
         if(User.instance.id == -1)
             return;
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from session where peer != ?;", new String[]{"" + User.instance.id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from session where owner = ?;", new String[]{"" + User.instance.id});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Session item = getCursored(cursor);
@@ -102,19 +107,20 @@ public class Session {
         Session item = new Session(
                 cursor.getInt(cursor.getColumnIndex("peer")),
                 cursor.getString(cursor.getColumnIndex("nickname")));
+        item.owner = User.instance.id;
         return item;
     }
 
     public void store(){
         ContentValues cv = new ContentValues();
         cv.put("peer", peer);
+        cv.put("owner", owner);
         cv.put("nickname", nickname);
         DatabaseHelper.db.insert(tableName, null, cv);
     }
 
     public void append(Record record){
         records.add(record);
-        affected = true;
     }
 
     public long getLast(){

@@ -43,7 +43,6 @@ import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.GridAdapter;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Douban;
 import com.androider.legacy.data.Holder;
@@ -89,8 +88,8 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     Button addScan;
     Button addPhoto;
     CardView selfContent;
-    LinearLayout whenCap;
-    private Button publish;
+    GridView whenCap;
+    GridAdapter capAdapter;
     ImageButton finishCap;
     ArrayList<Bitmap> caped;
     ArrayList<String> capedPath;
@@ -116,7 +115,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
         price = (MaterialEditText)findViewById(R.id.price_to_publish);
         title = (MaterialEditText)findViewById(R.id.title_to_publish);
-        publish = (Button)findViewById(R.id.publish);
+        Button publish = (Button)findViewById(R.id.publish);
         selfContent = (CardView)findViewById(R.id.self_content);
         surface = (FrameLayout)findViewById(R.id.cap_view);
         thumbs = (GridView)findViewById(R.id.cap_holder);
@@ -151,7 +150,9 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         preview = new CapturePreview(this);
         surface.addView(preview);
         View view = LayoutInflater.from(this).inflate(R.layout.preview_below, null);
-        whenCap = (LinearLayout)view.findViewById(R.id.when_cap);
+        whenCap = (GridView)view.findViewById(R.id.when_cap);
+        capAdapter = new GridAdapter();
+        whenCap.setAdapter(capAdapter);
         finishCap = (ImageButton)view.findViewById(R.id.finish_cap);
         finishCap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,14 +184,14 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
 
     }
     private void setToInput(){
+        if(selfContent.getVisibility() == View.GONE)
+            selfContent.setVisibility(View.VISIBLE);
         for (int i = 0; i < caped.size(); i++){
             ImageView view = new ImageView(this);
             view.setImageBitmap(caped.get(i));
             thumbAdpter.addThumb(view);
             paths.add(capedPath.get(i));
         }
-        if(selfContent.getVisibility() == View.GONE)
-            selfContent.setVisibility(View.VISIBLE);
     }
 
     private void myPublish(){
@@ -296,7 +297,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         added.setImageBitmap(thumbnail);
         caped.add(thumbnail);
         capedPath.add(theName);
-        whenCap.addView(added);
+        capAdapter.addThumb(added);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(MainActivity.filePath + theName)));
             used.compress(Bitmap.CompressFormat.JPEG, 90, bos);

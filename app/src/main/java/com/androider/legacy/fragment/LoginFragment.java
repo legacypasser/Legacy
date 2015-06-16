@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.androider.legacy.R;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
@@ -81,7 +80,6 @@ public class LoginFragment extends Fragment {
                 login();
             }
         });
-        StateController.change(Constants.detailState);
         return rootView;
     }
 

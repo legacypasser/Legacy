@@ -36,10 +36,11 @@ import android.widget.Toast;
 import com.androider.legacy.R;
 import com.androider.legacy.adapter.FragmentViewPagerAdapter;
 import com.androider.legacy.data.Holder;
+import com.androider.legacy.data.Mate;
+import com.androider.legacy.data.Record;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.database.DatabaseHelper;
-import com.androider.legacy.controller.StateController;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Nicker;
 import com.androider.legacy.data.User;
@@ -69,7 +70,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity{
         Nicker.initNick(this);
         School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
-        StateController.change(Constants.mainState);
         User.instance.drag();
         autoLogin();
         initView();
@@ -119,17 +118,6 @@ public class MainActivity extends AppCompatActivity{
         drawer.setDrawerListener(toggle);
     }
 
-    private void backControl(){
-        if(StateController.getCurrent() == Constants.detailState){
-            getSupportFragmentManager().popBackStack();
-            StateController.goBack();
-        }else if (StateController.getCurrent() == Constants.mainState){
-            finish();
-        }else if(StateController.getCurrent() == Constants.drawerState){
-            drawer.closeDrawer(GravityCompat.START);
-            StateController.goBack();
-        }
-    }
 
     private void initLocation(){
         String url = LegacyClient.getInstance().getBaiduLocationUrl(getApiKey());
@@ -239,8 +227,35 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public NetHandler netHandler = new NetHandler(instance);
+    private void afterLogin(int result){
+        switch (result){
+            case Constants.email_fail:
+                Toast.makeText(instance, "邮箱不对哦，先去注册亲", Toast.LENGTH_SHORT).show();
+                break;
+            case Constants.password_fail:
+                Toast.makeText(instance, "密码不对哦，亲", Toast.LENGTH_SHORT).show();
+                break;
+            case Constants.not_active:
+                Toast.makeText(instance, "先去邮箱激活一下亲", Toast.LENGTH_SHORT).show();
+                break;
+            case Constants.unknow_login_fail:
+                break;
+            case Constants.userReseted:
+            case Constants.userNotReseted:
+                RecommendFragment.instance.request();
+                Mate.peers.put(User.instance.id, User.instance);
+                Toast.makeText(instance, "登陆成功" + User.instance.nickname, Toast.LENGTH_SHORT).show();
+                instance.accountNickname.setText(User.instance.nickname);
+                instance.accountEmail.setText(User.instance.email);
+                UdpClient.getInstance().isRunning = true;
+                instance.chatOn();
+                User.instance.alreadLogin = true;
+                SessionListFragment.instance.startPull();
+                break;
+        }
+    }
 
+    public NetHandler netHandler = new NetHandler(instance);
 
     private static class NetHandler extends Handler{
         WeakReference<MainActivity> activityWeakReference;
@@ -258,43 +273,17 @@ public class MainActivity extends AppCompatActivity{
                         Toast.makeText(instance, "注册成功，请登陆邮箱激活账号，么么哒", Toast.LENGTH_SHORT).show();
                     break;
                 case Constants.loginAttempt:
-                    switch (msg.arg1){
-                        case Constants.email_fail:
-                            Toast.makeText(instance, "邮箱不对哦，注册过了吗亲？" + User.instance.nickname, Toast.LENGTH_SHORT).show();
-                            break;
-                        case Constants.password_fail:
-                            Toast.makeText(instance, "密码不对哦，亲" + User.instance.nickname, Toast.LENGTH_SHORT).show();
-                            break;
-                        case Constants.not_active:
-                            Toast.makeText(instance, "先去邮箱激活一下亲" + User.instance.nickname, Toast.LENGTH_SHORT).show();
-                            break;
-                        case Constants.unknow_login_fail:
-                            break;
-                        case Constants.userReseted:
-                            Session.clearSession();
-                        case Constants.userNotReseted:
-                            RecommendFragment.instance.request();
-                            Toast.makeText(instance, "登陆成功" + User.instance.nickname, Toast.LENGTH_SHORT).show();
-                            instance.accountNickname.setText(User.instance.nickname);
-                            instance.accountEmail.setText(User.instance.email);
-                            UdpClient.getInstance().isRunning = true;
-                            instance.chatOn();
-                            SessionListFragment.instance.startPull();
-                            if(StateController.getCurrent() == Constants.detailState){
-                                instance.backControl();
-                            }
-                            User.instance.alreadLogin = true;
-                            break;
-                    }
-                    break;
-                case Constants.pullMsg:
-                    SessionListFragment.instance.refreshSessions();
+                    instance.afterLogin(msg.arg1);
                     break;
                 case Constants.myPublish:
                     MyPostListFragment.instance.addItem();
                     break;
-                case Constants.sessionAdded:
-                    SessionListFragment.instance.addSession(Holder.talks.get(msg.arg1));
+                case Constants.msgArrive:
+                    SessionListFragment.instance.oneCome((Record)msg.getData().getSerializable(Constants.chat));
+                    break;
+                case Constants.emptySession:
+                    SessionListFragment.instance.directAdd((Session)msg.getData().getSerializable(Constants.chat));
+                    break;
             }
         }
     }

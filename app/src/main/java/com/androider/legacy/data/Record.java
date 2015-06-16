@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +25,7 @@ import java.util.LinkedList;
 /**
  * Created by Think on 2015/4/16.
  */
-public class Record {
+public class Record implements Serializable{
     public int sender;
     public int receiver;
     public String content;
@@ -68,7 +69,7 @@ public class Record {
     }
 
     public static void getOnline(LegacyTask.RequestCallback callback){
-        String url = LegacyClient.getInstance().getOnlineUrl();
+        String url = Constants.requestPath + Constants.online;
         LegacyClient.getInstance().callTask(url, callback);
     }
 
@@ -112,15 +113,27 @@ public class Record {
         return cv;
     }
 
-    public Session getSession(){
-        int newPeer = (receiver == User.instance.id)? sender: receiver;
-        return Session.get(newPeer);
+    public int getPeerId(){
+        return (receiver == User.instance.id)? sender: receiver;
     }
 
-    public void moreCome(){
+    public Session getSession(){
+        return Holder.talks.get(getPeerId());
+    }
+
+    public void onlineCome(){
         store();
-        if(getSession().draged)
-            getSession().append(this);
+        Session owner = getSession();
+        if(owner == null){
+            Mate mate = Mate.getPeer(getPeerId());
+            if(mate == null)
+                mate = Mate.justGet(getPeerId());
+            owner = Session.get(mate);
+            owner.append(this);
+        }else {
+            if(owner.draged)
+                owner.append(this);
+        }
     }
 
     @Override

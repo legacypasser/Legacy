@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -38,16 +39,14 @@ public class ChatService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         int intentType = intent.getIntExtra(Constants.intentType, -1);
         if(intentType == NetConstants.heartHead)
             return;
         if(intentType == NetConstants.sendChat){
-            Sender.getInstance().sendToPeer(ChatActivity.instance.talker, intent.getStringExtra(NetConstants.content));
+            int targetId = intent.getIntExtra(Constants.id, -1);
+            Sender.getInstance().sendToPeer(targetId, intent.getStringExtra(NetConstants.content));
             return;
         }
-        Messenger messenger = new Messenger(ChatActivity.instance.netHandler);
-        Message msg = Message.obtain();
         String[] tokens;
         Record record = null;
         switch (intentType){
@@ -71,19 +70,21 @@ public class ChatService extends IntentService {
                 Sender.getInstance().feedBack(record);
                 break;
         }
-        ChatActivity.justAdded = record;
-        record.moreCome();
-        msg.what = intentType;
+        record.onlineCome();
+        Bundle data = new Bundle();
+        data.putSerializable(Constants.chat, record);
         try {
-            messenger.send(msg);
-            messenger = new Messenger(MainActivity.instance.netHandler);
-            msg = Message.obtain();
-            msg.what = Constants.pullMsg;
-            messenger.send(msg);
+            Message msgForChat = Message.obtain();
+            msgForChat.what = intentType;
+            msgForChat.setData(data);
+            new Messenger(ChatActivity.netHandler).send(msgForChat);
+            Message msgforMain = Message.obtain();
+            msgforMain.what = Constants.msgArrive;
+            msgforMain.setData(data);
+            new Messenger(MainActivity.instance.netHandler).send(msgforMain);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
-
 
 }

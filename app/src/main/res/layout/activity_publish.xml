@@ -28,7 +28,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="点击添加"
+                    android:text="@string/click_to_add"
                     android:id="@+id/add_scan"/>
                 <View
                     android:layout_margin="4dp"
@@ -45,7 +45,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="点击添加"
+                    android:text="@string/click_to_add"
                     android:id="@+id/add_photo"/>
                 <android.support.v7.widget.CardView
                     android:id="@+id/self_content"

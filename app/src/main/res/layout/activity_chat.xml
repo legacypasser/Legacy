@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.androider.legacy.activity.ChatActivity">
-
     <include layout="@layout/common_toolbar"/>
     <ListView
         android:layout_width="match_parent"
@@ -16,11 +17,22 @@
         android:id="@+id/message_list"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider_color"/>
-    <com.jialin.chat.MessageInputToolBox
+        android:layout_height="0.5dp"
+        android:background="@color/talk_divider"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/message_box"/>
-
+        android:padding="4dp"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_input"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/chat_send"
+            android:text="发送" />
+    </LinearLayout>
 </LinearLayout>

@@ -50,6 +50,7 @@
 
     <string name="not_login">未登录</string>
     <string name="contract_seller">联系同学</string>
+    <string name="click_to_add">点击添加</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

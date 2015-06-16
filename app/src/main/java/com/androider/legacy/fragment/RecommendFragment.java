@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.adapter.IndexAdapter;
-import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
@@ -30,7 +29,6 @@ import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 

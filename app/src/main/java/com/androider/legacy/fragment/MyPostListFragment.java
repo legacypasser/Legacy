@@ -19,7 +19,6 @@ import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.activity.SearchActivity;
-import com.androider.legacy.adapter.RecyclerListAdapter;
 import com.androider.legacy.adapter.SearchAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;

@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "   price int," +
                 "   type int);");
 
-        db.execSQL("CREATE TABLE session ( peer INT primary key, nickname VARCHAR);");
+        db.execSQL("CREATE TABLE session (peer INT primary key, owner INT, nickname VARCHAR);");
         db.execSQL("CREATE TABLE record ( id INTEGER, sender INT, receiver INT, content VARCHAR, edit TIMESTAMP);");
         db.execSQL("CREATE TABLE user (id INT primary key, nickname VARCHAR, email VARCHAR, password VARCHAR, school VARCHAR, major VARCHAR, lati FLOAT, longi FLOAT);");
         db.execSQL("CREATE TABLE peer ( id INT primary key, nickname varchar, lati DOUBLE, longi DOUBLE , school VARCHAR, major VARCHAR);");
