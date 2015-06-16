@@ -5,19 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.androider.legacy.activity.RegisterActivity">
-
     <include layout="@layout/common_toolbar"/>
-
-    <android.support.v4.widget.DrawerLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/register_drawer">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:background="@color/text_icon"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="16dp"
             android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -88,13 +83,13 @@
                 android:layout_gravity="end"
                 android:id="@+id/register"/>
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:background="@color/text_icon"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="start">
+            android:layout_gravity="start"
+            android:id="@+id/register_chooser">
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,8 +106,5 @@
                 android:layout_height="match_parent"
                 android:id="@+id/choose_list"/>
         </LinearLayout>
-    </android.support.v4.widget.DrawerLayout>
-
-
-
+    </FrameLayout>
 </LinearLayout>

@@ -61,6 +61,7 @@ public class Session {
     public static Session get(int id){
         Session result = Holder.talks.get(id);
         if(result == null){
+
             result = new Session(id, Mate.getPeer(id).nickname);
             result.draged = true;
             Holder.talks.put(id, result);

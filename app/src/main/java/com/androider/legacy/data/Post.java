@@ -10,6 +10,7 @@ import android.util.Log;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 
 import org.json.JSONArray;
@@ -63,6 +64,38 @@ public class Post{
         return file.exists();
     }
 
+    public static ArrayList<Post> arryToList(ArrayList<JSONObject> objs){
+        ArrayList<Post> result = new ArrayList<>();
+        try {
+            for(JSONObject item : objs){
+                int id = item.getInt("id");
+                String img = item.getString("img");
+                Date publish = new Date(item.getLong("publish"));
+                String abs = item.getString("abs");
+                int price = item.getInt("price");
+                int seller = item.getInt("seller");
+                Post added = new Post(id, img, publish, abs, price, seller);
+                added.type = item.getInt("type");
+                result.add(added);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public static ArrayList<Post> stringToList(String str){
+        ArrayList<JSONObject> objs = new ArrayList<>();
+        try {
+            JSONArray jsonPosts = new JSONArray(str);
+            for(int i = 0; i < jsonPosts.length(); i++){
+                objs.add(jsonPosts.getJSONObject(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return arryToList(objs);
+    }
+
     public ArrayList<String> getDetailImg(){
         ArrayList<String> imgs = new ArrayList<>();
         if(type == doubanType){
@@ -101,20 +134,17 @@ public class Post{
         this.price = price;
     }
 
-    public static Post get(int id) {
+    public static Post get(int id){
         Post certain = Holder.detailed.get(id);
         if(certain == null){
             certain = detailFromBase(id);
             Holder.detailed.put(id, certain);
-            if(certain.des.equals("")){
-                Intent intent = new Intent(MainActivity.instance, NetService.class);
-                intent.putExtra(Constants.intentType, Constants.detailRequest);
-                intent.putExtra(Constants.id, id);
-                MainActivity.instance.startService(intent);
-                return null;
-            }
         }
         return certain;
+    }
+    public static void get(int id, LegacyTask.RequestCallback callback) {
+        String url = LegacyClient.getInstance().getRestUrl(id);
+        LegacyClient.getInstance().callTask(url, callback);
     }
 
     public JSONObject toServerJson(){

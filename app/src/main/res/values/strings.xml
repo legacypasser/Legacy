@@ -11,6 +11,7 @@
     <string name="title_activity_search">搜索</string>
     <string name="cap_finish">拍照完成</string>
     <string name="cap_start">再拍几张</string>
+    <string name="input_price">请输入价格：</string>
 
     <string name="email">邮箱</string>
     <string name="password">密码</string>
@@ -59,4 +60,7 @@
     <string name="title_activity_mail">active</string>
 
     <string name="hello_world">Hello world!</string>
+
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
 </resources>

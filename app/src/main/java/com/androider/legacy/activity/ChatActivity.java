@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -38,7 +39,6 @@ import java.util.HashMap;
 
 
 public class ChatActivity extends AppCompatActivity {
-
     public int talker;
     public Session currentSession;
     public static ChatActivity instance;
@@ -55,6 +55,8 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         instance = this;
+        Toolbar toolbar = (Toolbar)findViewById(R.id.simple_toolbar);
+        setSupportActionBar(toolbar);
         talker = getIntent().getIntExtra("talker", -1);
         currentSession = Session.get(talker);
         box = (MessageInputToolBox)findViewById(R.id.message_box);

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

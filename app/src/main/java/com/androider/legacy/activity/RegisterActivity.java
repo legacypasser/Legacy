@@ -3,12 +3,14 @@ package com.androider.legacy.activity;
 import android.content.Intent;
 import android.hardware.usb.UsbRequest;
 import android.location.Location;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +36,6 @@ import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.Encryption;
 import com.androider.legacy.util.WatcherSimplifier;
-import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
@@ -46,14 +48,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     MaterialEditText nickname;
     MaterialEditText school;
     MaterialEditText major;
-    DrawerLayout drawer;
     School choosedSchool;
     EditText search;
     RecyclerView list;
     View.OnClickListener listener;
+    LinearLayout chooser;
 
     WatcherSimplifier validator = new WatcherSimplifier() {
-
         @Override
         public void afterTextChanged(Editable s) {
             if(!email.getText().toString().equals("")
@@ -65,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }else{
                 button.setEnabled(false);
             }
-
         }
     };
     @Override
@@ -82,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         list = (RecyclerView)findViewById(R.id.choose_list);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.addItemDecoration(new DividerDecorator());
+        chooser = (LinearLayout)findViewById(R.id.register_chooser);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +90,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         listener = this;
-
+        Toolbar toolbar = (Toolbar)findViewById(R.id.simple_toolbar);
+        setSupportActionBar(toolbar);
         email.addTextChangedListener(validator);
         password.addTextChangedListener(validator);
         nickname.addTextChangedListener(validator);
@@ -97,9 +99,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         major.addTextChangedListener(validator);
         nickname.setText(Nicker.getAdj() + Nicker.getNoun());
         button.setEnabled(false);
-
         StateController.change(Constants.registerState);
-        drawer = (DrawerLayout)findViewById(R.id.register_drawer);
         setToChooseSchool();
     }
 
@@ -135,7 +135,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void setToChooseSchool(){
         if(StateController.getCurrent() == Constants.registerState){
-            drawer.openDrawer(Gravity.START);
             StateController.change(Constants.schoolChoosing);
         }else if(StateController.getCurrent() == Constants.majorChoosing){
             StateController.goBack();
@@ -151,7 +150,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void setToChooseMajor(){
         if(StateController.getCurrent() == Constants.registerState){
-            drawer.openDrawer(Gravity.START);
             StateController.change(Constants.schoolChoosing);
         }else if(StateController.getCurrent() == Constants.schoolChoosing){
             StateController.goBack();
@@ -189,9 +187,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             school.setText(choosedSchool.name);
             setToChooseMajor();
         }else if(StateController.getCurrent() == Constants.majorChoosing){
-            major.setText(((TextView)v).getText().toString());
-            drawer.closeDrawer(Gravity.LEFT);
+            major.setText(((TextView) v).getText().toString());
             StateController.goBack();
+            chooser.setVisibility(View.GONE);
         }
     }
 }

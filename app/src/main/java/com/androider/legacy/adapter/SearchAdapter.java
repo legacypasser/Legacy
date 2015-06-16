@@ -17,7 +17,6 @@ import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
-import com.gc.materialdesign.views.Card;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 

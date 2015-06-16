@@ -314,7 +314,7 @@ public class CloudsearchClient {
             result = LegacyClient.getInstance().aliPush(url, requestParams);
         } else if (method.equals(METHOD_GET)) {
             url = url + getHTTPParamsStr(requestParams);
-            result = LegacyClient.getInstance().aliSearch(url);
+            result = LegacyClient.getInstance().thirdGet(url);
         }
         return result;
     }

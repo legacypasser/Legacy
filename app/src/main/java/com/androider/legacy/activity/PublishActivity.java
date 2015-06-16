@@ -49,18 +49,16 @@ import com.androider.legacy.data.Douban;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.User;
 import com.androider.legacy.fragment.ResultFragment;
+import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.WatcherSimplifier;
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
-import com.gc.materialdesign.views.ButtonFlat;
 
 
-import com.gc.materialdesign.views.ButtonFloat;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -96,7 +94,6 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     ImageButton finishCap;
     ArrayList<Bitmap> caped;
     ArrayList<String> capedPath;
-    public static final String ISBN = "isbn";
     public ArrayList<Douban> beans = new ArrayList<>();
     GridView thumbs;
     LinearLayout list;
@@ -114,6 +111,8 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         instance = this;
         thumbHeight = DensityUtil.dip2px(this, 96);
         requiredWidth = DensityUtil.dip2px(this, 150);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.simple_toolbar);
+        setSupportActionBar(toolbar);
         des = (MaterialEditText)findViewById(R.id.des_to_publish);
         price = (MaterialEditText)findViewById(R.id.price_to_publish);
         title = (MaterialEditText)findViewById(R.id.title_to_publish);
@@ -220,10 +219,16 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     @Override
     public void handleResult(Result result) {
         scannerView.stopCamera();
-        Intent intent = new Intent(this, PublishService.class);
-        intent.putExtra(Constants.intentType, Constants.fromDouban);
-        intent.putExtra(ISBN, result.getContents());
-        startService(intent);
+        final String str = result.getContents();
+        LegacyClient.getInstance().callTask(Douban.url + str + Douban.suf, new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                Douban one = new Douban(str);
+                one.fill(result);
+                beans.add(one);
+                addFormattedBook(one);
+            }
+        });
         setToMain();
     }
 
@@ -239,27 +244,24 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
                 case Constants.myPublish:
                     instance.publishFinished();
                     break;
-                case Constants.fromDouban:
-                    instance.addFormattedBook(msg.arg1);
-                    break;
             }
         }
     }
 
-    private void addFormattedBook(final int index){
-        View itemView = LayoutInflater.from(this).inflate(R.layout.format_book, null);
+    private void addFormattedBook(final Douban one){
+        View itemView = LayoutInflater.from(this).inflate(R.layout.format_book, list, false);
         ImageView img = (ImageView)itemView.findViewById(R.id.douban_img);
         TextView title = (TextView)itemView.findViewById(R.id.douban_name);
         final TextView price = (MaterialEditText)itemView.findViewById(R.id.douban_price);
-        title.setText(beans.get(index).name);
-        ImageLoader.getInstance().displayImage(beans.get(index).img, img);
+        title.setText(one.name);
+        ImageLoader.getInstance().displayImage(one.img, img);
         price.addTextChangedListener(new WatcherSimplifier() {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().equals("")) {
-                    beans.get(index).price = 0;
+                    one.price = 0;
                 } else {
-                    beans.get(index).price = Integer.parseInt(price.getText().toString());
+                    one.price = Integer.parseInt(price.getText().toString());
                 }
             }
         });

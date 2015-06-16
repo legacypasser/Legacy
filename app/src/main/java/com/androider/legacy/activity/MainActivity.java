@@ -1,7 +1,11 @@
 package com.androider.legacy.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Handler;
@@ -9,10 +13,12 @@ import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +48,8 @@ import com.androider.legacy.fragment.MyPostListFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.RecommendFragment;
 import com.androider.legacy.fragment.SessionListFragment;
+import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.net.Receiver;
 import com.androider.legacy.net.SearchClient;
@@ -50,9 +58,6 @@ import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.ConnectDetector;
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
-import com.gc.materialdesign.views.ButtonFloat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -62,8 +67,6 @@ import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,13 +75,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
 
     public static String filePath;
-    private MaterialMenuIconToolbar materialMenu;
     public static MainActivity instance;
     TextView accountEmail;
     TextView accountNickname;
     Thread sendThread;
     Thread receiveThread;
     DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,46 +89,7 @@ public class MainActivity extends AppCompatActivity{
         instance = this;
         new DatabaseHelper(this);
         setContentView(R.layout.activity_main);
-        drawer = (DrawerLayout)findViewById(R.id.legacy_drawer);
-        Toolbar overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
-        setSupportActionBar(overallToolBar);
-        overallToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (StateController.getCurrent() == Constants.mainState) {
-                    drawer.openDrawer(Gravity.START);
-                    materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
-                    StateController.change(Constants.drawerState);
-                } else {
-                    backControl();
-                }
-
-            }
-        });
-        drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                if (StateController.getCurrent() == Constants.drawerState) {
-                    materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
-                    StateController.goBack();
-                }
-            }
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                if (StateController.getCurrent() == Constants.mainState) {
-                    drawer.openDrawer(Gravity.START);
-                    materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
-                    StateController.change(Constants.drawerState);
-                }
-            }
-        });
-        materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
-            @Override
-            public int getToolbarViewId() {
-                return R.id.overall_toolbar;
-            }
-        };
-        materialMenu.setNeverDrawTouch(true);
+        initToolbar();
         Nicker.initNick(this);
         School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
@@ -135,31 +99,57 @@ public class MainActivity extends AppCompatActivity{
         initView();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    private void initToolbar(){
+        drawer = (DrawerLayout)findViewById(R.id.legacy_drawer);
+        Toolbar overallToolBar = (Toolbar)findViewById(R.id.overall_toolbar);
+        setSupportActionBar(overallToolBar);
+        toggle = new ActionBarDrawerToggle(this,drawer, overallToolBar, R.string.drawer_open, R.string.drawer_close);
+        drawer.setDrawerListener(toggle);
+    }
+
     private void backControl(){
         if(StateController.getCurrent() == Constants.detailState){
             getSupportFragmentManager().popBackStack();
-            materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
             StateController.goBack();
         }else if (StateController.getCurrent() == Constants.mainState){
             finish();
         }else if(StateController.getCurrent() == Constants.drawerState){
-            drawer.closeDrawer(Gravity.START);
-            materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+            drawer.closeDrawer(GravityCompat.START);
             StateController.goBack();
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        backControl();
-    }
-
     private void initLocation(){
-        Intent intent = new Intent(this, NetService.class);
-        intent.putExtra(Constants.intentType, Constants.baiduLocation);
-        startService(intent);
+        String url = LegacyClient.getInstance().getBaiduLocationUrl(getApiKey());
+        LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                User.instance.positionUser(result);
+            }
+        });
     }
 
+    public String getApiKey(){
+        try {
+            ActivityInfo info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            return info.metaData.getString("map.baidu.api.ak");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private void autoLogin(){
         if(!ConnectDetector.isConnectedToNet()){
@@ -206,7 +196,6 @@ public class MainActivity extends AppCompatActivity{
                 fragment = PostDetailFragment.newInstance("", "");
             }
         }
-        materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_container, fragment, fragmentName);
         ft.addToBackStack(null);
@@ -262,12 +251,6 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case Constants.recommendAdded:
-                    RecommendFragment.instance.refreshList();
-                break;
-                case Constants.detailRequest:
-                    PostDetailFragment.instance.setView();
-                    break;
                 case Constants.registrationSent:
                     if(msg.arg1 == Constants.mail_occupied)
                         Toast.makeText(instance, "这个邮箱已被注册过了，亲", Toast.LENGTH_SHORT).show();
@@ -277,19 +260,21 @@ public class MainActivity extends AppCompatActivity{
                 case Constants.loginAttempt:
                     switch (msg.arg1){
                         case Constants.email_fail:
+                            Toast.makeText(instance, "邮箱不对哦，注册过了吗亲？" + User.instance.nickname, Toast.LENGTH_SHORT).show();
                             break;
                         case Constants.password_fail:
+                            Toast.makeText(instance, "密码不对哦，亲" + User.instance.nickname, Toast.LENGTH_SHORT).show();
                             break;
                         case Constants.not_active:
+                            Toast.makeText(instance, "先去邮箱激活一下亲" + User.instance.nickname, Toast.LENGTH_SHORT).show();
                             break;
                         case Constants.unknow_login_fail:
                             break;
                         case Constants.userReseted:
                             Session.clearSession();
-                            SessionListFragment.instance.useNewAdapter();
                         case Constants.userNotReseted:
                             RecommendFragment.instance.request();
-                            Toast.makeText(instance, "登陆成功 " + User.instance.nickname, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(instance, "登陆成功" + User.instance.nickname, Toast.LENGTH_SHORT).show();
                             instance.accountNickname.setText(User.instance.nickname);
                             instance.accountEmail.setText(User.instance.email);
                             UdpClient.getInstance().isRunning = true;

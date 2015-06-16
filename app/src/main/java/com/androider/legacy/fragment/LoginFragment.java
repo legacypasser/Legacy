@@ -16,7 +16,6 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.Encryption;
-import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;

@@ -25,6 +25,9 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="map.baidu.api.ak"
+                android:value="260569e20491d41b6def091cccf191b0"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,9 +47,7 @@
         <service
             android:name=".service.NetService"
             android:exported="false" >
-            <meta-data
-                android:name="map.baidu.api.ak"
-                android:value="260569e20491d41b6def091cccf191b0"/>
+
         </service>
 
         <activity
@@ -58,10 +59,6 @@
             android:label="@string/title_activity_search" >
         </activity>
 
-        <service
-            android:name=".service.SearchService"
-            android:exported="false" >
-        </service>
         <service
             android:name=".service.PublishService"
             android:exported="false" >

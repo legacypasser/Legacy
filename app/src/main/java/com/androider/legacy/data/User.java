@@ -52,7 +52,6 @@ public class User extends Mate{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
     public int resetUser(JSONObject returned){
         try {

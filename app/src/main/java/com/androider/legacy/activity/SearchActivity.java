@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.support.v7.widget.Toolbar;
@@ -29,11 +30,9 @@ import com.androider.legacy.data.Post;
 import com.androider.legacy.fragment.LoginFragment;
 import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.fragment.ResultFragment;
+import com.androider.legacy.net.LegacyTask;
+import com.androider.legacy.net.SearchClient;
 import com.androider.legacy.service.NetService;
-import com.androider.legacy.service.SearchService;
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.gc.materialdesign.views.ButtonFlat;
-import com.gc.materialdesign.views.ButtonFloat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.lang.ref.WeakReference;
@@ -41,7 +40,7 @@ import java.lang.ref.WeakReference;
 public class SearchActivity extends AppCompatActivity {
 
     EditText searchInput;
-    ButtonFlat searchButton;
+    Button searchButton;
     public static SearchActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         instance = this;
         searchInput = (EditText)findViewById(R.id.search_input);
-        searchButton = (ButtonFlat)findViewById(R.id.search_confirm);
+        searchButton = (Button)findViewById(R.id.search_confirm);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,31 +67,15 @@ public class SearchActivity extends AppCompatActivity {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         String keyword = searchInput.getText().toString();
-        Intent intent = new Intent(this, SearchService.class);
-        intent.putExtra(Constants.intentType, Constants.searchReq);
-        intent.putExtra(Constants.keyword, keyword);
-        this.startService(intent);
-        instance.switchFragment(ResultFragment.class.getSimpleName());
-    }
-
-    public NetHandler netHandler = new NetHandler(instance);
-
-    private static class NetHandler extends Handler {
-        WeakReference<SearchActivity> activityWeakReference;
-        NetHandler(SearchActivity searchActivity){
-            activityWeakReference = new WeakReference<>(searchActivity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case Constants.searchReq:
-                    ResultFragment.instance.refreshList();
-                    break;
+        SearchClient.search(keyword, new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                instance.switchFragment(ResultFragment.class.getSimpleName());
+                ResultFragment.instance.refreshList(SearchClient.formSearchStr(result));
             }
-        }
-    }
+        });
 
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

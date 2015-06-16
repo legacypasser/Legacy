@@ -11,9 +11,10 @@ import java.util.PriorityQueue;
  */
 public class UdpClient {
     DatagramChannel channel;
-    InetSocketAddress targetServer = new InetSocketAddress(NetConstants.serverAddr, NetConstants.serverPort);;
+    InetSocketAddress targetServer;
     public boolean isRunning;
     private UdpClient(){
+        targetServer = new InetSocketAddress(NetConstants.serverAddr, NetConstants.serverPort);
     }
 
     private static class SingletonHolder{

@@ -1,6 +1,7 @@
 package com.androider.legacy.fragment;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,9 +27,10 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
 
+import com.androider.legacy.database.DatabaseHelper;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.util.DateConverter;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.FitManager;
@@ -110,9 +112,60 @@ public class PostDetailFragment extends Fragment {
     }
 
     public void setView(){
-        Post current = Post.get(currentId);
-        if(current == null)
+        final Post current = Post.get(currentId);
+        if(current.des.equals("")){
+            Post.get(currentId, new LegacyTask.RequestCallback() {
+                @Override
+                public void onRequestDone(String result) {
+                    current.des = result;
+                    ContentValues cv = new ContentValues();
+                    cv.put("des", current.des);
+                    DatabaseHelper.db.update(Post.tableName, cv, "id = ?", new String[]{"" + current.id});
+                    fillContent(current);
+                    fillSeller(current.seller);
+                }
+            });
+        }else {
+            fillContent(current);
+            fillSeller(current.seller);
+        }
+    }
+
+    private void fillSeller(final int id){
+        if(id == User.instance.id) {
+            icon.setImageResource(R.drawable.ic_person_black_48dp);
+            detailNickname.setText("我的宝贝");
+            detailSchool.setText(User.instance.school);
             return;
+        }
+            detailNickCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("talker", Post.get(currentId).seller);
+                    getActivity().startActivity(intent);
+                }
+            });
+        Mate one = Mate.getPeer(id);
+            if (one == null){
+                Mate.getPeer(id, new LegacyTask.RequestCallback() {
+                    @Override
+                    public void onRequestDone(String result) {
+                        Mate neted = Mate.fromString(result);
+                        neted.id = id;
+                        neted.store();
+                        detailNickname.setText(neted.nickname);
+                        detailSchool.setText(neted.school);
+                    }
+                });
+            }else {
+                detailNickname.setText(one.nickname);
+                detailSchool.setText(one.school);
+            }
+
+    }
+
+    private void fillContent(Post current){
         for(String item : current.getDetailImg()){
             View imageCard = LayoutInflater.from(getActivity()).inflate(R.layout.item_img, null);
             ImageView img = (ImageView)imageCard.findViewById(R.id.detail_img);
@@ -123,22 +176,6 @@ public class PostDetailFragment extends Fragment {
         detailPrice.setText("价格：" + current.price + "元");
         detailPub.setText(DateConverter.formatDate(current.publish));
         detailTitle.setText(current.abs);
-        if(current.seller != User.instance.id){
-            detailNickCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra("talker", Post.get(currentId).seller);
-                    getActivity().startActivity(intent);
-                }
-            });
-            detailNickname.setText(Mate.peers.get(current.seller).nickname);
-            detailSchool.setText(Mate.getPeer(current.seller).school);
-        }else {
-            icon.setImageResource(R.drawable.ic_person_black_48dp);
-            detailNickname.setText("我的宝贝");
-            detailSchool.setText(User.instance.school);
-        }
     }
 
     @Override

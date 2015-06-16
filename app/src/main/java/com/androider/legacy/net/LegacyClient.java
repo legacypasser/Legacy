@@ -14,7 +14,6 @@ import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
@@ -101,47 +100,43 @@ public class LegacyClient{
     }
 
     public String thirdGet(String url){
+        if(!ConnectDetector.isConnectedToNet()){
+            return RequestData.fromBase(url);
+        }
         Request req = new Request.Builder()
                 .url(url)
                 .build();
         Response  resp = null;
         try {
             resp = client.newCall(req).execute();
-            return resp.body().string();
+            String result = resp.body().string();
+            RequestData.save(Constants.baiduUrl, result);
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String getRecommend(int pageNum){
-        String reqUrl = Constants.requestPath + Constants.recommend + Constants.ask + Constants.page + pageNum;
-        return get(reqUrl);
+    public String getRecommendUrl(int pageNum){
+        return Constants.requestPath + Constants.recommend + Constants.ask + Constants.page + pageNum;
+
     }
 
-    public String getRest(int id){
-        String reqUrl = Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
-        return get(reqUrl);
+    public String getRestUrl(int id){
+        return Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
     }
 
-    public String search(String keyword){
-        String reqUrl = Constants.requestPath + Constants.search + Constants.ask + Constants.keyword + keyword;
-        String str = get(reqUrl);
-        return str;
+    public String getPersonalUrl(int id){
+        return Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
     }
 
-    public String personal(int id){
-        String reqUrl = Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
-        return get(reqUrl);
+    public String getOnlineUrl(){
+        return Constants.requestPath + Constants.online;
     }
 
-    public String online(){
-        String reqUrl = Constants.requestPath + Constants.online;
-        return get(reqUrl);
-    }
-
-    public String info(int id){
-        return get(Constants.requestPath + Constants.info + Constants.ask + Constants.id + id);
+    public String getInfoUrl(int id){
+        return Constants.requestPath + Constants.info + Constants.ask + Constants.id + id;
     }
 
     public String interest(int id){
@@ -221,35 +216,8 @@ public class LegacyClient{
         return null;
     }
 
-    public String baiduLocation(String apiKey){
-        if(!ConnectDetector.isConnectedToNet()){
-            return RequestData.fromBase(Constants.baiduUrl);
-        }
-        Request req = new Request.Builder()
-                .url(Constants.baiduUrl + apiKey)
-                .build();
-        Response  resp = null;
-        try {
-            resp = client.newCall(req).execute();
-            String result = resp.body().string();
-            RequestData.save(Constants.baiduUrl, result);
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String aliSearch(String reqUrl){
-        Request req = new Request.Builder().url(reqUrl).build();
-        Response resp = null;
-        try {
-            resp = client.newCall(req).execute();
-            return resp.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getBaiduLocationUrl(String apiKey){
+        return Constants.baiduUrl + apiKey;
     }
 
     public String aliPush(String url, Map<String, String> content){
@@ -279,5 +247,4 @@ public class LegacyClient{
         LegacyTask task = new LegacyTask(callback);
         task.execute(url);
     }
-
 }

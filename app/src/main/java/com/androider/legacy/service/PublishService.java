@@ -17,7 +17,6 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Douban;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.User;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
@@ -69,7 +68,6 @@ public class PublishService extends IntentService {
                     dataArray.put(published.toServerJson());
                     toStore.add(published);
                 }
-
                 for(Douban item :PublishActivity.instance.beans){
                     dataArray.put(item.toJson());
                     Post temp = new Post(-1, item.des, item.img, User.instance.id, new Date(), item.name, item.price);
@@ -85,13 +83,6 @@ public class PublishService extends IntentService {
                     DatabaseHelper.db.insert(Post.tableName, null, Post.getCv(toStore.get(i)));
                 }
                 SearchClient.uploadContent(toStore);
-                break;
-            case Constants.fromDouban:
-                String isbn = intent.getStringExtra(PublishActivity.ISBN);
-                Douban one = new Douban(isbn);
-                one.fill();
-                PublishActivity.instance.beans.add(one);
-                msg.arg1 = PublishActivity.instance.beans.size() - 1;
                 break;
         }
         try {

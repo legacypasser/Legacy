@@ -21,7 +21,6 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Mate;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.data.Record;
 import com.androider.legacy.data.User;
 import com.androider.legacy.database.DatabaseHelper;
@@ -58,20 +57,6 @@ public class NetService extends IntentService {
         Message msg = Message.obtain();
         try {
         switch (type){
-            case Constants.recommendAdded:
-                int pageNum = intent.getIntExtra(Constants.page, 1);
-                Holder.recommendPost = PostConverter.stringToList(LegacyClient.getInstance().getRecommend(pageNum));
-                Post.store(Holder.recommendPost);
-                break;
-            case Constants.detailRequest:
-                int id = intent.getIntExtra(Constants.id, -1);
-                Post certain = Holder.detailed.get(id);
-                certain.des = LegacyClient.getInstance().getRest(id);
-                ContentValues cv = new ContentValues();
-                cv.put("des", certain.des);
-                DatabaseHelper.db.update(Post.tableName, cv, "id = ?", new String[]{"" + id});
-                Mate.getPeer(certain.seller);
-                break;
             case Constants.registrationSent:
                 String regiResult = LegacyClient.getInstance().register();
                 if(regiResult.equals("email_used")){
@@ -96,19 +81,7 @@ public class NetService extends IntentService {
                     msg.arg1 = User.instance.resetUser(new JSONObject(loginResult));
                 }
                 break;
-            case Constants.pullMsg:
-                ArrayList<Record> records = Record.getOnline();
-                if(records != null){
-                    for (Record item : records)
-                        item.moreCome();
-                    break;
-                }else {
-                    return;
-                }
-            case Constants.baiduLocation:
-                String woduResult = LegacyClient.getInstance().baiduLocation(getApiKey());
-                User.instance.positionUser(woduResult);
-                return;
+
             case Constants.byebye:
                 Sender.getInstance().sendToServer(""+User.instance.id, NetConstants.offline);
                 UdpClient.getInstance().close();
@@ -121,14 +94,4 @@ public class NetService extends IntentService {
         }
     }
 
-    public String getApiKey(){
-        try {
-            ComponentName cn = new ComponentName(this, NetService.class);
-            ServiceInfo info = this.getPackageManager().getServiceInfo(cn, PackageManager.GET_META_DATA);
-            return info.metaData.getString("map.baidu.api.ak");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

@@ -26,6 +26,8 @@ import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
+import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -76,17 +78,18 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
 
     private void more(){
         currentPage++;
-        Intent intent = new Intent(getActivity(), NetService.class);
-        intent.putExtra(Constants.intentType, Constants.recommendAdded);
-        intent.putExtra(Constants.page, currentPage);
-        getActivity().startService(intent);
-    }
-
-    public void refreshList(){
-        for(Post item : Holder.recommendPost){
-            adapter.addData(item);
-        }
-        holder.setRefreshing(false);
+        String url = LegacyClient.getInstance().getRecommendUrl(currentPage);
+        LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                ArrayList<Post> list = Post.stringToList(result);
+                Post.store(list);
+                for(Post item : list){
+                    adapter.addData(item);
+                }
+                holder.setRefreshing(false);
+            }
+        });
     }
 
 

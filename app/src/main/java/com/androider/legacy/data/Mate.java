@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,13 +44,16 @@ public class Mate {
         Mate mate = peers.get(id);
         if(mate == null){
             mate = fromBase(id);
-            if(mate == null){
-                mate = fromNet(id);
-                mate.store();
-            }
+            if(mate == null)
+                return null;
             peers.put(id, mate);
         }
         return mate;
+    }
+
+    public static void getPeer(int id, LegacyTask.RequestCallback callback){
+        String url = LegacyClient.getInstance().getInfoUrl(id);
+        LegacyClient.getInstance().callTask(url, callback);
     }
 
     private static Mate fromBase(int id){
@@ -86,12 +90,11 @@ public class Mate {
         return mate;
     }
 
-    private static Mate fromNet(int id){
+    public static Mate fromString(String str){
         JSONObject peerInfo;
         try {
-            peerInfo = new JSONObject(LegacyClient.getInstance().info(id));
+            peerInfo = new JSONObject(str);
             Mate mate= new Mate();
-            mate.id = id;
             mate.nickname = peerInfo.getString("nickname");
             mate.lati = peerInfo.getDouble("lati");
             mate.longi = peerInfo.getDouble("longi");

@@ -20,8 +20,7 @@ public class Douban {
         this.isbn = isbn;
     }
 
-    public void fill(){
-        String result = LegacyClient.getInstance().thirdGet(url + isbn + suf);
+    public void fill(String result){
         try {
             JSONObject obj = new JSONObject(result);
             img = obj.getString("image");

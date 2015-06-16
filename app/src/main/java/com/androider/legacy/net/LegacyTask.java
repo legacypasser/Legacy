@@ -9,7 +9,10 @@ public class LegacyTask extends AsyncTask<String, Integer, String> {
     private RequestCallback callback;
     @Override
     protected String doInBackground(String... params) {
-        return LegacyClient.getInstance().get(params[0]);
+        if(params[0].contains("hereprovides.com"))
+            return LegacyClient.getInstance().get(params[0]);
+        else
+            return LegacyClient.getInstance().thirdGet(params[0]);
     }
 
     @Override

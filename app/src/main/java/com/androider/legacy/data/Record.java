@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.util.DateConverter;
 import com.jialin.chat.Message;
@@ -66,11 +67,9 @@ public class Record {
         return result;
     }
 
-    public static ArrayList<Record> getOnline(){
-        String allMsg = LegacyClient.getInstance().online();
-        if(allMsg.equals("empty"))
-            return null;
-        return strToList(allMsg);
+    public static void getOnline(LegacyTask.RequestCallback callback){
+        String url = LegacyClient.getInstance().getOnlineUrl();
+        LegacyClient.getInstance().callTask(url, callback);
     }
 
     public static Record fromCome(String[] tokens){

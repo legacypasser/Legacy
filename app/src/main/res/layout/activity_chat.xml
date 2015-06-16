@@ -14,7 +14,6 @@
         android:dividerHeight="3dp"
         android:scrollbarStyle="outsideOverlay"
         android:id="@+id/message_list"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

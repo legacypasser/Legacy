@@ -1,10 +1,10 @@
 package com.androider.legacy.net;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.androider.legacy.data.Post;
-import com.androider.legacy.data.PostConverter;
 import com.androider.legacy.util.Encryption;
 import com.opensearch.javasdk.CloudsearchClient;
 import com.opensearch.javasdk.CloudsearchDoc;
@@ -45,85 +45,10 @@ public class SearchClient {
     private static String tableName = "legacy";
     private static String appName = "legacy";
     private static String serverUrl = "http://opensearch-cn-hangzhou.aliyuncs.com";
-    private static String version = "v2";
-    private static String signatureVersion = "1.0";
-    private static String signatureMethod = "HMAC-SHA1";
-    private static ArrayList<String> searchParamList;
-    private static ArrayList<String> uploadParamList;
-    private static final String PUSH = "push";
-    private static final String POST = "POST";
-    private static final String GET = "GET";
-
-    private static final String VERSION = "Version";
-    private static final String ACCESSKEYID = "AccessKeyId";
-    private static final String SIGNATUREMETHOD = "SignatureMethod";
-    private static final String SIGNATUREVERSION = "SignatureVersion";
-    private static final String SIGNATURENONCE = "SignatureNonce";
-    private static final String TIMESTAMP = "Timestamp";
-    private static final String QUERY = "query";
-    private static final String INDEXNAME = "index_name";
-    private static final String FETCHFIELDS = "fetch_fields";
-    private static final String SIGNATURE = "Signature";
-
-    private static final String ACTION = "action";
-    private static final String TABLENAME = "table_name";
-    private static Date conductDate;
-
-    public static void initSearch(){
-
-        searchParamList = new ArrayList<>();
-        uploadParamList = new ArrayList<>();
-        for(String item : getCommonList()){
-            searchParamList.add(item);
-            uploadParamList.add(item);
-        }
-
-        searchParamList.add(QUERY);
-        searchParamList.add(INDEXNAME);
-        searchParamList.add(FETCHFIELDS);
-
-        uploadParamList.add(ACTION);
-        uploadParamList.add(TABLENAME);
-        uploadParamList.add("sign_mode");
-
-        Collections.sort(searchParamList);
-        Collections.sort(uploadParamList);
-    }
-
-    private static String aliDate(){
-        SimpleDateFormat preFormat = new SimpleDateFormat("yyyy-MM-dd");
-        preFormat.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-        SimpleDateFormat sufFormat = new SimpleDateFormat("HH:mm:ss");
-        sufFormat.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-        return preFormat.format(conductDate) + "T" + sufFormat.format(conductDate) + "Z";
-    }
-
-    private static ArrayList<String> getCommonList(){
-        ArrayList<String> list = new ArrayList<>();
-        list.add(VERSION);
-        list.add(ACCESSKEYID);
-        list.add(SIGNATUREMETHOD);
-        list.add(SIGNATUREVERSION);
-        list.add(SIGNATURENONCE);
-        list.add(TIMESTAMP);
-        return list;
-    }
-    public static String buildUploadUrl(){
-        JSONObject urlObj = buildCommon();
-        try {
-            urlObj.put(ACTION, PUSH);
-            urlObj.put(TABLENAME, tableName);
-            urlObj.put("sign_mode", "1");
-            return serverUrl + "/index/doc/" + appName + "?" + buildParamPart(urlObj, uploadParamList,POST);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public static void uploadContent(ArrayList<Post> posts){
         JSONArray dataArray = new JSONArray();
-        conductDate = new Date();
+        Date conductDate = new Date();
         try {
             for(Post post : posts){
                 JSONObject fullData = new JSONObject();
@@ -147,61 +72,7 @@ public class SearchClient {
         }
     }
 
-    private static JSONObject buildCommon(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put(VERSION, version);
-            obj.put(ACCESSKEYID, accessKey);
-            obj.put(SIGNATUREMETHOD, signatureMethod);
-            obj.put(SIGNATUREVERSION, signatureVersion);
-            obj.put(SIGNATURENONCE, "" + conductDate.getTime() + (new Random().nextInt(9999)%8999 + 1000));
-            obj.put(TIMESTAMP, "" + aliDate());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
-
-    private static String buildParamPart(JSONObject obj, ArrayList<String > paramlist, String method){
-        String result = getEncodedPair(paramlist.get(0), obj);
-        for(int i = 1; i < paramlist.size(); i++){
-            result += "&" + getEncodedPair(paramlist.get(i), obj);
-        }
-        String signature = null;
-        try {
-            String toSign = POST + "&" + URLEncoder.encode("/", "utf-8") + "&" + URLEncoder.encode(result, "utf-8");
-            String hmac = Encryption.hmac(toSign, bigali);
-            signature = URLEncoder.encode(hmac, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return result + "&" + SIGNATURE + "=" + signature;
-    }
-
-    private static String buildQueryUrl(String keyword, int start, int number){
-        String queryPart = "config=start:" + start + ",hit:" + number + ",format:json&&query=default:\'"+ keyword + "\'&&sort=-publish;-RANK";
-        JSONObject queryObj = buildCommon();
-        try {
-            queryObj.put(QUERY, queryPart);
-            queryObj.put(INDEXNAME, appName);
-            queryObj.put(FETCHFIELDS, "id;img;seller;publish;abs;price");
-            return serverUrl + "/search?" + buildParamPart(queryObj, searchParamList, GET);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static String getEncodedPair(String paramName, JSONObject obj){
-        try {
-            return URLEncoder.encode(paramName, "utf-8") + "=" + URLEncoder.encode(obj.getString(paramName),"utf-8");
-        } catch (UnsupportedEncodingException|JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static ArrayList<Post> search(String keyWord){
+    public static void search(String keyWord, LegacyTask.RequestCallback callback){
         Map<String, Object> opts = new HashMap();
         opts.put("host", serverUrl);
         CloudsearchClient client = new CloudsearchClient(accessKey, bigali , opts, KeyTypeEnum.ALIYUN);
@@ -210,13 +81,39 @@ public class SearchClient {
         search.setQueryString("default:" + "\'" + keyWord + "\'");
         search.setFormat("json");
         search.addSort("publish", "-");
+        SearchTask task = new SearchTask(callback);
+        task.execute(search);
+    }
+
+    public static ArrayList<Post> formSearchStr(String result){
+        JSONArray itemArray = null;
         try {
-            String result = search.search();
-            Log.v("panbo", result);
-            JSONArray itemArray = new JSONObject(result).getJSONObject("result").getJSONArray("items");
-            return PostConverter.stringToList(itemArray.toString());
-        } catch (IOException|JSONException e) {
+            itemArray = new JSONObject(result).getJSONObject("result").getJSONArray("items");
+        } catch (JSONException e) {
             e.printStackTrace();
+        }
+        return Post.stringToList(itemArray.toString());
+    }
+
+    private static class SearchTask extends AsyncTask<CloudsearchSearch, Integer, String>{
+        LegacyTask.RequestCallback callback;
+        public SearchTask(LegacyTask.RequestCallback callback) {
+            super();
+            this.callback = callback;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            callback.onRequestDone(s);
+        }
+
+        @Override
+        protected String doInBackground(CloudsearchSearch... params) {
+            try {
+                return params[0].search();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
