@@ -14,7 +14,7 @@
             android:background="@color/text_icon"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText

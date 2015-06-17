@@ -68,17 +68,16 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
             HashMap.Entry entry = (HashMap.Entry)it.next();
             adapter.addData((Session)entry.getValue());
         }
+        sessionCover.setVisibility(View.GONE);
     }
 
     public void directAdd(Session session){
         adapter.addData(session);
-        if(sessionCover.getVisibility() == View.VISIBLE)
-            sessionCover.setVisibility(View.GONE);
+        sessionCover.setVisibility(View.GONE);
     }
 
     public void oneCome(final Record one){
-        if(sessionCover.getVisibility() == View.VISIBLE)
-            sessionCover.setVisibility(View.GONE);
+        sessionCover.setVisibility(View.GONE);
         Session owner = one.getSession();
         if(owner == null)
             Mate.getPeer(one.getPeerId(), new LegacyTask.RequestCallback() {

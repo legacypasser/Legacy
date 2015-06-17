@@ -118,11 +118,6 @@ public class LegacyClient{
         return null;
     }
 
-    public String getRecommendUrl(int pageNum){
-        return Constants.requestPath + Constants.recommend + Constants.ask + Constants.page + pageNum;
-
-    }
-
     public String getRestUrl(int id){
         return Constants.requestPath + Constants.detail + Constants.ask + Constants.id + id;
     }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -65,18 +64,17 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
                 request();
             }
         });
-        if(User.instance.id == -1)
-            request();
+        request();
         return rootView;
     }
 
-    public void request(){
-        more();
+    private String getRecommendUrl(int id, int pageNum){
+        return Constants.requestPath + Constants.recommend + Constants.ask + Constants.id + id  + "&" + Constants.page + pageNum;
     }
 
-    private void more(){
+    private void request(){
         currentPage++;
-        String url = LegacyClient.getInstance().getRecommendUrl(currentPage);
+        String url = getRecommendUrl(User.instance.id, currentPage);
         LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
             @Override
             public void onRequestDone(String result) {
@@ -90,7 +88,6 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
         });
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -98,6 +95,6 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
 
     @Override
     public void onEndReach() {
-        more();
+        request();
     }
 }

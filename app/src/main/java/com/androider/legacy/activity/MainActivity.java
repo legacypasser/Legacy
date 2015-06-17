@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity{
         PageIndicator indicator = (TabPageIndicator)findViewById(R.id.pager_indicator);
         indicator.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
-
     }
 
     public void switchFragment(String fragmentName){
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             return true;
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -215,7 +214,6 @@ public class MainActivity extends AppCompatActivity{
                 break;
             case Constants.userReseted:
             case Constants.userNotReseted:
-                RecommendFragment.instance.request();
                 Mate.peers.put(User.instance.id, User.instance);
                 Toast.makeText(instance, "登陆成功" + User.instance.nickname, Toast.LENGTH_SHORT).show();
                 instance.accountNickname.setText(User.instance.nickname);
