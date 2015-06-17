@@ -64,14 +64,16 @@ public class PublishService extends IntentService {
                         imgStr += item;
                     }
                     Post published = new Post(-1, rawDes, imgStr, User.instance.id, new Date(), rawTitle, rawPrice);
+                    published.school = User.instance.school;
                     published.type = Post.selfType;
                     dataArray.put(published.toServerJson());
                     toStore.add(published);
                 }
                 for(Douban item :PublishActivity.instance.beans){
-                    dataArray.put(item.toJson());
                     Post temp = new Post(-1, item.des, item.img, User.instance.id, new Date(), item.name, item.price);
+                    temp.school = User.instance.school;
                     temp.type = Post.doubanType;
+                    dataArray.put(temp.toServerJson());
                     toStore.add(temp);
                 }
                 String pubResult = LegacyClient.getInstance().publish(dataArray.toString(), paths);

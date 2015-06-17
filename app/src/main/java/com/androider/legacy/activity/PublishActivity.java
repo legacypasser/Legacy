@@ -55,6 +55,7 @@ import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.DividerDecorator;
+import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 
 
@@ -169,6 +170,10 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
             }
         });
         preview.startPreview();
+        if(!StoreInfo.getBool("photoInstructed")){
+            Toast.makeText(this, "拍照完成后点击右上角保存拍照", Toast.LENGTH_SHORT).show();
+            StoreInfo.setBool("photoInstructed", true);
+        }
     }
 
     private void setToScan(){
@@ -181,7 +186,6 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     private void setToMain(){
         surface.removeAllViews();
         surface.setVisibility(View.GONE);
-
     }
     private void setToInput(){
         if(selfContent.getVisibility() == View.GONE)
@@ -208,6 +212,14 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         }
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(surface.getVisibility() == View.VISIBLE)
+            setToMain();
+        else
+            finish();
     }
 
     public void publishFinished(){

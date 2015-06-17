@@ -39,6 +39,7 @@
     <string name="take_photo">再拍几张</string>
 
     <string name="sound_on">拍照声音</string>
+    <string name="information_on">消息提醒</string>
 
     <string name="test">测试</string>
     <string name="test_long">864633261@qq.com</string>
@@ -52,15 +53,7 @@
     <string name="contract_seller">联系同学</string>
     <string name="click_to_add">点击添加</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="title_activity_scanning">ScanningActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_mail">active</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_mail">邮箱</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>

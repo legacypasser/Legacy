@@ -46,14 +46,13 @@
             android:layout_marginStart="8dp"
             android:id="@+id/index_pub"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/index_pub"
             android:layout_alignStart="@id/index_pub"
             android:layout_above="@id/index_pub"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"
-            android:text="深圳"
+            android:textSize="12sp"
             android:id="@+id/index_pos"/>
         <ImageView
             android:layout_width="72dp"

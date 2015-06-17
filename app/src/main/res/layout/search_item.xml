@@ -36,8 +36,7 @@
             android:layout_alignStart="@id/search_title"
             android:layout_alignParentBottom="true"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"
-            android:text="深圳"
+            android:textSize="12sp"
             android:id="@+id/search_pos"/>
 
         <TextView

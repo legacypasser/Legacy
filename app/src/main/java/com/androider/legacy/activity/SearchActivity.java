@@ -101,12 +101,13 @@ public class SearchActivity extends AppCompatActivity {
             if(fragment == null){
                 fragment = ResultFragment.newInstance("", "");
                 ft.add(R.id.search_holder, fragment, fragName);
-            }else {
             }
+            searchInput.setEnabled(true);
         }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
             if(fragment == null){
                 fragment = PostDetailFragment.newInstance("", "");
             }
+            searchInput.setEnabled(false);
             ft.replace(R.id.search_holder, fragment, fragName);
             ft.addToBackStack(null);
         }

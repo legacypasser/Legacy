@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
@@ -153,14 +154,24 @@ public class PostDetailFragment extends Fragment {
     private void setEntry(final Mate one){
         detailNickname.setText(one.nickname);
         detailSchool.setText(one.school);
-        detailNickCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra(Constants.chat, Session.get(one));
-                getActivity().startActivity(intent);
-            }
-        });
+        if(User.instance.alreadLogin){
+            detailNickCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra(Constants.chat, Session.get(one));
+                    getActivity().startActivity(intent);
+                }
+            });
+        }else {
+            detailNickCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     private void fillContent(Post current){

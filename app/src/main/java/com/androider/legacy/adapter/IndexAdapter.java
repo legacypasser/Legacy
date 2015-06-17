@@ -64,6 +64,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
         holder.title.setText(item.abs);
         holder.price.setText("" + item.price + "元");
         holder.pub.setText(DateConverter.justDate(item.publish));
+        holder.location.setText(item.school);
         ImageLoader.getInstance().loadImage(item.getAbsImg(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {

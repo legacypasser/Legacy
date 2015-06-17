@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.ChatActivity;
@@ -33,7 +34,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
     public SessionListAdapter adapter;
     public static SessionListFragment instance;
     RecyclerView selfList;
-    CardView sessionCover;
+    TextView sessionCover;
     public static SessionListFragment newInstance(String param1, String param2) {
         SessionListFragment fragment = new SessionListFragment();
         Bundle args = new Bundle();
@@ -51,7 +52,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         adapter = new SessionListAdapter();
         adapter.setOnclickListener(this);
         selfList.setAdapter(adapter);
-        sessionCover = (CardView)rootView.findViewById(R.id.session_cover);
+        sessionCover = (TextView)rootView.findViewById(R.id.session_cover);
         Session.drag();
         listSessions();
         return rootView;
@@ -76,6 +77,8 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
     }
 
     public void oneCome(final Record one){
+        if(sessionCover.getVisibility() == View.VISIBLE)
+            sessionCover.setVisibility(View.GONE);
         Session owner = one.getSession();
         if(owner == null)
             Mate.getPeer(one.getPeerId(), new LegacyTask.RequestCallback() {

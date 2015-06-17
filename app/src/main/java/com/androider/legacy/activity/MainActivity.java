@@ -119,33 +119,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    private void initLocation(){
-        String url = LegacyClient.getInstance().getBaiduLocationUrl(getApiKey());
-        LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
-            @Override
-            public void onRequestDone(String result) {
-                User.instance.positionUser(result);
-            }
-        });
-    }
-
-    public String getApiKey(){
-        try {
-            ActivityInfo info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            return info.metaData.getString("map.baidu.api.ak");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private void autoLogin(){
         if(!ConnectDetector.isConnectedToNet()){
             return;
         }
-        if(User.instance.id == -1){
-            initLocation();
-        }else{
+        if(User.instance.id != -1){
             Intent intent = new Intent(this, NetService.class);
             intent.putExtra(Constants.intentType, Constants.loginAttempt);
             startService(intent);
@@ -218,12 +196,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             return true;
         }
-
-        if(id == R.id.action_mail){
-            Intent intent = new Intent(this, MailActivity.class);
-            startActivity(intent);
-            return true;
-        }
+        
         return super.onOptionsItemSelected(item);
     }
 
@@ -269,8 +242,11 @@ public class MainActivity extends AppCompatActivity{
                 case Constants.registrationSent:
                     if(msg.arg1 == Constants.mail_occupied)
                         Toast.makeText(instance, "这个邮箱已被注册过了，亲", Toast.LENGTH_SHORT).show();
-                    else if(msg.arg1 == Constants.please_active)
+                    else if(msg.arg1 == Constants.please_active){
                         Toast.makeText(instance, "注册成功，请登陆邮箱激活账号，么么哒", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(instance, MailActivity.class);
+                        instance.startActivity(intent);
+                    }
                     break;
                 case Constants.loginAttempt:
                     instance.afterLogin(msg.arg1);

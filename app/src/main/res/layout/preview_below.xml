@@ -7,18 +7,28 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="48dp"
-        android:background="#33000000"
+        android:background="#66000000"
+        android:gravity="center_vertical"
         android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            android:textColor="@color/text_icon"
+            android:text="点击屏幕拍照"/>
+
         <ImageButton
             android:id="@+id/finish_cap"
-            android:background="@drawable/ic_close_white_36dp"
+            android:background="@drawable/ic_check_circle_white_36dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             />
     </RelativeLayout>
 

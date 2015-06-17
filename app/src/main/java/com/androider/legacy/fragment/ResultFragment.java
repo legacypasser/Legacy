@@ -79,6 +79,7 @@ public class ResultFragment extends Fragment implements View.OnClickListener{
             for(Post item : resultList)
                 adapter.addData(item);
             selfList.setAdapter(adapter);
+            resultCover.setVisibility(View.GONE);
         }else {
             resultCover.setVisibility(View.VISIBLE);
         }

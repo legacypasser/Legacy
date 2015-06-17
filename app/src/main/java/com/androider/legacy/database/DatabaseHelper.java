@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "   seller  INT," +
                 "   publish  TIMESTAMP," +
                 "   abs  VARCHAR," +
+                "   school VARCHAR," +
                 "   price int," +
                 "   type int);");
 

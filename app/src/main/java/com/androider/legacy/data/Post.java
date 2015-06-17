@@ -39,6 +39,7 @@ public class Post{
     public String img;
     public int seller;
     public Date publish;
+    public String school;
     public String abs;
     public int type;
 
@@ -72,10 +73,12 @@ public class Post{
                 String img = item.getString("img");
                 Date publish = new Date(item.getLong("publish"));
                 String abs = item.getString("abs");
+                String school = item.getString("school");
                 int price = item.getInt("price");
                 int seller = item.getInt("seller");
                 Post added = new Post(id, img, publish, abs, price, seller);
                 added.type = item.getInt("type");
+                added.school = school;
                 result.add(added);
             }
         } catch (JSONException e) {
@@ -122,6 +125,7 @@ public class Post{
         this.abs = abs;
         this.price = price;
         this.seller = seller;
+        this.school = "δ֪ѧУ";
     }
 
     public Post(int id,String des, String img, int seller, Date publish, String abs, int price) {
@@ -132,6 +136,7 @@ public class Post{
         this.publish = publish;
         this.abs = abs;
         this.price = price;
+        this.school = "δ֪ѧУ";
     }
 
     public static Post get(int id){
@@ -155,6 +160,7 @@ public class Post{
             rawObj.put("des", des);
             rawObj.put("img", img);
             rawObj.put("type", type);
+            rawObj.put("school", school);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -172,6 +178,7 @@ public class Post{
             data.put("seller", seller);
             data.put("publish", publish.getTime());
             data.put("type", type);
+            data.put("school", school);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -210,6 +217,7 @@ public class Post{
                 cursor.getInt(cursor.getColumnIndex("price"))
         );
         result.type = cursor.getInt(cursor.getColumnIndex("type"));
+        result.school = cursor.getString(cursor.getColumnIndex("school"));
         return result;
     }
 
@@ -233,6 +241,7 @@ public class Post{
         cv.put("abs", item.abs);
         cv.put("price", item.price);
         cv.put("type", item.type);
+        cv.put("school", item.school);
         return cv;
     }
 

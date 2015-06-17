@@ -1,6 +1,5 @@
 package com.androider.legacy.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,9 +7,11 @@ import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.support.v7.widget.Toolbar;
 
 import com.androider.legacy.R;
 import com.androider.legacy.data.User;
+import com.androider.legacy.util.StoreInfo;
 
 public class MailActivity extends AppCompatActivity {
 
@@ -18,6 +19,8 @@ public class MailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.simple_toolbar);
+        setSupportActionBar(toolbar);
         WebView page = (WebView)findViewById(R.id.webView);
         page.setWebViewClient(new WebViewClient() {
             @Override
@@ -29,13 +32,17 @@ public class MailActivity extends AppCompatActivity {
         });
         page.setWebChromeClient(new WebChromeClient());
         page.getSettings().setJavaScriptEnabled(true);
-        page.loadData("<html><head></head><body>" +
-                "<a href=\"http://mail.163.com\">http://mail.163.com</a><br>" +
-                "<a href=\"http://mail.126.com\">http://mail.126.com</a><br>" +
-                "<a href=\"http://mail.qq.com\">http://mail.qq.com</a><br>" +
-                "<a href=\"http://mail.sina.cn\">http://mail.sina.cn</a><br>" +
-                "<a href=\"http://mail.foxmail.com\">http://mail.foxmail.com</a><br>" +
-                "</body></html>", "text/html", null);
+        String email = StoreInfo.getString("email");
+        String emailLink = null;
+        if(email.contains("163"))
+            emailLink = "http://m.mail.163.com";
+        if(email.contains("126"))
+            emailLink = "http://m.mail.126.com";
+        if(email.contains("qq") || email.contains("foxmail"))
+            emailLink = "http://m.mail.qq.com";
+        if(email.contains("sina"))
+            emailLink = "http://mail.sina.com.cn";
+        page.loadUrl(emailLink);
     }
 
     @Override

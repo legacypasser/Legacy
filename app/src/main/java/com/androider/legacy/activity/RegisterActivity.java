@@ -1,6 +1,8 @@
 package com.androider.legacy.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.hardware.usb.UsbRequest;
 import android.location.Location;
 import android.support.v4.view.GravityCompat;
@@ -30,13 +32,18 @@ import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
+import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.Encryption;
+import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -74,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        initLocation();
         button = (AddFloatingActionButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
@@ -101,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         major.addTextChangedListener(validator);
         nickname.setText(Nicker.getAdj() + Nicker.getNoun());
         button.setEnabled(false);
-        setToChooseSchool();
     }
 
     @Override
@@ -110,6 +117,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return true;
     }
 
+    private void initLocation(){
+        String url = LegacyClient.getInstance().getBaiduLocationUrl(getApiKey());
+        LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
+            @Override
+            public void onRequestDone(String result) {
+                User.instance.positionUser(result);
+                setToChooseSchool();
+            }
+        });
+    }
+
+    public String getApiKey(){
+        try {
+            ActivityInfo info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            return info.metaData.getString("map.baidu.api.ak");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -135,6 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     };
 
     private void setToChooseSchool(){
+        chooser.setVisibility(View.VISIBLE);
         state = atSchool;
         search.removeTextChangedListener(majorWatcher);
         search.setHint(getString(R.string.school_name));
@@ -145,6 +173,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setToChooseMajor(){
+        chooser.setVisibility(View.VISIBLE);
         state = atMajor;
         search.removeTextChangedListener(schoolWatcher);
         search.setHint(getString(R.string.major_name));
@@ -154,6 +183,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void sendRegistration(){
         User.instance.email = email.getText().toString();
+        int result = checkEmail(User.instance.email);
+        if(result == 1){
+            Toast.makeText(this, "激活账号需要邮箱的，亲。请输入常用的邮箱，可以用网易新浪qq和foxmail邮箱", Toast.LENGTH_SHORT).show();
+            return;
+        }else if(result == 2){
+            Toast.makeText(this, "gmail有点小问题，你懂的亲。可以用网易新浪qq和foxmail邮箱", Toast.LENGTH_SHORT).show();
+            return;
+        }
         User.instance.password = Encryption.encrypt(password.getText().toString());
         User.instance.nickname = nickname.getText().toString();
         User.instance.school = school.getText().toString();
@@ -161,7 +198,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, NetService.class);
         intent.putExtra(Constants.intentType, Constants.registrationSent);
         startService(intent);
+        StoreInfo.setString("email", User.instance.email);
         finish();
+    }
+
+    private int checkEmail(String email){
+        Pattern pattern = Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
+        Matcher matcher = pattern.matcher(email);
+        if(!matcher.matches())
+            return 1;
+        if(email.toLowerCase().contains("gmail"))
+            return 2;
+        return 0;
     }
 
     @Override
