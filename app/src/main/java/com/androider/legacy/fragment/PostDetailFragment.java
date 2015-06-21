@@ -35,6 +35,7 @@ import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.util.DateConverter;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.FitManager;
+import com.androider.legacy.util.StoreInfo;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.zip.Inflater;
@@ -154,7 +155,7 @@ public class PostDetailFragment extends Fragment {
     private void setEntry(final Mate one){
         detailNickname.setText(one.nickname);
         detailSchool.setText(one.school);
-        if(User.instance.alreadLogin){
+        if(StoreInfo.validLogin()){
             detailNickCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

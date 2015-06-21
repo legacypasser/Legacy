@@ -199,7 +199,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     }
 
     private void myPublish(){
-        if(!User.instance.alreadLogin){
+        if(!StoreInfo.validLogin()){
             Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
             return;
         }

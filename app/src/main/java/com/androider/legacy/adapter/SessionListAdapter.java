@@ -42,7 +42,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     @Override
     public void onBindViewHolder(RecycleHolder holder, int position) {
         holder.nickname.setText(data.get(position).nickname);
-        switch (position%6){
+        switch (data.get(position).peer%6){
             case 0:
                 holder.card.setBackgroundColor(MainActivity.instance.getResources().getColor(R.color.color_one));
                 break;
@@ -65,6 +65,10 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     }
 
     public void addData(Session one){
+        for(Session item: data)
+            if(item == one){
+                return;
+            }
         int pos = 0;
         data.add(pos, one);
         notifyItemInserted(pos);

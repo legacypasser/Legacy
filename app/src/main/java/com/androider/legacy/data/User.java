@@ -18,7 +18,6 @@ import org.json.JSONObject;
 public class User extends Mate{
     public String email;
     public String password;
-    public boolean alreadLogin;
     public String province;
     public static String tableName = "user";
     public static User instance = new User();
@@ -85,7 +84,6 @@ public class User extends Mate{
             longi = cursor.getFloat(cursor.getColumnIndex("longi"));
             lati = cursor.getFloat(cursor.getColumnIndex("lati"));
             cursor.close();
-            Mate.peers.put(id, this);
         }
         Mate.dragAll();
     }

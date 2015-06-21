@@ -68,7 +68,10 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     public void takePicture(){
-        camera.takePicture(this, null, callback);
+        if(StoreInfo.getBool(StoreInfo.shutter))
+            camera.takePicture(this, null, callback);
+        else
+            camera.takePicture(null, null, callback);
     }
 
     @Override

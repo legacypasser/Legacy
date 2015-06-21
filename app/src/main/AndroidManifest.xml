@@ -44,7 +44,6 @@
         <service
             android:name=".service.NetService"
             android:exported="false" >
-
         </service>
 
         <activity
@@ -52,7 +51,7 @@
             android:label="@string/title_activity_register" >
             <meta-data
                 android:name="map.baidu.api.ak"
-                android:value="260569e20491d41b6def091cccf191b0"/>
+                android:value="260569e20491d41b6def091cccf191b0" />
         </activity>
         <activity
             android:name=".activity.SearchActivity"
@@ -72,6 +71,12 @@
             android:name=".activity.MailActivity"
             android:label="@string/title_activity_mail" >
         </activity>
+
+        <receiver
+            android:name=".util.NetStateReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
     </application>
 
 </manifest>

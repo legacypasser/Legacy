@@ -26,6 +26,8 @@ import com.androider.legacy.data.Session;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.NetConstants;
 import com.androider.legacy.service.ChatService;
+import com.androider.legacy.util.ConnectDetector;
+import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.jialin.chat.Message;
 import com.jialin.chat.MessageAdapter;
@@ -104,11 +106,16 @@ public class ChatActivity extends AppCompatActivity{
                 return false;
             }
         });
-        list.setSelection(list.getBottom());
+        list.setSelection(adapter.getCount() - 1);
     }
 
     private void sendOnline(String content){
-        if(User.instance.alreadLogin){
+        if(!ConnectDetector.isConnectedToNet()){
+            Toast.makeText(this, "网络未连接", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(StoreInfo.validLogin()){
             Intent intent = new Intent(this, ChatService.class);
             intent.putExtra(Constants.intentType, NetConstants.sendChat);
             intent.putExtra(Constants.id, currentSession.peer);

@@ -6,7 +6,7 @@ package com.androider.legacy.net;
 public class NetConstants {
     public static final int serverPort = 1314;
     public static final int listenPort = 9420;
-    public static final long heartSpace = 60000;
+    public static final long heartSpace = 30000;
     public static final String serverAddr = "114.215.210.22";
     public static final String divider = ":";
     public static final String regex = ";";

@@ -69,16 +69,6 @@ public class Session implements Serializable{
         one.draged = true;
         Holder.talks.put(item.id, one);
         one.store();
-        android.os.Message msg = android.os.Message.obtain();
-        try {
-            msg.what = Constants.emptySession;
-            Bundle data = new Bundle();
-            data.putSerializable(Constants.chat, one);
-            msg.setData(data);
-            new Messenger(MainActivity.instance.netHandler).send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
         return one;
     }
 

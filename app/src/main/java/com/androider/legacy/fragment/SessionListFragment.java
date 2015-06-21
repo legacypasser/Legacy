@@ -21,7 +21,10 @@ import com.androider.legacy.data.Record;
 import com.androider.legacy.data.Session;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
+import com.androider.legacy.util.ConnectDetector;
 import com.androider.legacy.util.DividerDecorator;
+import com.androider.legacy.util.SoundShouter;
+import com.androider.legacy.util.StoreInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +58,8 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         sessionCover = (TextView)rootView.findViewById(R.id.session_cover);
         Session.drag();
         listSessions();
+        if(StoreInfo.validLogin() && ConnectDetector.isConnectedToNet())
+            startPull();
         return rootView;
     }
 
@@ -97,19 +102,35 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
             @Override
             public void onRequestDone(String result) {
                 final ArrayList<Record> all = Record.strToList(result);
+                if(all.size() == 0)
+                    return;
                 String requestStr = "";
+                HashSet<Integer> conflictResovler = new HashSet<Integer>();
                 for (int i = 0; i < all.size(); i++){
                     Record one = all.get(i);
                     one.store();
-                    if(one.getSession() == null)
-                        if (requestStr.equals(""))
-                            requestStr += one.getPeerId();
-                        else
-                            requestStr += "," + one.getPeerId();
+                    conflictResovler.add(one.getPeerId());
                 }
-                if(requestStr.equals(""))
+                ArrayList<Session> already = new ArrayList<Session>();
+                for(Integer id : conflictResovler){
+                    Mate mate = Mate.getPeer(id);
+                    if(mate == null){
+                        if (requestStr.equals(""))
+                            requestStr += id;
+                        else
+                            requestStr += "," + id;
+                    }else {
+                        already.add(Session.get(mate));
+                    }
+                }
+                for(Session item : already){
+                    adapter.addData(item);
+                    if(!item.draged)
+                        item.dragRecords();
+                }
+                if(requestStr.equals("")){
                     refreshSession(all);
-                else{
+                }else{
                     String url = Constants.requestPath + "infos?ids=" + requestStr;
                     LegacyClient.getInstance().callTask(url, new LegacyTask.RequestCallback() {
                         @Override
@@ -118,6 +139,10 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
                             ArrayList<Session> added = Session.get(more);
                             for (Session item : added)
                                 adapter.addData(item);
+                            for(Record item : all){
+                                Session one = item.getSession();
+                                one.append(item);
+                            }
                             refreshSession(all);
                         }
                     });
@@ -127,9 +152,12 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
     }
 
     private void refreshSession(ArrayList<Record> all){
+        sessionCover.setVisibility(View.GONE);
         HashSet<Session> affected = new HashSet<>();
-        for(Record item : all)
-            affected.add(item.getSession());
+        for(Record item : all){
+            Session one = item.getSession();
+            affected.add(one);
+        }
         ArrayList<Session> sorted = new ArrayList<>();
         for(Session item : affected){
             int pos = 0;
@@ -143,6 +171,11 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         }
         for (Session item: sorted)
             adapter.refresh(item);
+        SoundShouter.playInfo();
+    }
+
+    public void clearSession(){
+        adapter.clearData();
     }
 
     @Override

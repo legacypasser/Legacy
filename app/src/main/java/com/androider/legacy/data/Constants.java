@@ -27,7 +27,6 @@ public class Constants {
     public static final int loginAttempt = 3;
     public static final int myPublish = 4;
     public static final int msgArrive = 6;
-    public static final int byebye = 10;
 
     public static final int userReseted = 1;
     public static final int userNotReseted = 0;

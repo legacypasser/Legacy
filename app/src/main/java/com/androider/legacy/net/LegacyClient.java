@@ -18,6 +18,7 @@ import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.androider.legacy.util.ConnectDetector;
+import com.androider.legacy.util.StoreInfo;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -46,16 +47,15 @@ import java.util.Map;
  */
 public class LegacyClient{
     OkHttpClient client;
+    private static final String session = "session";
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private LegacyClient(){
         client = new OkHttpClient();
-        lastSession = "";
     }
     public static LegacyClient getInstance(){
         return SingletonHoler.instance;
     }
-    private String lastSession;
 
     private static class SingletonHoler{
         private static LegacyClient instance = new LegacyClient();
@@ -65,13 +65,14 @@ public class LegacyClient{
         RequestBody body = RequestBody.create(JSON, json);
         Request req = new Request.Builder()
                 .url(url)
-                .addHeader("Cookie", lastSession)
+                .addHeader("Cookie", StoreInfo.getString(session))
                 .post(body)
                 .build();
         Response resp = null;
         try {
             resp = client.newCall(req).execute();
-            lastSession = resp.header("Set-Cookie").split(";")[0];
+            StoreInfo.setString(session, resp.header("Set-Cookie").split(";")[0]);
+            StoreInfo.setLast();
             return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,12 +85,13 @@ public class LegacyClient{
             return RequestData.fromBase(url);
         Request req = new Request.Builder()
                 .url(url)
-                .addHeader("Cookie", lastSession)
+                .addHeader("Cookie", StoreInfo.getString(session))
                 .build();
         Response  resp = null;
         try {
             resp = client.newCall(req).execute();
-            lastSession = resp.header("Set-Cookie").split(";")[0];
+            StoreInfo.setString(session ,resp.header("Set-Cookie").split(";")[0]);
+            StoreInfo.setLast();
             String result = resp.body().string();
             RequestData.save(url, result);
             return result;
@@ -190,12 +192,13 @@ public class LegacyClient{
         RequestBody body = builder.build();
         Request req = new Request.Builder()
                 .url(Constants.requestPath + Constants.publish)
-                .addHeader("Cookie", lastSession)
+                .addHeader("Cookie", StoreInfo.getString(session))
                 .post(body)
                 .build();
         try {
             Response resp = client.newCall(req).execute();
-            lastSession = resp.header("Set-Cookie").split(";")[0];
+            StoreInfo.setString(session, resp.header("Set-Cookie").split(";")[0]);
+            StoreInfo.setLast();
             return resp.body().string();
         } catch (IOException e) {
             e.printStackTrace();

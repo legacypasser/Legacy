@@ -80,6 +80,7 @@ public class ChatService extends IntentService {
             new Messenger(ChatActivity.netHandler).send(msgForChat);
             Message msgforMain = Message.obtain();
             msgforMain.what = Constants.msgArrive;
+            msgforMain.arg1 = intentType;
             msgforMain.setData(data);
             new Messenger(MainActivity.instance.netHandler).send(msgforMain);
         } catch (RemoteException e) {

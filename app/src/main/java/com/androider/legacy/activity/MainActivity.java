@@ -8,6 +8,7 @@ import android.content.pm.ServiceInfo;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +62,8 @@ import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.ConnectDetector;
+import com.androider.legacy.util.SoundShouter;
+import com.androider.legacy.util.StoreInfo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -82,6 +87,8 @@ public class MainActivity extends AppCompatActivity{
     Thread receiveThread;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
+    SwitchCompat info;
+    SwitchCompat shutter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +101,8 @@ public class MainActivity extends AppCompatActivity{
         School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
         User.instance.drag();
-        autoLogin();
         initView();
+        autoLogin();
     }
 
     @Override
@@ -116,19 +123,57 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(overallToolBar);
         toggle = new ActionBarDrawerToggle(this,drawer, overallToolBar, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(toggle);
+        accountEmail = (TextView)findViewById(R.id.account_email);
+        accountNickname = (TextView)findViewById(R.id.account_nickname);
+        shutter = (SwitchCompat)findViewById(R.id.shutter_switch);
+        info = (SwitchCompat)findViewById(R.id.info_switch);
+        if(StoreInfo.getBool(StoreInfo.shutter))
+            shutter.setChecked(true);
+        else
+            shutter.setChecked(false);
+        if(StoreInfo.getBool(StoreInfo.info))
+            info.setChecked(true);
+        else
+            info.setChecked(false);
+
+        shutter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    StoreInfo.setBool(StoreInfo.shutter, true);
+                else
+                    StoreInfo.setBool(StoreInfo.shutter, false);
+            }
+        });
+        info.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    StoreInfo.setBool(StoreInfo.info, true);
+                else
+                    StoreInfo.setBool(StoreInfo.info, false);
+            }
+        });
     }
 
+    private void loginSet(){
+        instance.accountNickname.setText(User.instance.nickname);
+        instance.accountEmail.setText(User.instance.email);
+        Mate.peers.put(User.instance.id, User.instance);
+        if(ConnectDetector.isConnectedToNet())
+            chatOn();
+    }
 
     private void autoLogin(){
-        if(!ConnectDetector.isConnectedToNet()){
-            return;
-        }
-        if(User.instance.id != -1){
+        if(StoreInfo.validLogin()){
+            loginSet();
+        }else if(User.instance.id != -1 && ConnectDetector.isConnectedToNet()){
             Intent intent = new Intent(this, NetService.class);
             intent.putExtra(Constants.intentType, Constants.loginAttempt);
             startService(intent);
         }
     }
+
     private void initView(){
         DisplayImageOptions options  = new DisplayImageOptions.Builder().
                 cacheOnDisk(true).
@@ -138,8 +183,6 @@ public class MainActivity extends AppCompatActivity{
                 .defaultDisplayImageOptions(options)
                 .build();
         ImageLoader.getInstance().init(config);
-        accountEmail = (TextView)findViewById(R.id.account_email);
-        accountNickname = (TextView)findViewById(R.id.account_nickname);
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(RecommendFragment.newInstance("", ""));
         fragmentList.add(MyPostListFragment.newInstance("",""));
@@ -195,7 +238,6 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -213,15 +255,14 @@ public class MainActivity extends AppCompatActivity{
             case Constants.unknow_login_fail:
                 break;
             case Constants.userReseted:
+                SessionListFragment.instance.clearSession();
             case Constants.userNotReseted:
-                Mate.peers.put(User.instance.id, User.instance);
                 Toast.makeText(instance, "登陆成功" + User.instance.nickname, Toast.LENGTH_SHORT).show();
-                instance.accountNickname.setText(User.instance.nickname);
-                instance.accountEmail.setText(User.instance.email);
-                UdpClient.getInstance().isRunning = true;
-                instance.chatOn();
-                User.instance.alreadLogin = true;
+                loginSet();
+                StoreInfo.setBool(StoreInfo.last, true);
+                StoreInfo.setLong(StoreInfo.lastTime, System.currentTimeMillis());
                 SessionListFragment.instance.startPull();
+                instance.getSupportFragmentManager().popBackStack();
                 break;
         }
     }
@@ -242,8 +283,8 @@ public class MainActivity extends AppCompatActivity{
                         Toast.makeText(instance, "这个邮箱已被注册过了，亲", Toast.LENGTH_SHORT).show();
                     else if(msg.arg1 == Constants.please_active){
                         Toast.makeText(instance, "注册成功，请登陆邮箱激活账号，么么哒", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(instance, MailActivity.class);
-                        instance.startActivity(intent);
+                        //Intent intent = new Intent(instance, MailActivity.class);
+                        //instance.startActivity(intent);
                     }
                     break;
                 case Constants.loginAttempt:
@@ -253,20 +294,38 @@ public class MainActivity extends AppCompatActivity{
                     MyPostListFragment.instance.addItem();
                     break;
                 case Constants.msgArrive:
+                    if(msg.arg1 == NetConstants.message)
+                        SoundShouter.playInfo();
                     SessionListFragment.instance.oneCome((Record)msg.getData().getSerializable(Constants.chat));
-                    break;
-                case Constants.emptySession:
-                    SessionListFragment.instance.directAdd((Session)msg.getData().getSerializable(Constants.chat));
                     break;
             }
         }
     }
 
     @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
+        else if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else{
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        Sender.getInstance().sendToServer(""+User.instance.id, NetConstants.offline);
+                        UdpClient.getInstance().close();
+                    }
+                }).start();
+                finish();
+
+        }
+    }
+
+    @Override
     protected void onDestroy() {
-        super.onDestroy();
         DatabaseHelper.db.close();
         chatOff();
+        super.onDestroy();
     }
 
     public void chatOn(){
@@ -281,9 +340,6 @@ public class MainActivity extends AppCompatActivity{
     public void chatOff(){
         if(!UdpClient.getInstance().isRunning)
             return;
-        Intent intent = new Intent(this, NetService.class);
-        intent.putExtra(Constants.intentType, Constants.byebye);
-        startService(intent);
         UdpClient.getInstance().isRunning = false;
         if(receiveThread != null){
             receiveThread.interrupt();
