@@ -222,6 +222,7 @@ public class Post{
     }
 
     public static void store(ArrayList<Post> added){
+        DatabaseHelper.db.beginTransaction();
         for(Post item : added){
             Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
             cursor.moveToFirst();
@@ -229,6 +230,8 @@ public class Post{
                 DatabaseHelper.db.insert(tableName, null, getCv(item));
             cursor.close();
         }
+        DatabaseHelper.db.setTransactionSuccessful();
+        DatabaseHelper.db.endTransaction();
     }
 
     public static ContentValues getCv(Post item){

@@ -11,6 +11,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
@@ -64,6 +66,7 @@ import com.androider.legacy.net.UdpClient;
 import com.androider.legacy.service.ChatService;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.ConnectDetector;
+import com.androider.legacy.util.CustomProgressDialog;
 import com.androider.legacy.util.SoundShouter;
 import com.androider.legacy.util.StoreInfo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -94,18 +97,36 @@ public class MainActivity extends AppCompatActivity{
     ActionBarDrawerToggle toggle;
     SwitchCompat info;
     SwitchCompat shutter;
-
+    private static final String inited = "inited";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
         new DatabaseHelper(this);
+        User.instance.drag();
+        if(!StoreInfo.getBool(inited)){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Nicker.initNick(instance);
+                    School.iniSchool(instance);
+                    Message msg = Message.obtain();
+                    msg.what = Constants.initFinish;
+                    try {
+                        new Messenger(MainActivity.instance.netHandler).send(msg);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            StoreInfo.setBool(inited, true);
+        }else{
+            Nicker.initNick(instance);
+            School.iniSchool(instance);
+        }
         setContentView(R.layout.activity_main);
         initToolbar();
-        Nicker.initNick(this);
-        School.iniSchool(this);
         filePath = this.getApplicationContext().getFilesDir() + "/";
-        User.instance.drag();
         initView();
         autoLogin();
     }
@@ -243,6 +264,10 @@ public class MainActivity extends AppCompatActivity{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
+        if(!ConnectDetector.isConnectedToNet()){
+            Toast.makeText(this, "没有网络连接哦，亲", Toast.LENGTH_SHORT).show();
+            return true;
+        }
         if(id == R.id.action_register){
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
@@ -286,6 +311,9 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    public void showWelcome(){
+        Toast.makeText(this, "先点击右上角注册一个账号吧同学，欢迎加入", Toast.LENGTH_LONG).show();
+    }
 
     public NetHandler netHandler = new NetHandler(instance);
 
@@ -318,6 +346,9 @@ public class MainActivity extends AppCompatActivity{
                         SoundShouter.playInfo();
                     SessionListFragment.instance.oneCome((Record)msg.getData().getSerializable(Constants.chat));
                     break;
+                case Constants.initFinish:
+                    instance.showWelcome();
+                    break;
             }
         }
     }
@@ -329,6 +360,7 @@ public class MainActivity extends AppCompatActivity{
         else if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
         }else{
+            if(UdpClient.getInstance().isRunning)
                 new Thread(new Runnable(){
                     @Override
                     public void run() {

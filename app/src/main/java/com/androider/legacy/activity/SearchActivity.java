@@ -37,6 +37,7 @@ import com.androider.legacy.util.WatcherSimplifier;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -84,11 +85,21 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onRequestDone(String result) {
                 instance.switchFragment(ResultFragment.class.getSimpleName());
-                ResultFragment.instance.refreshList(SearchClient.formSearchStr(result));
+                final ArrayList<Post> resultList = SearchClient.formSearchStr(result);
+                Post.store(resultList);
+                ResultFragment.instance.refreshList(resultList);
             }
         });
         searchInput.setText("");
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(getSupportFragmentManager().getBackStackEntryCount() == 0)
+            searchInput.setEnabled(true);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -102,7 +113,7 @@ public class SearchActivity extends AppCompatActivity {
                 fragment = ResultFragment.newInstance("", "");
                 ft.add(R.id.search_holder, fragment, fragName);
             }
-            searchInput.setEnabled(true);
+
         }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
             if(fragment == null){
                 fragment = PostDetailFragment.newInstance("", "");

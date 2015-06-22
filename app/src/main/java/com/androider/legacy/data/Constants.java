@@ -22,11 +22,11 @@ public class Constants {
     public static final String id = "id=";
     public static final String baiduUrl = "http://api.map.baidu.com/location/ip?coor=bd09ll&ak=";
 
-    public static final int emptySession = 1;
     public static final int registrationSent = 2;
     public static final int loginAttempt = 3;
     public static final int myPublish = 4;
     public static final int msgArrive = 6;
+    public static final int initFinish = 1;
 
     public static final int userReseted = 1;
     public static final int userNotReseted = 0;

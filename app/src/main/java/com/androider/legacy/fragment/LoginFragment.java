@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.androider.legacy.R;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.util.Encryption;
+import com.androider.legacy.util.WatcherSimplifier;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
@@ -80,6 +83,18 @@ public class LoginFragment extends Fragment {
                 login();
             }
         });
+        WatcherSimplifier watcher = new WatcherSimplifier() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(username.getText().toString().equals("")||password.getText().toString().equals(""))
+                    loginButton.setEnabled(false);
+                else
+                    loginButton.setEnabled(true);
+            }
+        };
+        username.addTextChangedListener(watcher);
+        password.addTextChangedListener(watcher);
+        loginButton.setEnabled(false);
         return rootView;
     }
 

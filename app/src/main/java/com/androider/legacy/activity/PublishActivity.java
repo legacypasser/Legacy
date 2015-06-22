@@ -53,6 +53,7 @@ import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
+import com.androider.legacy.util.ConnectDetector;
 import com.androider.legacy.util.CustomProgressDialog;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.DividerDecorator;
@@ -179,6 +180,10 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     }
 
     private void setToScan(){
+        if(!ConnectDetector.isConnectedToNet()){
+            Toast.makeText(this, "没有网扫不出来的亲，先连一个哈，么么哒", Toast.LENGTH_SHORT).show();
+            return;
+        }
         surface.setVisibility(View.VISIBLE);
         scannerView = new ZBarScannerView(this);
         scannerView.setResultHandler(this);
@@ -204,13 +209,17 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     private boolean selfValid(){
         if(thumbAdpter.getCount() != 0){
             return (!title.getText().toString().equals("")&&!price.getText().toString().equals("")
-                    &&des.getText().toString().equals(""));
+                    &&!des.getText().toString().equals(""));
         }else
             return true;
     }
 
 
     private void myPublish(){
+        if(!ConnectDetector.isConnectedToNet()){
+            Toast.makeText(this, "没有网，亲，先连一个哈，么么哒", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!StoreInfo.validLogin()){
             Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
             return;
@@ -319,6 +328,10 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     }
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
+        if(thumbAdpter.getCount() >= 5 || capAdapter.getCount() >= 5){
+            Toast.makeText(this, "最多5张照片亲，别太多了", Toast.LENGTH_SHORT).show();
+            return;
+        }
         long nowTime = System.currentTimeMillis();
         String theName =  nowTime + ".jpg";
         String thumbName = "s_" + nowTime + ".jpg";

@@ -2,4 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.androider.legacy.activity.MailActivity">
+    <item app:showAsAction="always" android:icon="@drawable/ic_close_white_24dp"
+        android:title="回到App" android:id="@+id/back_app"
+        android:orderInCategory="100"/>
 </menu>
