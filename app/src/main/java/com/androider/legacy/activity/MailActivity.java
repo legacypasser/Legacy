@@ -14,14 +14,14 @@ import com.androider.legacy.data.User;
 import com.androider.legacy.util.StoreInfo;
 
 public class MailActivity extends AppCompatActivity {
-
+    WebView page;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail);
         Toolbar toolbar = (Toolbar)findViewById(R.id.simple_toolbar);
         setSupportActionBar(toolbar);
-        WebView page = (WebView)findViewById(R.id.webView);
+        page = (WebView)findViewById(R.id.webView);
         page.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -50,6 +50,14 @@ public class MailActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_mail, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(page.canGoBack())
+            page.goBack();
+        else
+            finish();
     }
 
     @Override

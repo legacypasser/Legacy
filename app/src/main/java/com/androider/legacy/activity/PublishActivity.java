@@ -53,6 +53,7 @@ import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
+import com.androider.legacy.util.CustomProgressDialog;
 import com.androider.legacy.util.DensityUtil;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.StoreInfo;
@@ -103,6 +104,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     public static PublishActivity instance;
     ZBarScannerView scannerView;
     CapturePreview preview;
+    CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,13 +185,14 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         surface.addView(scannerView);
         scannerView.startCamera();
     }
-    private void setToMain(){
+    private void  setToMain(){
+        if(scannerView != null)
+            scannerView.stopCamera();
         surface.removeAllViews();
         surface.setVisibility(View.GONE);
     }
     private void setToInput(){
-        if(selfContent.getVisibility() == View.GONE)
-            selfContent.setVisibility(View.VISIBLE);
+        selfContent.setVisibility(View.VISIBLE);
         for (int i = 0; i < caped.size(); i++){
             ImageView view = new ImageView(this);
             view.setImageBitmap(caped.get(i));
@@ -198,11 +201,29 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         }
     }
 
+    private boolean selfValid(){
+        if(thumbAdpter.getCount() != 0){
+            return (!title.getText().toString().equals("")&&!price.getText().toString().equals("")
+                    &&des.getText().toString().equals(""));
+        }else
+            return true;
+    }
+
+
     private void myPublish(){
         if(!StoreInfo.validLogin()){
             Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(list.getChildCount() == 0 && thumbAdpter.getCount() == 0){
+            Toast.makeText(this, "请输入发布内容", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!selfValid()){
+            Toast.makeText(this, "请输入完整的信息", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(this, PublishService.class);
         if(!paths.isEmpty()){
             intent.putExtra("rawDes", des.getText().toString());
@@ -212,6 +233,8 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         }
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
+        dialog = CustomProgressDialog.createDialog(this);
+        dialog.show();
     }
 
     @Override
@@ -226,12 +249,17 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         paths.clear();
         thumbAdpter.clearImg();
         des.setText("");
+        title.setText("");
+        price.setText("");
+        list.removeAllViews();
+        dialog.dismiss();
+        selfContent.setVisibility(View.GONE);
+        Toast.makeText(this, "发布成功", Toast.LENGTH_SHORT).show();
     }
     public NetHandler netHandler = new NetHandler(instance);
 
     @Override
     public void handleResult(Result result) {
-        scannerView.stopCamera();
         final String str = result.getContents();
         LegacyClient.getInstance().callTask(Douban.url + str + Douban.suf, new LegacyTask.RequestCallback() {
             @Override
@@ -262,6 +290,10 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     }
 
     private void addFormattedBook(final Douban one){
+        if(one.name == null){
+            Toast.makeText(this, "获取信息失败，请再扫描一次。再不行，就拍照发布吧亲", Toast.LENGTH_LONG).show();
+            return;
+        }
         View itemView = LayoutInflater.from(this).inflate(R.layout.format_book, list, false);
         ImageView img = (ImageView)itemView.findViewById(R.id.douban_img);
         TextView title = (TextView)itemView.findViewById(R.id.douban_name);

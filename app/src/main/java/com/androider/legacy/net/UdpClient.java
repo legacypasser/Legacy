@@ -1,6 +1,10 @@
 package com.androider.legacy.net;
 
+import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.util.StoreInfo;
+
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.Selector;
@@ -11,10 +15,10 @@ import java.util.PriorityQueue;
  */
 public class UdpClient {
     DatagramChannel channel;
-    InetSocketAddress targetServer;
+    public InetSocketAddress targetServer;
     public boolean isRunning;
     private UdpClient(){
-        targetServer = new InetSocketAddress(NetConstants.serverAddr, NetConstants.serverPort);
+
     }
 
     private static class SingletonHolder{

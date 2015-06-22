@@ -118,6 +118,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:padding="16dp">
                 <TextView
                     android:layout_marginEnd="48dp"
@@ -130,12 +131,14 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/check_refresh"
                     android:src="@drawable/ic_autorenew_grey600_36dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:padding="16dp">
                 <TextView
                     android:layout_marginRight="48dp"
@@ -148,9 +151,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/feedback"
                     android:src="@drawable/ic_message_grey600_36dp"/>
             </LinearLayout>
-
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 

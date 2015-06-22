@@ -2,6 +2,7 @@ package com.androider.legacy.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.provider.ContactsContract;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
@@ -107,7 +108,6 @@ public class Mate implements Serializable{
             JSONArray array = new JSONArray(result);
             for(int i = 0; i < array.length(); i++){
                 Mate mate = fromString(array.getString(i));
-                mate.store();
                 mates.add(mate);
             }
         } catch (JSONException e) {

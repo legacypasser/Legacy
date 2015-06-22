@@ -4,12 +4,12 @@ package com.androider.legacy.data;
  * Created by Think on 2015/4/16.
  */
 public class Constants {
-    public static final String requestPath = "http://hereprovides.com/passer/public/index.php/";
-    public static final String imgPath = "http://hereprovides.com:8000/passerImg/";
+    public static final String requestPath = "http://www.hereprovides.com/passer/public/index.php/";
+    public static final String imgPath = "http://www.hereprovides.com:8000/passerImg/";
     public static final String register = "register";
     public static final String login = "login";
     public static final String recommend = "recommend";
-    public static final String personal = "persoanl";
+    public static final String personal = "personal";
     public static final String detail = "detail";
     public static final String publish = "publish";
     public static final String finish = "finish";

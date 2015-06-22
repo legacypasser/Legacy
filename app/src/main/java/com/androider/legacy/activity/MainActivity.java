@@ -20,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +76,9 @@ import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.lang.ref.WeakReference;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 
@@ -152,6 +157,20 @@ public class MainActivity extends AppCompatActivity{
                     StoreInfo.setBool(StoreInfo.info, true);
                 else
                     StoreInfo.setBool(StoreInfo.info, false);
+            }
+        });
+        ImageView feedback = (ImageView)findViewById(R.id.feedback);
+        ImageView checkRefresh = (ImageView)findViewById(R.id.check_refresh);
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainActivity.instance).setTitle("意见反馈").setMessage("请写邮件至welcome@hereprovides.com").setPositiveButton("确定",null).show();
+            }
+        });
+        checkRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.instance, "此功能正在完善中", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -267,6 +286,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+
     public NetHandler netHandler = new NetHandler(instance);
 
     private static class NetHandler extends Handler{
@@ -283,8 +303,8 @@ public class MainActivity extends AppCompatActivity{
                         Toast.makeText(instance, "这个邮箱已被注册过了，亲", Toast.LENGTH_SHORT).show();
                     else if(msg.arg1 == Constants.please_active){
                         Toast.makeText(instance, "注册成功，请登陆邮箱激活账号，么么哒", Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(instance, MailActivity.class);
-                        //instance.startActivity(intent);
+                        Intent intent = new Intent(instance, MailActivity.class);
+                        instance.startActivity(intent);
                     }
                     break;
                 case Constants.loginAttempt:
@@ -330,11 +350,23 @@ public class MainActivity extends AppCompatActivity{
 
     public void chatOn(){
         UdpClient.getInstance().isRunning = true;
-        UdpClient.getInstance().open();
-            instance.receiveThread = new Thread(Receiver.getInstance());
-            instance.receiveThread.start();
-            instance.sendThread = new Thread(Sender.getInstance());
-            instance.sendThread.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InetAddress address = null;
+                try {
+                    address = InetAddress.getByName(NetConstants.serverAddr);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                UdpClient.getInstance().targetServer = new InetSocketAddress(address, NetConstants.serverPort);
+                UdpClient.getInstance().open();
+                instance.receiveThread = new Thread(Receiver.getInstance());
+                instance.receiveThread.start();
+                instance.sendThread = new Thread(Sender.getInstance());
+                instance.sendThread.start();
+            }
+        }).start();
     }
 
     public void chatOff(){

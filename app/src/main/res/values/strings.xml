@@ -20,12 +20,11 @@
     <string name="nickname">昵称</string>
     <string name="major">专业</string>
     <string name="key_word">请输入关键字</string>
-    <string name="legacy_story">我有话说</string>
-    <string name="legacy_des">含泪甩卖</string>
+    <string name="legacy_story">描述你的宝贝</string>
+    <string name="legacy_des">详细的信息可以让你的宝贝更吸引人哦</string>
     <string name="publishing">正在上传</string>
 
     <string name="price_flow">价格</string>
-    <string name="price">虽然伤感情但必须的价格</string>
 
     <string name="please_pub">还没有发布你的资产哦，请登陆或点击下方发布按钮</string>
     <string name="empty_search">没有找到你想要的，换个词搜一下吧</string>
