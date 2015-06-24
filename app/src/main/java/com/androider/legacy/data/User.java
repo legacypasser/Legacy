@@ -19,7 +19,7 @@ public class User extends Mate{
     public String email;
     public String password;
     public String province;
-    public static String tableName = "user";
+    public static final String tableName = "user";
     public static User instance = new User();
 
     private User(){

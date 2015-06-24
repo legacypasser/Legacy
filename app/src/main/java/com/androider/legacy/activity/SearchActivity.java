@@ -2,48 +2,44 @@ package com.androider.legacy.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Message;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.androider.legacy.R;
+import com.androider.legacy.adapter.SearchAdapter;
 import com.androider.legacy.data.Constants;
-import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.fragment.LoginFragment;
-import com.androider.legacy.fragment.PostDetailFragment;
-import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.net.LegacyTask;
 import com.androider.legacy.net.SearchClient;
-import com.androider.legacy.service.NetService;
+import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.WatcherSimplifier;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity {
-
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
     EditText searchInput;
     Button searchButton;
     public static SearchActivity instance;
+    static SearchAdapter adapter;
+    RecyclerView selfList;
+    CardView resultCover;
+    public static String accessKey;
+    public static String bigAli;
+    public static final String accessName = "com.aliyun.search.access";
+    public static final String secretName = "com.aliyun.search.secret";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +47,8 @@ public class SearchActivity extends AppCompatActivity {
         instance = this;
         Toolbar toolbar = (Toolbar)findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
+        setAliKey();
+        setList();
         searchInput = (EditText)findViewById(R.id.search_input);
         searchButton = (Button)findViewById(R.id.search_confirm);
         searchButton.setEnabled(false);
@@ -63,17 +61,26 @@ public class SearchActivity extends AppCompatActivity {
         searchInput.addTextChangedListener(new WatcherSimplifier() {
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().equals(""))
+                if (s.toString().equals(Constants.emptyString))
                     searchButton.setEnabled(false);
                 else
                     searchButton.setEnabled(true);
             }
         });
-        switchFragment(ResultFragment.class.getSimpleName());
+    }
+
+    private void setAliKey(){
+        try {
+            ActivityInfo info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            accessKey = info.metaData.getString(accessName);
+            bigAli = info.metaData.getString(secretName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startSearch(){
-        if(searchInput.getText().toString().equals("")){
+        if(searchInput.getText().toString().equals(Constants.emptyString)){
             Toast.makeText(this, "请输入关键字", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -84,13 +91,12 @@ public class SearchActivity extends AppCompatActivity {
         SearchClient.search(keyword, new LegacyTask.RequestCallback() {
             @Override
             public void onRequestDone(String result) {
-                instance.switchFragment(ResultFragment.class.getSimpleName());
                 final ArrayList<Post> resultList = SearchClient.formSearchStr(result);
                 Post.store(resultList);
-                ResultFragment.instance.refreshList(resultList);
+                refreshList(resultList);
             }
         });
-        searchInput.setText("");
+        searchInput.setText(Constants.emptyString);
     }
 
     @Override
@@ -105,23 +111,32 @@ public class SearchActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public void switchFragment(String fragName){
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragName);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if(fragName.equals(ResultFragment.class.getSimpleName())){
-            if(fragment == null){
-                fragment = ResultFragment.newInstance("", "");
-                ft.add(R.id.search_holder, fragment, fragName);
-            }
-
-        }else if(fragName.equals(PostDetailFragment.class.getSimpleName())){
-            if(fragment == null){
-                fragment = PostDetailFragment.newInstance("", "");
-            }
-            searchInput.setEnabled(false);
-            ft.replace(R.id.search_holder, fragment, fragName);
-            ft.addToBackStack(null);
+    public void setList(){
+        selfList = (RecyclerView)findViewById(R.id.result_list);
+        selfList.setLayoutManager(new LinearLayoutManager(this));
+        selfList.addItemDecoration(new DividerDecorator());
+        resultCover = (CardView)findViewById(R.id.result_cover);
+        if(adapter != null){
+            selfList.setAdapter(adapter);
         }
-        ft.commit();
+    }
+    public void refreshList(ArrayList<Post> resultList){
+        if(resultList.size() != 0){
+            adapter = new SearchAdapter(this);
+            for(Post item : resultList)
+                adapter.addData(item);
+            selfList.setAdapter(adapter);
+            resultCover.setVisibility(View.GONE);
+        }else {
+            resultCover.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        Post one = Post.get((int)v.getTag());
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(Constants.detail, one);
+        startActivity(intent);
     }
 }

@@ -38,4 +38,8 @@ public class Constants {
     public static final int mail_occupied = 6;
     public static final int please_active = 7;
     public static final String intentType = "intentType";
+    public static final String emptyString = "";
+
+    public static final String email = "email";
+    public static final String password = "password";
 }

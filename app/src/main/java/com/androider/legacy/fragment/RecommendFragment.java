@@ -1,38 +1,30 @@
 package com.androider.legacy.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.androider.legacy.R;
-import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.activity.DetailActivity;
 import com.androider.legacy.adapter.IndexAdapter;
 import com.androider.legacy.data.Constants;
-import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
-import com.androider.legacy.service.NetService;
 
 
 import java.util.ArrayList;
 
 
-public class RecommendFragment extends Fragment implements IndexAdapter.BottomListener{
+public class RecommendFragment extends Fragment implements IndexAdapter.BottomListener, View.OnClickListener{
 
     private IndexAdapter adapter;
     public static RecommendFragment instance;
@@ -55,7 +47,7 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
         View rootView = inflater.inflate(R.layout.fragment_static_load, container, false);
         selfList = (RecyclerView)rootView.findViewById(R.id.index_list);
         selfList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new IndexAdapter(this);
+        adapter = new IndexAdapter(this, this);
         selfList.setAdapter(adapter);
         holder = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_frame);
         holder.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -80,7 +72,7 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
             public void onRequestDone(String result) {
                 ArrayList<Post> list = Post.stringToList(result);
                 Post.store(list);
-                for(Post item : list){
+                for (Post item : list) {
                     adapter.addData(item);
                 }
                 holder.setRefreshing(false);
@@ -88,13 +80,17 @@ public class RecommendFragment extends Fragment implements IndexAdapter.BottomLi
         });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     public void onEndReach() {
         request();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Post one = Post.get((int)v.getTag());
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(Constants.detail, one);
+        getActivity().startActivity(intent);
     }
 }

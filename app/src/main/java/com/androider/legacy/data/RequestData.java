@@ -17,7 +17,6 @@ public class RequestData {
             cursor.close();
             return null;
         }
-        RequestData req = new RequestData();
         String content = cursor.getString(cursor.getColumnIndex("content"));
         cursor.close();
         return content;

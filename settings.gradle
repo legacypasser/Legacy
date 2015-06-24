@@ -1,2 +1,2 @@
-include ':app', ':', ':android-view-pager-indicator-0.9.0'
+include ':app', ':'
 include ':chatWidget'

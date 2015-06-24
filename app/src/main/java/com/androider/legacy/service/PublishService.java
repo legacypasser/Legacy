@@ -10,6 +10,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.activity.SearchActivity;
@@ -52,12 +53,12 @@ public class PublishService extends IntentService {
             case Constants.myPublish:
                 toStore = new ArrayList<>();
                 JSONArray dataArray = new JSONArray();
-                ArrayList<String> paths = intent.getStringArrayListExtra("paths");
+                ArrayList<String> paths = intent.getStringArrayListExtra(getString(R.string.img_path));
                 if(paths != null){
-                    String rawDes = intent.getStringExtra("rawDes");
-                    String rawTitle = intent.getStringExtra("rawTitle");
-                    int rawPrice = Integer.parseInt(intent.getStringExtra("rawPrice"));
-                    String imgStr = "";
+                    String rawDes = intent.getStringExtra(getString(R.string.raw_des));
+                    String rawTitle = intent.getStringExtra(getString(R.string.raw_title));
+                    int rawPrice = Integer.parseInt(intent.getStringExtra(getString(R.string.raw_price)));
+                    String imgStr = Constants.emptyString;
                     for(String item : paths){
                         if(item != paths.get(0))
                             imgStr += ";";

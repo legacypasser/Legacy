@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,9 +38,10 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
     }
 
     private BottomListener listener;
-
-    public IndexAdapter(BottomListener listener) {
+    private View.OnClickListener clickListener;
+    public IndexAdapter(BottomListener listener, View.OnClickListener clicked) {
         this.listener = listener;
+        clickListener = clicked;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
     public void onBindViewHolder(final IndexHolder holder, final int position) {
         final Post item = data.get(position);
         holder.title.setText(item.abs);
-        holder.price.setText("" + item.price + "元");
+        holder.price.setText(Constants.emptyString + item.price + "元");
         holder.pub.setText(DateConverter.justDate(item.publish));
         holder.location.setText(item.school);
         ImageLoader.getInstance().loadImage(item.getAbsImg(), new SimpleImageLoadingListener() {
@@ -81,15 +82,8 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.IndexHolder>
                 holder.banner.setBackgroundColor(p.getLightMutedColor(Color.WHITE));
             }
         });
-
-        holder.indexCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PostDetailFragment.currentId = item.id;
-                MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
-            }
-        });
-
+        holder.indexCard.setTag(data.get(position).id);
+        holder.indexCard.setOnClickListener(clickListener);
         if(position == data.size() - 1)
             listener.onEndReach();
     }

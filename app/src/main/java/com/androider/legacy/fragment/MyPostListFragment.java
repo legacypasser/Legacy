@@ -3,6 +3,7 @@ package com.androider.legacy.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.androider.legacy.R;
+import com.androider.legacy.activity.DetailActivity;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.PublishActivity;
 import com.androider.legacy.activity.SearchActivity;
@@ -28,15 +30,13 @@ import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.DividerDecorator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
-
 import java.util.ArrayList;
 
 public class MyPostListFragment extends Fragment implements View.OnClickListener{
 
     public static MyPostListFragment instance;
     private RecyclerView selfList;
-    private AddFloatingActionButton overButton;
+
     TextView myCover;
     private SearchAdapter adapter;
     public static MyPostListFragment newInstance(String param1, String param2) {
@@ -59,14 +59,6 @@ public class MyPostListFragment extends Fragment implements View.OnClickListener
         selfList.setLayoutManager(new LinearLayoutManager(getActivity()));
         selfList.addItemDecoration(new DividerDecorator());
         myCover = (TextView)rootView.findViewById(R.id.pub_info);
-        overButton = (AddFloatingActionButton)rootView.findViewById(R.id.all_over_button);
-        overButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.instance, PublishActivity.class);
-                MainActivity.instance.startActivity(intent);
-            }
-        });
         ArrayList<Post> myList = Post.listFromBase(User.instance.id);
         adapter = new SearchAdapter(this);
         if(myList.size() != 0){
@@ -89,7 +81,9 @@ public class MyPostListFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        PostDetailFragment.currentId = (int)v.getTag();
-        MainActivity.instance.switchFragment(PostDetailFragment.class.getSimpleName());
+        Post one = Post.get((int)v.getTag());
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(Constants.detail, one);
+        getActivity().startActivity(intent);
     }
 }

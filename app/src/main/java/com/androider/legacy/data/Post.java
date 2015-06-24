@@ -1,38 +1,27 @@
 package com.androider.legacy.data;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
-import com.androider.legacy.service.NetService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Think on 2015/4/16.
  */
 
-public class Post{
+public class Post implements Serializable{
     public int id;
     public int price;
     public String des;
@@ -119,13 +108,13 @@ public class Post{
 
     public Post(int id, String img, Date publish, String abs, int price, int seller) {
         this.id = id;
-        this.des = "";
+        this.des = Constants.emptyString;
         this.img = img;
         this.publish = publish;
         this.abs = abs;
         this.price = price;
         this.seller = seller;
-        this.school = "δ֪ѧУ";
+        this.school = Constants.emptyString;
     }
 
     public Post(int id,String des, String img, int seller, Date publish, String abs, int price) {
@@ -136,7 +125,7 @@ public class Post{
         this.publish = publish;
         this.abs = abs;
         this.price = price;
-        this.school = "δ֪ѧУ";
+        this.school = Constants.emptyString;
     }
 
     public static Post get(int id){
@@ -186,7 +175,7 @@ public class Post{
     }
 
     private static Post detailFromBase(int id){
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id=?;", new String[]{"" + id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id=?;", new String[]{Constants.emptyString + id});
         cursor.moveToFirst();
         Post result = getCursored(cursor);
         cursor.close();
@@ -196,7 +185,7 @@ public class Post{
 
     public static ArrayList<Post> listFromBase(int seller){
         ArrayList<Post> result = new ArrayList<Post>();
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where seller = ?;", new String[]{"" + seller});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where seller = ?;", new String[]{Constants.emptyString + seller});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             result.add(getCursored(cursor));
@@ -224,7 +213,7 @@ public class Post{
     public static void store(ArrayList<Post> added){
         DatabaseHelper.db.beginTransaction();
         for(Post item : added){
-            Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id = ?;", new String[]{"" + item.id});
+            Cursor cursor = DatabaseHelper.db.rawQuery("select * from post where id = ?;", new String[]{Constants.emptyString + item.id});
             cursor.moveToFirst();
             if(cursor.isAfterLast())
                 DatabaseHelper.db.insert(tableName, null, getCv(item));

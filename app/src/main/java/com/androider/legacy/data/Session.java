@@ -40,7 +40,7 @@ public class Session implements Serializable{
     }
 
     public void dragRecords(){
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from record where receiver = ? or sender = ? order by edit asc;", new String[]{"" + peer, "" + peer});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from record where receiver = ? or sender = ? order by edit asc;", new String[]{Constants.emptyString + peer, Constants.emptyString + peer});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Record item = Record.getCursored(cursor);
@@ -83,7 +83,7 @@ public class Session implements Serializable{
     public static void drag(){
         if(User.instance.id == -1)
             return;
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from session where owner = ?;", new String[]{"" + User.instance.id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from session where owner = ?;", new String[]{Constants.emptyString + User.instance.id});
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Session item = getCursored(cursor);

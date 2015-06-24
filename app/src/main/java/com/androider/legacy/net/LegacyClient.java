@@ -149,19 +149,19 @@ public class LegacyClient{
         return post(Constants.requestPath + Constants.chat, reqData.toString());
     }
 
-    public String register(){
+    public String register(User instance){
         JSONObject reqData = new JSONObject();
         try {
-            reqData.put("email", User.instance.email);
-            reqData.put("password", User.instance.password);
-            reqData.put("nickname", User.instance.nickname);
-            reqData.put("school", User.instance.school);
-            reqData.put("major", User.instance.major);
-            reqData.put("lati", User.instance.lati);
-            reqData.put("longi", User.instance.longi);
-            reqData.put("schoolid", School.schoolId(User.instance.school));
-            reqData.put("majorid", School.majorId(User.instance.major));
-            reqData.put("region", School.proviceId(User.instance.province));
+            reqData.put("email", instance.email);
+            reqData.put("password", instance.password);
+            reqData.put("nickname", instance.nickname);
+            reqData.put("school", instance.school);
+            reqData.put("major", instance.major);
+            reqData.put("lati", instance.lati);
+            reqData.put("longi", instance.longi);
+            reqData.put("schoolid", School.schoolId(instance.school));
+            reqData.put("majorid", School.majorId(instance.major));
+            reqData.put("region", School.proviceId(instance.province));
         } catch (JSONException e) {
             e.printStackTrace();
         }

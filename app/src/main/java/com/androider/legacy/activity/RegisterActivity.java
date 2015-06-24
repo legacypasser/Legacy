@@ -3,23 +3,17 @@ package com.androider.legacy.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.hardware.usb.UsbRequest;
-import android.location.Location;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,21 +27,20 @@ import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
-import com.androider.legacy.service.NetService;
+import com.androider.legacy.service.AccountService;
 import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.Encryption;
 import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
-    AddFloatingActionButton button;
+    FloatingActionButton button;
     MaterialEditText email;
     MaterialEditText password;
     MaterialEditText nickname;
@@ -59,18 +52,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     View.OnClickListener listener;
     LinearLayout chooser;
     int state;
-    final int atSchool = 0;
-    final int atMajor = 1;
-    final int readyRegi = 2;
+    private static final String gmail = "gmail";
+    private static final int atSchool = 0;
+    private static final int atMajor = 1;
+    private static final int readyRegi = 2;
+    private static final String emailRegular = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
 
     WatcherSimplifier validator = new WatcherSimplifier() {
         @Override
         public void afterTextChanged(Editable s) {
-            if(!email.getText().toString().equals("")
-                    &&!password.getText().toString().equals("")
-                    &&!nickname.getText().toString().equals("")
-                    &&!school.getText().toString().equals("")
-                    &&!major.getText().toString().equals("")){
+            if(!email.getText().toString().equals(Constants.emptyString)
+                    &&!password.getText().toString().equals(Constants.emptyString)
+                    &&!nickname.getText().toString().equals(Constants.emptyString)
+                    &&!school.getText().toString().equals(Constants.emptyString)
+                    &&!major.getText().toString().equals(Constants.emptyString)){
                 button.setEnabled(true);
             }else{
                 button.setEnabled(false);
@@ -82,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initLocation();
-        button = (AddFloatingActionButton)findViewById(R.id.register);
+        button = (FloatingActionButton)findViewById(R.id.register);
         email = (MaterialEditText)findViewById(R.id.email);
         password = (MaterialEditText)findViewById(R.id.password);
         nickname = (MaterialEditText)findViewById(R.id.nickname);
@@ -131,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public String getApiKey(){
         try {
             ActivityInfo info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            return info.metaData.getString("map.baidu.api.ak");
+            return info.metaData.getString(getString(R.string.baidu_key_name));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -185,29 +180,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         User.instance.email = email.getText().toString();
         int result = checkEmail(User.instance.email);
         if(result == 1){
-            Toast.makeText(this, "激活账号需要邮箱的，亲。请输入常用的邮箱，可以用网易新浪qq和foxmail邮箱", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.email_need_real), Toast.LENGTH_SHORT).show();
             return;
         }else if(result == 2){
-            Toast.makeText(this, "gmail有点小问题，你懂的亲。可以用网易新浪qq和foxmail邮箱", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.not_gmail), Toast.LENGTH_SHORT).show();
             return;
         }
-        User.instance.password = Encryption.encrypt(password.getText().toString());
+        String iniPass = password.getText().toString();
+        User.instance.password = Encryption.encrypt(iniPass);
         User.instance.nickname = nickname.getText().toString();
         User.instance.school = school.getText().toString();
         User.instance.major = major.getText().toString();
-        Intent intent = new Intent(this, NetService.class);
+        Intent intent = new Intent(this, AccountService.class);
         intent.putExtra(Constants.intentType, Constants.registrationSent);
         startService(intent);
-        StoreInfo.setString("email", User.instance.email);
+        StoreInfo.setString(Constants.email, User.instance.email);
+        StoreInfo.setString(Constants.password, iniPass);
         finish();
     }
 
     private int checkEmail(String email){
-        Pattern pattern = Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
+        Pattern pattern = Pattern.compile(emailRegular);
         Matcher matcher = pattern.matcher(email);
         if(!matcher.matches())
             return 1;
-        if(email.toLowerCase().contains("gmail"))
+        if(email.toLowerCase().contains(gmail))
             return 2;
         return 0;
     }

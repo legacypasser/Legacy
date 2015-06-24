@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity{
         input.addTextChangedListener(new WatcherSimplifier() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals(""))
+                if (s.toString().equals(Constants.emptyString))
                     send.setEnabled(false);
                 else
                     send.setEnabled(true);
@@ -73,7 +73,7 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 sendOnline(input.getText().toString());
-                input.setText("");
+                input.setText(Constants.emptyString);
             }
         });
         input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -111,7 +111,7 @@ public class ChatActivity extends AppCompatActivity{
 
     private void sendOnline(String content){
         if(!ConnectDetector.isConnectedToNet()){
-            Toast.makeText(this, "网络未连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_net), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -122,7 +122,7 @@ public class ChatActivity extends AppCompatActivity{
             intent.putExtra(NetConstants.content, content);
             startService(intent);
         }else
-            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
     }
 
     private void updateSession(Record record){

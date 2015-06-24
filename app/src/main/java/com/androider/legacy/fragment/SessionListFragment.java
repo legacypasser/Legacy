@@ -104,7 +104,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
                 final ArrayList<Record> all = Record.strToList(result);
                 if(all.size() == 0)
                     return;
-                String requestStr = "";
+                String requestStr = Constants.emptyString;
                 HashSet<Integer> conflictResovler = new HashSet<Integer>();
                 for (int i = 0; i < all.size(); i++){
                     Record one = all.get(i);
@@ -115,7 +115,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
                 for(Integer id : conflictResovler){
                     Mate mate = Mate.getPeer(id);
                     if(mate == null){
-                        if (requestStr.equals(""))
+                        if (requestStr.equals(Constants.emptyString))
                             requestStr += id;
                         else
                             requestStr += "," + id;
@@ -128,7 +128,7 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
                     if(!item.draged)
                         item.dragRecords();
                 }
-                if(requestStr.equals("")){
+                if(requestStr.equals(Constants.emptyString)){
                     refreshSession(all);
                 }else{
                     String url = Constants.requestPath + "infos?ids=" + requestStr;

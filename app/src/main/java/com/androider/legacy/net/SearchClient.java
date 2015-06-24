@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.androider.legacy.activity.SearchActivity;
 import com.androider.legacy.data.Post;
 import com.androider.legacy.util.Encryption;
 import com.opensearch.javasdk.CloudsearchClient;
@@ -40,9 +41,6 @@ import java.util.logging.SimpleFormatter;
  * Created by Think on 2015/5/23.
  */
 public class SearchClient {
-    private static String accessKey = "zsblzfu3ZoR2dziS";
-    private static String bigali = "D7CFmTmNiMxs8z05zhDMyHWkQMTq81";
-    private static String tableName = "legacy";
     private static String appName = "legacy";
     private static String serverUrl = "http://opensearch-cn-hangzhou.aliyuncs.com";
 
@@ -62,10 +60,10 @@ public class SearchClient {
         }
         Map<String, Object> opts = new HashMap();
         opts.put("host", serverUrl);
-        CloudsearchClient client = new CloudsearchClient(accessKey, bigali , opts, KeyTypeEnum.ALIYUN);
+        CloudsearchClient client = new CloudsearchClient(SearchActivity.accessKey, SearchActivity.bigAli , opts, KeyTypeEnum.ALIYUN);
         CloudsearchDoc doc = new CloudsearchDoc(appName,client);
         try {
-            String result = doc.push(dataArray.toString(), tableName);
+            String result = doc.push(dataArray.toString(), appName);
             Log.v("panbo", result);
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,9 +71,9 @@ public class SearchClient {
     }
 
     public static void search(String keyWord, LegacyTask.RequestCallback callback){
-        Map<String, Object> opts = new HashMap();
+        HashMap<String, Object> opts = new HashMap();
         opts.put("host", serverUrl);
-        CloudsearchClient client = new CloudsearchClient(accessKey, bigali , opts, KeyTypeEnum.ALIYUN);
+        CloudsearchClient client = new CloudsearchClient(SearchActivity.accessKey, SearchActivity.bigAli , opts, KeyTypeEnum.ALIYUN);
         CloudsearchSearch search = new CloudsearchSearch(client);
         search.addIndex(appName);
         search.setQueryString("default:" + "\'" + keyWord + "\'");

@@ -1,20 +1,14 @@
 <resources>
     <string name="app_name">带不动</string>
-
-    <string name="action_settings">Settings</string>
     <string name="title_activity_publish">发布</string>
     <string name="title_activity_chat">聊天</string>
-    <string name="title_activity_setting">SettingActivity</string>
-
     <string name="title_activity_register">注册</string>
     <string name="title_activity_search">搜索</string>
     <string name="cap_finish">拍照完成</string>
     <string name="cap_start">再拍几张</string>
     <string name="input_price">请输入价格：</string>
-
     <string name="email">邮箱</string>
     <string name="password">密码</string>
-    <string name="repass">重新输入密码</string>
     <string name="school">学校</string>
     <string name="nickname">昵称</string>
     <string name="major">专业</string>
@@ -22,34 +16,54 @@
     <string name="legacy_story">描述你的宝贝</string>
     <string name="legacy_des">详细的信息可以让你的宝贝更吸引人哦</string>
     <string name="publishing">正在上传</string>
-
     <string name="price_flow">价格</string>
-
     <string name="please_pub">还没有发布你的资产哦，请登陆或点击下方发布按钮</string>
     <string name="empty_search">没有找到你想要的，换个词搜一下吧</string>
     <string name="empty_session">还没有消息哦，多去跟同学们交流吧</string>
-
-    <string name="search">搜索</string>
     <string name="school_name">学校名</string>
     <string name="major_name">专业名</string>
-
     <string name="edit_des">编辑</string>
     <string name="take_photo">再拍几张</string>
-
     <string name="sound_on">拍照声音</string>
     <string name="information_on">消息铃声</string>
-
     <string name="title">请输入书名</string>
-
-    <string name="update">检查更新</string>
-    <string name="feedback">意见反馈</string>
-
     <string name="not_login">未登录</string>
     <string name="contract_seller">联系同学</string>
     <string name="click_to_add">点击添加</string>
-
     <string name="title_activity_mail">邮箱</string>
-
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+    <string name="title_activity_detail">详情</string>
+    <string name="title_activity_login">登陆</string>
+    <string name="update">检查更新</string>
+    <string name="feedback">意见反馈</string>
+    <string name="about_us">关于我们</string>
+    <string name="this_app">App</string>
+    <string name="no_net">没有网络连接哦，亲</string>
+    <string name="photo_instruct">photoInstructed</string>
+    <string name="baidu_key_name">map.baidu.api.ak</string>
+    <string name="how_to_photo">拍照完成后点击右上角保存拍照</string>
+    <string name="neet_net_to_scan">没有网扫不出来的亲，先连一个哈，么么哒</string>
+    <string name="please_login">请先登录</string>
+    <string name="empty_joke">什么也没有啊，亲</string>
+    <string name="full_content">先填满哈，亲</string>
+    <string name="pub_finish">发布成功，么么哒</string>
+    <string name="scan_fail">获取信息失败，请再扫描一次。再不行，就拍照发布吧亲</string>
+    <string name="to_many_photo">最多5张照片亲，别太多了</string>
+    <string name="email_need_real">激活账号需要邮箱的，亲。请输入常用的邮箱，可以用网易新浪qq和foxmail邮箱</string>
+    <string name="not_gmail">gmail有点小问题，你懂的亲。可以用网易新浪qq和foxmail邮箱</string>
+    <string name="img_path">paths</string>
+    <string name="raw_des">des</string>
+    <string name="raw_title">title</string>
+    <string name="raw_price">price</string>
+    <string name="my_legacy">我的宝贝</string>
+    <string name="price_value">价格：</string>
+    <string name="rmb">元</string>
+    <string name="email_registered">这个邮箱已被注册过了，亲</string>
+    <string name="register_finish">注册成功，请登陆邮箱激活账号，么么哒</string>
+    <string name="welcome_register">先点击右上角注册一个账号吧同学，欢迎加入</string>
+    <string name="login_success">登陆成功</string>
+    <string name="email_wrong">邮箱不对哦，这个邮箱是不是还没注册过，亲</string>
+    <string name="password_wrong">密码不对哦，亲</string>
+    <string name="not_active">先去邮箱激活一下亲</string>
 </resources>

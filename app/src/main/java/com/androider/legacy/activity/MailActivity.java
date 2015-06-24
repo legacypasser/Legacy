@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.support.v7.widget.Toolbar;
 
 import com.androider.legacy.R;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 import com.androider.legacy.util.StoreInfo;
 
@@ -32,7 +33,7 @@ public class MailActivity extends AppCompatActivity {
         });
         page.setWebChromeClient(new WebChromeClient());
         page.getSettings().setJavaScriptEnabled(true);
-        String email = StoreInfo.getString("email");
+        String email = StoreInfo.getString(Constants.email);
         String emailLink = null;
         if(email.contains("163"))
             emailLink = "http://m.mail.163.com";

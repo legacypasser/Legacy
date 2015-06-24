@@ -26,7 +26,7 @@
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\Legacy\chatWidget\unspecified\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="87848fb39416d0676acfeb8016f53de7dbb501eb">
+        sha1="eac6f48de16c10cf6773e2637c6128bc4a928c07">
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-77f3bb07fc913acc4dc3476692d7bcfa70461771.jar" />
     </item>
     <item
@@ -70,20 +70,6 @@
         revision="22.0.1"
         sha1="cc14ad4b03b5c14529d264f5a8c042ca7a5cd607">
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-8c947d241f699a5a19797108a8962f9add209821.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\Legacy\android-view-pager-indicator-0.9.0\unspecified\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="58190d9f1c316feacb29a04bdb2df6064e9076d1">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-4cbb96c29e56c84f342fe69a5e50e37fe459d52a.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\net.i2p.android.ext\floatingactionbutton\1.9.0\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="7c5e4db194c6ec3e62b70759ef913381ea4903d1">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-e08304396f22244ba83d0004133186cadf766586.jar" />
     </item>
     <item
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.0\classes.jar"

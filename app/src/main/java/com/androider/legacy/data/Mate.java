@@ -69,7 +69,7 @@ public class Mate implements Serializable{
     }
 
     private static Mate fromBase(int id){
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from peer where id = ?;", new String[]{"" + id});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from peer where id = ?;", new String[]{Constants.emptyString + id});
         cursor.moveToFirst();
         if(cursor.isAfterLast()){
             cursor.close();

@@ -2,6 +2,7 @@ package com.androider.legacy.net;
 
 import android.util.Log;
 
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Holder;
 import com.androider.legacy.data.Record;
 import com.androider.legacy.data.User;
@@ -21,7 +22,7 @@ public class Sender implements Runnable{
     public void run() {
         while (common.isRunning){
             try {
-                sendToServer("" + User.instance.id, NetConstants.heartHead);
+                sendToServer(Constants.emptyString + User.instance.id, NetConstants.heartHead);
                 Thread.currentThread();
                 Thread.sleep(NetConstants.heartSpace);
             } catch (InterruptedException e) {

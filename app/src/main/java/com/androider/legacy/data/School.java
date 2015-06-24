@@ -26,7 +26,7 @@ public class School {
     public static HashMap<String, School> maybeUsed;
     public ArrayList<String> majorlist;
     public ArrayList<String> getMajors(){
-        if(majors.equals(""))
+        if(majors.equals(Constants.emptyString))
             return null;
         majorlist = new ArrayList<>();
         Cursor cursor = DatabaseHelper.db.query("major", new String[]{"name"}, "id in (" + majors + ")", null, null, null, null);
@@ -40,7 +40,7 @@ public class School {
     }
 
     public static ArrayList<School> regional(int region){
-        Cursor cursor = DatabaseHelper.db.rawQuery("select * from school where region = ?;", new String[]{"" + region});
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from school where region = ?;", new String[]{Constants.emptyString + region});
         ArrayList<School> schools = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){

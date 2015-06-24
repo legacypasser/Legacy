@@ -1,30 +1,16 @@
 package com.androider.legacy.activity;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraManager;
-import android.net.Uri;
 import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.BoringLayout;
 import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,12 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,27 +29,19 @@ import com.androider.legacy.R;
 import com.androider.legacy.adapter.GridAdapter;
 import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Douban;
-import com.androider.legacy.data.Holder;
-import com.androider.legacy.data.User;
-import com.androider.legacy.fragment.ResultFragment;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
-import com.androider.legacy.service.NetService;
 import com.androider.legacy.service.PublishService;
 import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.ConnectDetector;
 import com.androider.legacy.util.CustomProgressDialog;
 import com.androider.legacy.util.DensityUtil;
-import com.androider.legacy.util.DividerDecorator;
 import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.rengwuxian.materialedittext.MaterialEditText;
-
-import net.i2p.android.ext.floatingactionbutton.AddFloatingActionButton;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -73,8 +49,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 import me.dm7.barcodescanner.zbar.Result;
@@ -106,6 +80,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     ZBarScannerView scannerView;
     CapturePreview preview;
     CustomProgressDialog dialog;
+    private static final String jpgSuf = ".jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,15 +148,15 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
             }
         });
         preview.startPreview();
-        if(!StoreInfo.getBool("photoInstructed")){
-            Toast.makeText(this, "拍照完成后点击右上角保存拍照", Toast.LENGTH_SHORT).show();
-            StoreInfo.setBool("photoInstructed", true);
+        if(!StoreInfo.getBool(getString(R.string.photo_instruct))){
+            Toast.makeText(this, getString(R.string.how_to_photo), Toast.LENGTH_SHORT).show();
+            StoreInfo.setBool(getString(R.string.photo_instruct), true);
         }
     }
 
     private void setToScan(){
         if(!ConnectDetector.isConnectedToNet()){
-            Toast.makeText(this, "没有网扫不出来的亲，先连一个哈，么么哒", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.neet_net_to_scan), Toast.LENGTH_SHORT).show();
             return;
         }
         surface.setVisibility(View.VISIBLE);
@@ -208,8 +183,8 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
 
     private boolean selfValid(){
         if(thumbAdpter.getCount() != 0){
-            return (!title.getText().toString().equals("")&&!price.getText().toString().equals("")
-                    &&!des.getText().toString().equals(""));
+            return (!title.getText().toString().equals(Constants.emptyString)&&!price.getText().toString().equals(Constants.emptyString)
+                    &&!des.getText().toString().equals(Constants.emptyString));
         }else
             return true;
     }
@@ -217,28 +192,28 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
 
     private void myPublish(){
         if(!ConnectDetector.isConnectedToNet()){
-            Toast.makeText(this, "没有网，亲，先连一个哈，么么哒", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_net), Toast.LENGTH_SHORT).show();
             return;
         }
         if(!StoreInfo.validLogin()){
-            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
             return;
         }
         if(list.getChildCount() == 0 && thumbAdpter.getCount() == 0){
-            Toast.makeText(this, "请输入发布内容", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.empty_joke), Toast.LENGTH_SHORT).show();
             return;
         }
         if(!selfValid()){
-            Toast.makeText(this, "请输入完整的信息", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.full_content), Toast.LENGTH_SHORT).show();
             return;
         }
 
         Intent intent = new Intent(this, PublishService.class);
         if(!paths.isEmpty()){
-            intent.putExtra("rawDes", des.getText().toString());
-            intent.putExtra("rawTitle", title.getText().toString());
-            intent.putExtra("rawPrice", price.getText().toString());
-            intent.putStringArrayListExtra("paths", paths);
+            intent.putExtra(getString(R.string.raw_des), des.getText().toString());
+            intent.putExtra(getString(R.string.raw_title), title.getText().toString());
+            intent.putExtra(getString(R.string.raw_price), price.getText().toString());
+            intent.putStringArrayListExtra(getString(R.string.img_path), paths);
         }
         intent.putExtra(Constants.intentType, Constants.myPublish);
         startService(intent);
@@ -257,13 +232,13 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     public void publishFinished(){
         paths.clear();
         thumbAdpter.clearImg();
-        des.setText("");
-        title.setText("");
-        price.setText("");
+        des.setText(Constants.emptyString);
+        title.setText(Constants.emptyString);
+        price.setText(Constants.emptyString);
         list.removeAllViews();
         dialog.dismiss();
         selfContent.setVisibility(View.GONE);
-        Toast.makeText(this, "发布成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.pub_finish), Toast.LENGTH_SHORT).show();
     }
     public NetHandler netHandler = new NetHandler(instance);
 
@@ -300,7 +275,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
 
     private void addFormattedBook(final Douban one){
         if(one.name == null){
-            Toast.makeText(this, "获取信息失败，请再扫描一次。再不行，就拍照发布吧亲", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.scan_fail), Toast.LENGTH_LONG).show();
             return;
         }
         View itemView = LayoutInflater.from(this).inflate(R.layout.format_book, list, false);
@@ -312,7 +287,7 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         price.addTextChangedListener(new WatcherSimplifier() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals("")) {
+                if (s.toString().equals(Constants.emptyString)) {
                     one.price = 0;
                 } else {
                     one.price = Integer.parseInt(price.getText().toString());
@@ -329,12 +304,12 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         if(thumbAdpter.getCount() >= 5 || capAdapter.getCount() >= 5){
-            Toast.makeText(this, "最多5张照片亲，别太多了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.to_many_photo), Toast.LENGTH_SHORT).show();
             return;
         }
         long nowTime = System.currentTimeMillis();
-        String theName =  nowTime + ".jpg";
-        String thumbName = "s_" + nowTime + ".jpg";
+        String theName =  nowTime + jpgSuf;
+        String thumbName = "s_" + nowTime + jpgSuf;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 1;
         Matrix matrix = new Matrix();

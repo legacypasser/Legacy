@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.adapter.IndexAdapter;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.User;
 
 /**
@@ -37,7 +38,7 @@ public class StoreInfo {
 
     public static String getString(String key){
         SharedPreferences shared = MainActivity.instance.getSharedPreferences(store, Context.MODE_PRIVATE);
-        return shared.getString(key, "");
+        return shared.getString(key, Constants.emptyString);
     }
 
     public static long getLong(String key){

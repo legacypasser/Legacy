@@ -30,7 +30,6 @@ public class Record implements Serializable{
     public int receiver;
     public String content;
     public long edit;
-
     public static final String tableName = "record";
 
     public Record(int sender, int receiver, String content, long edit) {
@@ -82,7 +81,7 @@ public class Record implements Serializable{
     }
 
     public String formFeedBack(){
-        return "" + sender + NetConstants.regex + receiver + NetConstants.regex + edit;
+        return Constants.emptyString + sender + NetConstants.regex + receiver + NetConstants.regex + edit;
     }
 
     public static Record strToObj(String str){
@@ -138,7 +137,7 @@ public class Record implements Serializable{
 
     @Override
     public String toString(){
-        return "" + sender + NetConstants.regex + receiver + NetConstants.regex + edit + NetConstants.regex + content;
+        return Constants.emptyString + sender + NetConstants.regex + receiver + NetConstants.regex + edit + NetConstants.regex + content;
     }
 
     public Message formMessage(){

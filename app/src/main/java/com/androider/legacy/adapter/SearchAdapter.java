@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.androider.legacy.R;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.activity.SearchActivity;
+import com.androider.legacy.data.Constants;
 import com.androider.legacy.data.Post;
-import com.androider.legacy.fragment.PostDetailFragment;
 import com.androider.legacy.util.DateConverter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -52,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
     public void onBindViewHolder(final SearchHolder holder, int position) {
         final Post item = data.get(position);
         holder.title.setText(item.abs);
-        holder.price.setText("" + item.price + "元");
+        holder.price.setText(Constants.emptyString + item.price + "元");
         holder.pub.setText(DateConverter.justDate(item.publish));
         holder.pos.setText(item.school);
         ImageLoader.getInstance().loadImage(item.getAbsImg(), new SimpleImageLoadingListener() {
