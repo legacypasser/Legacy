@@ -5,4 +5,4 @@
     <item android:state_selected="true" android:drawable="@drawable/msg_state_fail_resend_pressed" />
     <item android:drawable="@drawable/msg_state_fail_resend" />
 </selector>
-<!-- From: file:/D:/github/Legacy/chatWidget/src/main/res/drawable/msg_state_failed_resend.xml -->
+<!-- From: file:/C:/Users/Think/Documents/GitHub/Legacy/chatWidget/src/main/res/drawable/msg_state_failed_resend.xml -->

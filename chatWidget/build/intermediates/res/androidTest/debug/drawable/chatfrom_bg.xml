@@ -5,4 +5,4 @@
     <item android:state_pressed="true" android:drawable="@drawable/chatfrom_bg_pressed" />
     <item android:state_selected="true" android:drawable="@drawable/chatfrom_bg_focused" />
     <item android:drawable="@drawable/chatfrom_bg_normal" />
-</selector><!-- From: file:/D:/github/Legacy/chatWidget/src/main/res/drawable/chatfrom_bg.xml --><!-- From: file:/D:/github/Legacy/chatWidget/build/intermediates/bundles/debug/res/drawable/chatfrom_bg.xml -->
+</selector><!-- From: file:/C:/Users/Think/Documents/GitHub/Legacy/chatWidget/src/main/res/drawable/chatfrom_bg.xml --><!-- From: file:/C:/Users/Think/Documents/GitHub/Legacy/chatWidget/build/intermediates/bundles/debug/res/drawable/chatfrom_bg.xml -->

@@ -25,18 +25,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':chatWidget')
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile project(':android-view-pager-indicator-0.9.0')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
-    compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'net.i2p.android.ext:floatingactionbutton:1.9.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'me.dm7.barcodescanner:zbar:1.7.1'
     compile 'com.android.support:palette-v7:22.2.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.android.support:design:22.2.0'
 }

@@ -5,4 +5,4 @@
     <item android:state_focused="true" android:drawable="@color/background_tab_pressed"/>
     <item android:drawable="@android:color/transparent"/>
 
-</selector><!-- From: file:/D:/github/Legacy/chatWidget/src/main/res/drawable/background_tab.xml --><!-- From: file:/D:/github/Legacy/chatWidget/build/intermediates/bundles/debug/res/drawable/background_tab.xml -->
+</selector><!-- From: file:/C:/Users/Think/Documents/GitHub/Legacy/chatWidget/src/main/res/drawable/background_tab.xml --><!-- From: file:/C:/Users/Think/Documents/GitHub/Legacy/chatWidget/build/intermediates/bundles/debug/res/drawable/background_tab.xml -->
