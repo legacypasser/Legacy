@@ -45,6 +45,8 @@ public class SessionListFragment extends Fragment implements SessionListAdapter.
         instance = fragment;
         return fragment;
     }
+    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

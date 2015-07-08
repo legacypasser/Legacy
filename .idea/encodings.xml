@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/activity/DetailActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/activity/LoginActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/data/User.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/androider/legacy/util/LegacyApp.java" charset="UTF-8" />
   </component>
 </project>

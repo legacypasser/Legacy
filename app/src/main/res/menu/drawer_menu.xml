@@ -18,7 +18,7 @@
                 android:icon="@drawable/ic_message_grey600_36dp"
                 android:title="@string/about_us"/>
             <item
-                android:id="@+id/updata_menu"
+                android:id="@+id/update_menu"
                 android:icon="@drawable/ic_message_grey600_36dp"
                 android:title="@string/update"/>
         </menu>

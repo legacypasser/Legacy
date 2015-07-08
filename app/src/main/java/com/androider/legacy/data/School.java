@@ -24,19 +24,19 @@ public class School {
     public String name;
     public String majors;
     public static HashMap<String, School> maybeUsed;
-    public ArrayList<String> majorlist;
+    public ArrayList<String> majorList;
     public ArrayList<String> getMajors(){
         if(majors.equals(Constants.emptyString))
             return null;
-        majorlist = new ArrayList<>();
+        majorList = new ArrayList<>();
         Cursor cursor = DatabaseHelper.db.query("major", new String[]{"name"}, "id in (" + majors + ")", null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
-            majorlist.add(cursor.getString(0));
+            majorList.add(cursor.getString(0));
             cursor.moveToNext();
         }
         cursor.close();
-        return majorlist;
+        return majorList;
     }
 
     public static ArrayList<School> regional(int region){
@@ -185,7 +185,7 @@ public class School {
 
     public ArrayList<String> prefixedMajors(String pre){
         ArrayList<String> prefixed = new ArrayList<>();
-        for (String item : majorlist){
+        for (String item : majorList){
             if(item.startsWith(pre))
                 prefixed.add(item);
         }

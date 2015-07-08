@@ -26,9 +26,9 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <android.support.design.widget.TabLayout
+                        android:background="@color/dark_primary_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:tabBackground="@color/primary_color"
                         android:id="@+id/main_tab"/>
                     <android.support.v4.view.ViewPager
                         android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:menu="@menu/drawer_menu"
+                android:id="@+id/main_nav"
                 app:headerLayout="@layout/drawer_header"/>
         </android.support.v4.widget.DrawerLayout>
 

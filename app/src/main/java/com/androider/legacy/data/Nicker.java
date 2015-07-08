@@ -19,16 +19,22 @@ import java.util.Random;
  * Created by Think on 2015/5/14.
  */
 public class Nicker {
-    public static int adjTotal;
-    public static int nounTotal;
-    public static void initNick(Context context){
+    public static int getAdjTotal(){
         Cursor cursor = DatabaseHelper.db.rawQuery("select * from nick_adj", null);
-        adjTotal = cursor.getCount();
+        int adjTotal = cursor.getCount();
         cursor.close();
-        cursor = DatabaseHelper.db.rawQuery("select * from nick_noun;", null);
-        nounTotal = cursor.getCount();
+        return adjTotal;
+    }
+
+    public static int getNounTotal(){
+        Cursor cursor = DatabaseHelper.db.rawQuery("select * from nick_noun;", null);
+        int nounTotal = cursor.getCount();
         cursor.close();
-        if(adjTotal != 0)
+        return nounTotal;
+    }
+
+    public static void initNick(Context context){
+        if(getAdjTotal() != 0 || getNounTotal() != 0)
             return;
         AssetManager manager = context.getAssets();
         DatabaseHelper.db.beginTransaction();
@@ -40,9 +46,7 @@ public class Nicker {
             while ((str = reader.readLine()) != null){
                 cv = new ContentValues();
                 cv.put("adj", str);
-
                 DatabaseHelper.db.insert("nick_adj", null, cv);
-                adjTotal++;
             }
             reader.close();
             in.close();
@@ -52,7 +56,6 @@ public class Nicker {
                 cv = new ContentValues();
                 cv.put("noun", str);
                 DatabaseHelper.db.insert("nick_noun", null, cv);
-                nounTotal++;
             }
             reader.close();
             in.close();
@@ -66,14 +69,14 @@ public class Nicker {
 
     public static String getAdj(){
         Cursor cursor = DatabaseHelper.db.rawQuery("select adj from nick_adj;", null);
-        cursor.move(new Random().nextInt(adjTotal));
+        cursor.move(new Random().nextInt(getAdjTotal()));
         String adj = cursor.getString(0);
         cursor.close();
         return adj;
     }
     public static String getNoun(){
         Cursor cursor = DatabaseHelper.db.rawQuery("select noun from nick_noun;", null);
-        cursor.move(new Random().nextInt(nounTotal));
+        cursor.move(new Random().nextInt(getNounTotal()));
         String noun = cursor.getString(0);
         cursor.close();
         return noun;

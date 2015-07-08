@@ -36,6 +36,7 @@ import com.androider.legacy.util.CapturePreview;
 import com.androider.legacy.util.ConnectDetector;
 import com.androider.legacy.util.CustomProgressDialog;
 import com.androider.legacy.util.DensityUtil;
+import com.androider.legacy.util.LegacyApp;
 import com.androider.legacy.util.StoreInfo;
 import com.androider.legacy.util.WatcherSimplifier;
 
@@ -331,11 +332,11 @@ public class PublishActivity extends AppCompatActivity implements Camera.Picture
         capedPath.add(theName);
         capAdapter.addThumb(added);
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(MainActivity.filePath + theName)));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(LegacyApp.filePath + theName)));
             used.compress(Bitmap.CompressFormat.JPEG, 90, bos);
             bos.flush();
             bos.close();
-            bos = new BufferedOutputStream(new FileOutputStream(new File(MainActivity.filePath + thumbName)));
+            bos = new BufferedOutputStream(new FileOutputStream(new File(LegacyApp.filePath + thumbName)));
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bos);
             bos.flush();
             bos.close();

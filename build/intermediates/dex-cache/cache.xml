@@ -2,6 +2,20 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-c0bc50513bc42d7b569ea78b9d69df38107404ae.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\core\1.7.1\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cc14ad4b03b5c14529d264f5a8c042ca7a5cd607">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-8c947d241f699a5a19797108a8962f9add209821.jar" />
+    </item>
+    <item
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\2.0.3\classes.jar"
         jumboMode="false"
         revision="22.0.1"
@@ -9,11 +23,32 @@
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-56ccdd201a0eab4d3299e70544d90371cf010aba.jar" />
     </item>
     <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5b37cf49773f7f17aca9830efd3053b0cac56728">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-1d2f8a572f2383be1675a38fdbd5128ce8455f12.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.3.0\2e7bc7033dc2c8423e661224171b3133fb155b28\okhttp-2.3.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2e7bc7033dc2c8423e661224171b3133fb155b28">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\okhttp-2.3.0-836099df4eff6db5569dc1c05dd095f31b423aa8.jar" />
+    </item>
+    <item
         jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\library-2.4.0-420c2159ba77a36df5d86321a17c14810d804c43.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-eb062dffbf6f66e2c04d28444f9026c4252e2d9d.jar" />
     </item>
     <item
         jar="C:\Users\Think\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
@@ -28,6 +63,20 @@
         revision="22.0.1"
         sha1="eac6f48de16c10cf6773e2637c6128bc4a928c07">
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-77f3bb07fc913acc4dc3476692d7bcfa70461771.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\zbar\1.7.1\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="125c6b6b82aa1692b10f54cca1868a4bf8a41e31">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-35d79ddb49ff30cde5aaa54c2b9d2813a3f474e7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\zbar\1.7.1\libs\zbar.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="7bbdf7ba57a8a157c0cad51e455609c70887812e">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\zbar-5e6ee8ed5cd430f118f303aa3d78bf3fabb56adb.jar" />
     </item>
     <item
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.0\classes.jar"
@@ -51,67 +100,18 @@
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-ef07340987bac28d016b7612211da52bca3013ec.jar" />
     </item>
     <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\palette-v7\22.2.0\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="060b30a619b8d3ba053e1d7dc08b3fdf0dd81530">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-810fd6e7e48f8c66d1f120d7e8a751eb5eb4c21a.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-c0bc50513bc42d7b569ea78b9d69df38107404ae.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\core\1.7.1\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="cc14ad4b03b5c14529d264f5a8c042ca7a5cd607">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-8c947d241f699a5a19797108a8962f9add209821.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.0\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="5b37cf49773f7f17aca9830efd3053b0cac56728">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-1d2f8a572f2383be1675a38fdbd5128ce8455f12.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.3.0\2e7bc7033dc2c8423e661224171b3133fb155b28\okhttp-2.3.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2e7bc7033dc2c8423e661224171b3133fb155b28">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\okhttp-2.3.0-836099df4eff6db5569dc1c05dd095f31b423aa8.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\libs\internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-eb062dffbf6f66e2c04d28444f9026c4252e2d9d.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\zbar\1.7.1\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="125c6b6b82aa1692b10f54cca1868a4bf8a41e31">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-35d79ddb49ff30cde5aaa54c2b9d2813a3f474e7.jar" />
-    </item>
-    <item
-        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\me.dm7.barcodescanner\zbar\1.7.1\libs\zbar.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="7bbdf7ba57a8a157c0cad51e455609c70887812e">
-        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\zbar-5e6ee8ed5cd430f118f303aa3d78bf3fabb56adb.jar" />
-    </item>
-    <item
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\libs\universal-image-loader-1.9.4.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
         <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-cb225dc21a7eaa397695a72f47a0445df4dfa0b7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\palette-v7\22.2.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="060b30a619b8d3ba053e1d7dc08b3fdf0dd81530">
+        <dex dex="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\pre-dexed\debug\classes-810fd6e7e48f8c66d1f120d7e8a751eb5eb4c21a.jar" />
     </item>
     <item
         jar="C:\Users\Think\Documents\GitHub\Legacy\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\classes.jar"

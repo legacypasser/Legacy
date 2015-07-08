@@ -7,6 +7,7 @@ import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
 import com.androider.legacy.net.LegacyTask;
+import com.androider.legacy.util.LegacyApp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +42,7 @@ public class Post implements Serializable{
             return img;
         }else{
             String name = img.split(";")[0];
-            String path = "file://" + MainActivity.filePath + "s_" + name;
+            String path = "file://" + LegacyApp.filePath + "s_" + name;
             if(fileExists(path))
                 return path;
             else
@@ -96,7 +97,7 @@ public class Post implements Serializable{
         }else if(type == selfType){
             String[] all = img.replace("mpic", "lpic").split(";");
                 for(String item : all){
-                    String path = "file://" + MainActivity.filePath + item;
+                    String path = "file://" + LegacyApp.filePath + item;
                     if(fileExists(path))
                         imgs.add(path);
                     else

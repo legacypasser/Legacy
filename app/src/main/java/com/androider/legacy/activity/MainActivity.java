@@ -7,6 +7,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -58,8 +59,6 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity{
-
-    public static String filePath;
     public static MainActivity instance;
     private FloatingActionButton overButton;
     TextView accountEmail;
@@ -68,36 +67,13 @@ public class MainActivity extends AppCompatActivity{
     Thread receiveThread;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
-    private static final String inited = "inited";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
-        new DatabaseHelper(this);
-        User.instance.drag();
-        if(!StoreInfo.getBool(inited)){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Nicker.initNick(instance);
-                    School.iniSchool(instance);
-                    Message msg = Message.obtain();
-                    msg.what = Constants.initFinish;
-                    try {
-                        new Messenger(MainActivity.instance.netHandler).send(msg);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-            StoreInfo.setBool(inited, true);
-        }else{
-            Nicker.initNick(instance);
-            School.iniSchool(instance);
-        }
         setContentView(R.layout.activity_main);
         initToolbar();
-        filePath = this.getApplicationContext().getFilesDir() + "/";
+
         initView();
         autoLogin();
     }
@@ -130,6 +106,19 @@ public class MainActivity extends AppCompatActivity{
         drawer.setDrawerListener(toggle);
         accountEmail = (TextView)findViewById(R.id.account_email);
         accountNickname = (TextView)findViewById(R.id.account_nickname);
+        NavigationView nav = (NavigationView)findViewById(R.id.main_nav);
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.register_menu:
+                        Intent intent = new Intent(instance, RegisterActivity.class);
+                        instance.startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void loginSet(){
@@ -139,7 +128,6 @@ public class MainActivity extends AppCompatActivity{
         if(ConnectDetector.isConnectedToNet())
             chatOn();
     }
-
     private void autoLogin(){
         if(StoreInfo.validLogin()){
             loginSet();
@@ -257,9 +245,6 @@ public class MainActivity extends AppCompatActivity{
                     if(msg.arg1 == NetConstants.message)
                         SoundShouter.playInfo();
                     SessionListFragment.instance.oneCome((Record)msg.getData().getSerializable(Constants.chat));
-                    break;
-                case Constants.initFinish:
-                    instance.showWelcome();
                     break;
             }
         }

@@ -18,6 +18,7 @@ import com.androider.legacy.data.RequestData;
 import com.androider.legacy.data.School;
 import com.androider.legacy.data.User;
 import com.androider.legacy.util.ConnectDetector;
+import com.androider.legacy.util.LegacyApp;
 import com.androider.legacy.util.StoreInfo;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
@@ -185,8 +186,8 @@ public class LegacyClient{
         if(paths != null){
             for(int i = 0; i < paths.size(); i++){
                 if(i == 0)
-                    builder.addFormDataPart("imgs" + (i), "s_" + paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + "s_" + paths.get(i))));
-                builder.addFormDataPart("imgs" + (i + 1), paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(MainActivity.filePath + paths.get(i))));
+                    builder.addFormDataPart("imgs" + (i), "s_" + paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(LegacyApp.filePath + "s_" + paths.get(i))));
+                builder.addFormDataPart("imgs" + (i + 1), paths.get(i), RequestBody.create(MEDIA_TYPE_JPEG, new File(LegacyApp.filePath + paths.get(i))));
             }
         }
         RequestBody body = builder.build();

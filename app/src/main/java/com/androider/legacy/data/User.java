@@ -7,7 +7,6 @@ import android.location.Location;
 import com.androider.legacy.activity.MainActivity;
 import com.androider.legacy.database.DatabaseHelper;
 import com.androider.legacy.net.LegacyClient;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +20,6 @@ public class User extends Mate{
     public String province;
     public static final String tableName = "user";
     public static User instance = new User();
-
     private User(){
 
     }
